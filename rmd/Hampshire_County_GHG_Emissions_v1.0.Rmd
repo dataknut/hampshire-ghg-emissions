@@ -1,0 +1,210 @@
+---
+title: "Hampshire County GHG Emissions"
+subtitle: "Trends over time using various accounting methods and data sources"
+author: "Ben Anderson (b.anderson@soton.ac.uk)"
+date: 'Last run at: `r Sys.time()`'
+output:
+  bookdown::html_document2:
+    fig_caption: yes
+    code_folding: hide
+    number_sections: yes
+    toc: yes
+    toc_depth: 4
+    toc_float: TRUE
+  bookdown::pdf_document2:
+    toc: yes
+    fig_caption: yes
+    number_sections: yes
+  bookdown::word_document2: 
+    fig_caption: yes
+    number_sections: yes
+    toc: yes
+    toc_depth: 4
+    fig_width: 5
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+library(data.table)
+library(flextable)
+library(ggplot2)
+library(here)
+
+source(here::here("R", "functions.R"))
+
+params <- list()
+
+params$dataPath <- path.expand("~/Dropbox/data/")
+
+```
+
+# Introduction
+
+This data report uses two different datasets to estimate the greenhouse gas emissions of the Hampshire County under three different definitions:
+
+ - total annual CO2 emissions for the period XX to YY using local authority level data from BEIS (Source:)
+ - total annual CO2e emissions (i.e. all emissions, including CH4 and others) using the territorial emissions method with data from the Centre for Sustainable Energy's Impact Toolkit at the local authority level
+  - total annual CO2e emissions (i.e. all emissions, including CH4 and others) using the consumption emissions method with data from the Centre for Sustainable Energy's Impact Toolkit at the local authority level
+  
+For the avoidance of doubt the Hampshire COunty is taken to mean _all_ local authority districts in the Hampshire County including the unitary authorities of Portsmouth, Southampton and the Isle of Wight.
+ 
+```{r loadProcessBEIS}
+
+# BEIS LA co2 data
+laDT <- data.table::fread(paste0(params$dataPath,
+ "beis/localAuthorityCarbon/",                                "2005-19_Local_Authority_CO2_emissions.csv"))
+
+laDT[, subSectorLabel := `LA CO2 Sub-sector`]
+laDT[, subSectorLabel := ifelse(subSectorLabel == "Agriculture",
+     "Industry: Agriculture",
+     subSectorLabel)
+     ]
+laDT[, subSectorLabel := ifelse(subSectorLabel == "Large Industrial Installations",
+     "Industry: Large Industrial Installations",
+     subSectorLabel)
+]
+laDT[, subSectorLabel := ifelse(subSectorLabel == "Road Transport (A roads)",
+     "Transport: (A roads)",
+     subSectorLabel)
+]
+laDT[, subSectorLabel := ifelse(subSectorLabel == "Road Transport (Minor roads)",
+     "Transport: (Minor roads)",
+     subSectorLabel)
+]
+laDT[, subSectorLabel := ifelse(subSectorLabel == "Road Transport (Motorways)",
+     "Transport: (Motorways)",
+     subSectorLabel)
+]
+laDT[, subSectorLabel := ifelse(subSectorLabel == "Diesel Railways",
+     "Transport: Diesel Railways",
+     subSectorLabel)
+]
+```
+
+```{r loadProcessCESData}
+# CSE impact tool data
+
+```
+
+# Energy use
+
+```{r domesticEnergy}
+# Gas
+
+# Elec
+
+# Other
+
+```
+
+```{r nonDomEnergy}
+
+# Gas
+
+# Elec
+
+# Other
+```
+
+## Residual
+
+https://www.gov.uk/government/statistics/sub-national-residual-fuel-consumption-2005-to-2019
+
+Non-gas, non-elec and non-transport
+
+Data is kToe - 1000 T oil equiv
+
+```{r residualEnergy2010}
+
+f <- paste0(dataPath, "beis/subnationalResidualFuels/residual_fuels_2005-19.xlsx")
+
+resid_dt <- data.table::as.data.table(readxl::read_xlsx(f, sheet = "2010", skip = 3))
+
+resid_dt[, la_name := `Local Authority`]
+
+resid_solent_dt <- getSolent(resid_dt)
+
+nrow(resid_solent_dt)
+
+makeFlexTable(resid_solent_dt, cap = "Solent residual fuels")
+
+data.table::fwrite(resid_solent_dt, file = paste0(dataPath, "beis/subnationalResidualFuels/residual_fuels_solent_2010.csv"))
+```
+
+```{r residualEnergy2019}
+
+f <- paste0(dataPath, "beis/subnationalResidualFuels/residual_fuels_2005-19.xlsx")
+
+resid_dt <- data.table::as.data.table(readxl::read_xlsx(f, sheet = "2019", skip = 3))
+
+resid_dt[, la_name := `Local Authority`]
+
+resid_solent_dt <- getSolent(resid_dt)
+
+nrow(resid_solent_dt)
+
+makeFlexTable(resid_solent_dt, cap = "Solent residual fuels")
+
+data.table::fwrite(resid_solent_dt, file = paste0(dataPath, "beis/subnationalResidualFuels/residual_fuels_solent_2019.csv"))
+```
+
+# Emissions
+
+# Renewables
+
+Load the BEIS file.
+
+```{r loadRenewables}
+f <- paste0(dataPath, "beis/renewables/Renewable_electricity_by_local_authority_2020.csv")
+la_renewables <- data.table::fread(f)
+
+la_renewables[, la_name := `Local Authority Name`]
+la_renewables[, `Estimated number of households 1, 2, 3` := as.numeric(`Estimated number of households 1, 2, 3`)]
+la_renewables[, `Onshore Wind` := as.numeric(`Onshore Wind`)]
+la_renewables[, `Offshore Wind` := as.numeric(`Offshore Wind`)]
+la_renewables[, `Plant Biomass` := as.numeric(`Plant Biomass`)]
+la_renewables[, `Total` := as.numeric(`Total`)]
+
+la_renewables <- flagSolent(la_renewables)
+
+table(la_renewables$solentFlag)
+
+m_la_renewables <- melt(la_renewables)
+m_la_renewables[, value := ifelse(is.na(value),
+                                  0,
+                                  value)]
+
+la_renewables_solent <- getSolent(la_renewables)
+
+t <- getSolent(la_renewables)
+
+makeFlexTable(t, cap = "Solent LA renewables (capacity - MW)")
+
+```
+
+Table \@ref(tab:loadRenewables) shows the 2020 renewable capacity by local authority.
+
+```{r comparePanHampshire}
+
+
+dt <- m_la_renewables[, .(all_LAs_sum = sum(value, na.rm = TRUE),
+                     all_LAs_mean = mean(value, na.rm = TRUE)), keyby = .(variable, solentFlag)]
+
+t <- dcast(dt[,.(variable, solentFlag, all_LAs_mean)], variable ~ solentFlag)
+
+makeFlexTable(dt[variable != "Estimated number of households 1, 2, 3"], 
+              cap = "Compare Solent with all LAs (MW capacity)")
+```
+
+```{r plot renewables}
+ggplot2::ggplot(dt[variable != "Estimated number of households 1, 2, 3"], aes(x = variable, y = all_LAs_mean, fill = solentFlag)) +
+  geom_col(position = "dodge") +
+  scale_fill_discrete(name="Districts") +
+  labs(x = "Source",
+       y = "Mean installed capacity (MW)") +
+  coord_flip()
+
+```
+
+
