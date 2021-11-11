@@ -1,2 +1,2 @@
-# hampshire-ghg-emissions
-Hampshire GHG Emissions estimates
+# Hampshire GHG emissions
+A repo to support estiamtion of Hampshire GHG emissions
