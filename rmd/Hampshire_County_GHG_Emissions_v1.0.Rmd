@@ -30,6 +30,8 @@ library(data.table)
 library(flextable)
 library(ggplot2)
 library(here)
+library(RColorBrewer)
+library(dkUtils) # see https://github.com/dataknut/dkUtils
 
 source(here::here("R", "functions.R"))
 
@@ -43,168 +45,287 @@ params$dataPath <- path.expand("~/Dropbox/data/")
 
 This data report uses two different datasets to estimate the greenhouse gas emissions of the Hampshire County under three different definitions:
 
- - total annual CO2 emissions for the period XX to YY using local authority level data from BEIS (Source:)
- - total annual CO2e emissions (i.e. all emissions, including CH4 and others) using the territorial emissions method with data from the Centre for Sustainable Energy's Impact Toolkit at the local authority level
-  - total annual CO2e emissions (i.e. all emissions, including CH4 and others) using the consumption emissions method with data from the Centre for Sustainable Energy's Impact Toolkit at the local authority level
+ - total annual CO2 emissions for the period 2005 to 2019 using local authority level data from [BEIS](https://www.gov.uk/government/statistics/uk-local-authority-and-regional-carbon-dioxide-emissions-national-statistics-2005-to-2019)
+ - total annual CO2e emissions (i.e. all emissions, including CH4 and others) using the [territorial emissions method](https://impact-tool.org.uk/using-the-tool) with data from the Centre for Sustainable Energy's [Impact Tool](https://impact-tool.org.uk/download) at the local authority level
+  - total annual CO2e emissions (i.e. all emissions, including CH4 and others) using the [consumption emissions method](https://impact-tool.org.uk/using-the-tool) with data from the Centre for Sustainable Energy's [Impact Tool](https://impact-tool.org.uk/download) at the local authority level
   
-For the avoidance of doubt the Hampshire COunty is taken to mean _all_ local authority districts in the Hampshire County including the unitary authorities of Portsmouth, Southampton and the Isle of Wight.
+For the avoidance of doubt the Hampshire County is taken to mean _all_ local authority districts in the Hampshire County including the unitary authorities of Portsmouth, Southampton and the Isle of Wight.
+
+# Data
  
 ```{r loadProcessBEIS}
 
 # BEIS LA co2 data
-laDT <- data.table::fread(paste0(params$dataPath,
+beis_la_co2_DT <- data.table::fread(paste0(params$dataPath,
  "beis/localAuthorityCarbon/",                                "2005-19_Local_Authority_CO2_emissions.csv"))
 
-laDT[, subSectorLabel := `LA CO2 Sub-sector`]
-laDT[, subSectorLabel := ifelse(subSectorLabel == "Agriculture",
+beis_la_co2_DT[, subSectorLabel := `LA CO2 Sub-sector`]
+beis_la_co2_DT[, subSectorLabel := ifelse(subSectorLabel == "Agriculture",
      "Industry: Agriculture",
      subSectorLabel)
      ]
-laDT[, subSectorLabel := ifelse(subSectorLabel == "Large Industrial Installations",
+beis_la_co2_DT[, subSectorLabel := ifelse(subSectorLabel == "Large Industrial Installations",
      "Industry: Large Industrial Installations",
      subSectorLabel)
 ]
-laDT[, subSectorLabel := ifelse(subSectorLabel == "Road Transport (A roads)",
+beis_la_co2_DT[, subSectorLabel := ifelse(subSectorLabel == "Road Transport (A roads)",
      "Transport: (A roads)",
      subSectorLabel)
 ]
-laDT[, subSectorLabel := ifelse(subSectorLabel == "Road Transport (Minor roads)",
+beis_la_co2_DT[, subSectorLabel := ifelse(subSectorLabel == "Road Transport (Minor roads)",
      "Transport: (Minor roads)",
      subSectorLabel)
 ]
-laDT[, subSectorLabel := ifelse(subSectorLabel == "Road Transport (Motorways)",
+beis_la_co2_DT[, subSectorLabel := ifelse(subSectorLabel == "Road Transport (Motorways)",
      "Transport: (Motorways)",
      subSectorLabel)
 ]
-laDT[, subSectorLabel := ifelse(subSectorLabel == "Diesel Railways",
+beis_la_co2_DT[, subSectorLabel := ifelse(subSectorLabel == "Diesel Railways",
      "Transport: Diesel Railways",
      subSectorLabel)
 ]
+beis_la_co2_DT[, la_name := `Local Authority`]
+
+
+# set up the colours
+
+# colours borrowed from https://git.soton.ac.uk/twr1m15/la_emissions_viz/-/blob/master/shiny/app.R
+# for details, use set for each sector
+industry_pal <- RColorBrewer::brewer.pal(n = 8, name = "Greys")[4:8]    # industry greys, 5 categories incl Agric
+commercial_pal <- RColorBrewer::brewer.pal(n = 8, name = "RdPu")[4:6]    # commercial greys, 3 categories
+domestic_pal <- RColorBrewer::brewer.pal(n = 4, name = "Blues")[2:4]    # domestic blues, 3 categories
+public_pal <- RColorBrewer::brewer.pal(n = 4, name = "Purples")[2:4]    # public purple, 3 categories
+transport_pal <- RColorBrewer::brewer.pal(n = 6, name = "Oranges")[2:6] # transport oranges, 5 categories
+lulucf_pal <- RColorBrewer::brewer.pal(n = 9, name = "Greens")[4:9]     # lulucf greens, 6 categories
+
+# for details, combine sets
+detailed_pal <- c(commercial_pal, domestic_pal, industry_pal, lulucf_pal, public_pal, transport_pal)
+
+beis_la_co2_DT[, subSectorLabelFact := factor(subSectorLabel)]
+
+catList <- unique(beis_la_co2_DT$subSectorLabelFact) # this is not alphabetical - why?
+
+catList2 <- c(catList[1:15],catList[25] , catList[16:24])
+
+names(detailed_pal) <- catList2
+
+hampshire_beis_la_co2_DT <- getSolent(beis_la_co2_DT)
+
+t <- hampshire_beis_la_co2_DT[, .('Number of emissions categories' = .N), keyby = .(District = la_name, Year = as.character(`Calendar Year`))]
+makeFlexTable(dcast(t, District ~ Year), cap = "Data coverage for BEIS CO2 emissions data")
 ```
 
-```{r loadProcessCESData}
+Table \@ref(tab:loadProcessBEIS) shows the numnber of emissions categories for each district over time. Where this value is less than 24 this implies some categories had no emissions for this district.
+
+```{r loadProcessCES_terrData}
 # CSE impact tool data
+cse_territorial_abs_DT <- data.table::fread(paste0(params$dataPath,
+ "cse/cse_ImpactTool/",                                "local-authority-all-territorial-absolute.csv.gz"))
+cse_territorial_abs_DT[, la_name := name]
+hampshire_cse_territorial_abs_DT <- getSolent(cse_territorial_abs_DT)
+
+# make long form for easy summary etc
+hampshire_cse_territorial_abs_DT <- melt(hampshire_cse_territorial_abs_DT)
+
+t <- hampshire_cse_territorial_abs_DT[, .('Number of emissions categories' = .N), keyby = .(District = la_name)]
+makeFlexTable(t, cap = "Data coverage for CSE territorial emissions data")
 
 ```
 
-# Energy use
+```{r loadProcessCES_consData}
 
-```{r domesticEnergy}
-# Gas
+cse_consumption_abs_DT <- data.table::fread(paste0(params$dataPath,
+ "cse/cse_ImpactTool/",                                "local-authority-all-consumption-absolute.csv.gz"))
+cse_consumption_abs_DT[, la_name := name]
+hampshire_cse_consumption_abs_DT <- getSolent(cse_consumption_abs_DT)
 
-# Elec
+# make long form for easy summary etc
+hampshire_cse_consumption_abs_DT <- melt(hampshire_cse_consumption_abs_DT)
 
-# Other
+t <- hampshire_cse_consumption_abs_DT[, .('Number of emissions categories' = .N), keyby = .(District = la_name)]
+makeFlexTable(t, cap = "Data coverage for CSE consumptions emissions data")
+```
+
+# Territorial CO2 emissions only (BEIS data)
+
+These are calculated under the territorial emissions method and include _only_ CO2 emissions.
+
+## Totals for 'Hampshire'
+
+Table \@ref(tab:hampshireBEISCO2Total) shows the total emissions for 2019.
+
+```{r hampshireBEISCO2Total}
+t <- hampshire_beis_la_co2_DT[`Calendar Year` == 2019, .(`Total kT CO2e` = sum(`Territorial emissions (kt CO2)`, na.rm = TRUE))]
+makeFlexTable(t, cap = "BEIS CO2 emissions (kT, Hampshire, 2019)")
+
+sumBEIS_kt <- sum(hampshire_beis_la_co2_DT[`Calendar Year` == 2019]$`Territorial emissions (kt CO2)`)
+```
+
+Table \@ref(tab:hampshireBEISCO2TotalByCat) shows the total emissions for 2019 by category. Figure \@ref(fig:hampshireBEISCO2TotalByCat) shows the data as a bar plot. The categroies have been colour-coded so that related categories have similar colours in the palette. The largest emissions sources under this method are clearly visible (domestic gas and transport).
+
+```{r hampshireBEISCO2TotalByCat, fig.cap = "BEIS CO2 emissions by category (Hampshire, 2019 ordered by emissions value)"}
+t <- hampshire_beis_la_co2_DT[`Calendar Year` == 2019, .(`Total kT CO2` = sum(`Territorial emissions (kt CO2)`, na.rm = TRUE)), keyby = .(subSectorLabelFact)]
+
+absTotal <- sum(hampshire_beis_la_co2_DT[`Calendar Year` == 2019, abs(`Territorial emissions (kt CO2)`)])
+                
+t[, `% of gross` := 100*(`Total kT CO2`/absTotal)]
+
+makeFlexTable(t, cap = "BEIS CO2 emissions by category (Hampshire, 2019)")
+
+ggplot2::ggplot(t, aes(x = reorder(subSectorLabelFact, -`Total kT CO2`), 
+                       y = `Total kT CO2`,
+                       fill = subSectorLabelFact)) +
+  geom_col() +
+  scale_fill_manual(values = detailed_pal) +
+  theme(legend.position = "none") +
+  labs(x = "LA CO2 Sub-sector") +
+  coord_flip()
+
+# p <- ggplot2::ggplot(subsetDT, aes(x = `Calendar Year`, y = `Territorial emissions (kt CO2)`,
+#                             fill = subSectorLabel,
+#                             colour = subSectorLabel)) +
+#   geom_col(position = "stack") +
+#   scale_colour_manual(values = detailed_pal) +
+#   scale_fill_manual(values = detailed_pal) #
+# p
+```
+
+Figure \@ref(fig:hampshireBEISCO2TotalTrends) shows trends over time for these categories.
+
+```{r hampshireBEISCO2TotalTrends, fig.height = 6, fig.cap = "BEIS CO2 emissions by category (Hampshire, 2019 ordered by emissions value)"}
+t <- hampshire_beis_la_co2_DT[, .(`Total kT CO2e` = sum(`Territorial emissions (kt CO2)`, na.rm = TRUE)), keyby = .(`Calendar Year`, subSectorLabelFact)]
+
+ggplot2::ggplot(t, aes(x = `Calendar Year`, 
+                       y = `Total kT CO2e`,
+                       fill = subSectorLabelFact)) +
+  geom_col(position = "stack") +
+  scale_fill_manual(values = detailed_pal) +
+  theme(legend.position = "bottom", ) +
+  guides(fill=guide_legend(ncol=3)) +
+  theme(legend.title = element_blank()) +
+  labs(x = "LA CO2 Sub-sector")
 
 ```
 
-```{r nonDomEnergy}
+Figure \@ref(fig:hampshireBEISCO2TotalTrendsLine) shows trends over time for these categories using a line plot to make it easier to see which categories have declined.
 
-# Gas
+```{r hampshireBEISCO2TotalTrendsLine, fig.height = 6, fig.cap = "BEIS CO2 emissions by category (Hampshire, 2019 ordered by emissions value)"}
+p <- ggplot2::ggplot(t, aes(x = `Calendar Year`, 
+                       y = `Total kT CO2e`,
+                       colour = subSectorLabelFact)) +
+  geom_line() +
+  scale_colour_manual(values = detailed_pal) +
+  theme(legend.position = "bottom", ) +
+  guides(colour=guide_legend(ncol=3)) +
+  theme(legend.title = element_blank()) +
+  labs(x = "LA CO2 Sub-sector")
 
-# Elec
-
-# Other
+p
 ```
 
-## Residual
+Figure \@ref(fig:hampshireBEISCO2TotalTrendsLinePlotly) shows the same plot using plotly so that you can hover over the lines. This only works if the output is html and you are viewing this in a web browser...
 
-https://www.gov.uk/government/statistics/sub-national-residual-fuel-consumption-2005-to-2019
-
-Non-gas, non-elec and non-transport
-
-Data is kToe - 1000 T oil equiv
-
-```{r residualEnergy2010}
-
-f <- paste0(dataPath, "beis/subnationalResidualFuels/residual_fuels_2005-19.xlsx")
-
-resid_dt <- data.table::as.data.table(readxl::read_xlsx(f, sheet = "2010", skip = 3))
-
-resid_dt[, la_name := `Local Authority`]
-
-resid_solent_dt <- getSolent(resid_dt)
-
-nrow(resid_solent_dt)
-
-makeFlexTable(resid_solent_dt, cap = "Solent residual fuels")
-
-data.table::fwrite(resid_solent_dt, file = paste0(dataPath, "beis/subnationalResidualFuels/residual_fuels_solent_2010.csv"))
+```{r hampshireBEISCO2TotalTrendsLinePlotly, fig.height = 6, fig.cap = "BEIS CO2 emissions by category (Hampshire, 2019 ordered by emissions value)"}
+library(plotly)
+plotly::ggplotly(p)
 ```
 
-```{r residualEnergy2019}
+## Totals for local authority districts
 
-f <- paste0(dataPath, "beis/subnationalResidualFuels/residual_fuels_2005-19.xlsx")
+To do
 
-resid_dt <- data.table::as.data.table(readxl::read_xlsx(f, sheet = "2019", skip = 3))
+# Territorial-based emissions (CSE data)
 
-resid_dt[, la_name := `Local Authority`]
+These are calculated under the territorial emissions method and include _all_ greenhouse gas emissions.
 
-resid_solent_dt <- getSolent(resid_dt)
+## Totals for 'Hampshire'
 
-nrow(resid_solent_dt)
+Table \@ref(tab:hampshireCSETerrTotal) shows the total emissions for 2019.
 
-makeFlexTable(resid_solent_dt, cap = "Solent residual fuels")
+```{r hampshireCSETerrTotal}
+t <- hampshire_cse_territorial_abs_DT[, .(`Total kT CO2e` = sum(value, na.rm = TRUE)/1000)]
+makeFlexTable(t, cap = "CSE territorial emissions (Hampshire, 2019)")
 
-data.table::fwrite(resid_solent_dt, file = paste0(dataPath, "beis/subnationalResidualFuels/residual_fuels_solent_2019.csv"))
+sumCSETerr_kt <- sum(hampshire_cse_territorial_abs_DT$value)/1000
+```
+Table \@ref(tab:hampshireCSEterrTotalByCat) shows the total emissions for 2019 by category. Figure \@ref(fig:hampshireCSEterrTotalByCat) shows the data as a bar plot. The largest emissions sources under this method are clearly visible (domestic gas,  transport and pwoer generation). Note that some of the categories do not exactly match those used in the BEIS data. Ignore the (t CO2e) in the label - the plot shows kT for easy comparison.
+
+```{r hampshireCSEterrTotalByCat, fig.cap = "CSE all territorial emissions by category (Hampshire, 2019 ordered by emissions value)"}
+t <- hampshire_cse_territorial_abs_DT[, .(`Total kT CO2e` = sum(value, na.rm = TRUE)/1000), keyby = .(variable)]
+
+absTotal <- sum(hampshire_cse_territorial_abs_DT[, abs(value)])/1000
+                
+t[, `% of gross` := 100*(`Total kT CO2e`/absTotal)]
+
+makeFlexTable(t, cap = "CSE all territorial emissions by category (Hampshire, 2019)")
+
+ggplot2::ggplot(t, aes(x = reorder(variable, -`Total kT CO2e`), 
+                       y = `Total kT CO2e`,
+                       fill = variable)) +
+  geom_col() +
+  #scale_fill_manual(values = detailed_pal) +
+  theme(legend.position = "none") +
+  labs(x = "Emissions source") +
+  coord_flip()
+
+# p <- ggplot2::ggplot(subsetDT, aes(x = `Calendar Year`, y = `Territorial emissions (kt CO2)`,
+#                             fill = subSectorLabel,
+#                             colour = subSectorLabel)) +
+#   geom_col(position = "stack") +
+#   scale_colour_manual(values = detailed_pal) +
+#   scale_fill_manual(values = detailed_pal) #
+# p
 ```
 
-# Emissions
 
-# Renewables
 
-Load the BEIS file.
 
-```{r loadRenewables}
-f <- paste0(dataPath, "beis/renewables/Renewable_electricity_by_local_authority_2020.csv")
-la_renewables <- data.table::fread(f)
+# Consumption-based emissions (CSE data)
 
-la_renewables[, la_name := `Local Authority Name`]
-la_renewables[, `Estimated number of households 1, 2, 3` := as.numeric(`Estimated number of households 1, 2, 3`)]
-la_renewables[, `Onshore Wind` := as.numeric(`Onshore Wind`)]
-la_renewables[, `Offshore Wind` := as.numeric(`Offshore Wind`)]
-la_renewables[, `Plant Biomass` := as.numeric(`Plant Biomass`)]
-la_renewables[, `Total` := as.numeric(`Total`)]
+These are calculated under the consumption emissions method and include _all_ greenhouse gas emissions.
 
-la_renewables <- flagSolent(la_renewables)
+## Totals for 'Hampshire'
 
-table(la_renewables$solentFlag)
+Table \@ref(tab:hampshireCSEConsTotal) shows the total emissions for 2019.
 
-m_la_renewables <- melt(la_renewables)
-m_la_renewables[, value := ifelse(is.na(value),
-                                  0,
-                                  value)]
-
-la_renewables_solent <- getSolent(la_renewables)
-
-t <- getSolent(la_renewables)
-
-makeFlexTable(t, cap = "Solent LA renewables (capacity - MW)")
-
+```{r hampshireCSEConsTotal}
+t <- hampshire_cse_consumption_abs_DT[, .(`Total kT CO2e` = sum(value, na.rm = TRUE)/1000)]
+makeFlexTable(t, cap = "CSE consumption emissions (Hampshire, 2019)")
+sumCSECons_kt <- sum(hampshire_cse_consumption_abs_DT$value)/1000
 ```
+Table \@ref(tab:hampshireCSEconsTotalByCat) shows the total emissions for 2019 by category. Figure \@ref(fig:hampshireCSEconsTotalByCat) shows the data as a bar plot. The largest emissions sources under this method are clearly visible (purchased goods, services and food/diet and gas-use). Note that some of the categories do not exactly match those used in the BEIS data. Ignore the (t CO2e) in the label - the plot shows kT for easy comparison.
 
-Table \@ref(tab:loadRenewables) shows the 2020 renewable capacity by local authority.
+```{r hampshireCSEconsTotalByCat, fig.cap = "CSE all territorial emissions by category (Hampshire, 2019 ordered by emissions value)"}
+t <- hampshire_cse_consumption_abs_DT[, .(`Total kT CO2e` = sum(value, na.rm = TRUE)/1000), keyby = .(variable)]
 
-```{r comparePanHampshire}
+absTotal <- sum(hampshire_cse_consumption_abs_DT[, abs(value)])/1000
+                
+t[, `% of gross` := 100*(`Total kT CO2e`/absTotal)]
 
+makeFlexTable(t, cap = "CSE all consumption emissions by category (Hampshire, 2019)")
 
-dt <- m_la_renewables[, .(all_LAs_sum = sum(value, na.rm = TRUE),
-                     all_LAs_mean = mean(value, na.rm = TRUE)), keyby = .(variable, solentFlag)]
-
-t <- dcast(dt[,.(variable, solentFlag, all_LAs_mean)], variable ~ solentFlag)
-
-makeFlexTable(dt[variable != "Estimated number of households 1, 2, 3"], 
-              cap = "Compare Solent with all LAs (MW capacity)")
-```
-
-```{r plot renewables}
-ggplot2::ggplot(dt[variable != "Estimated number of households 1, 2, 3"], aes(x = variable, y = all_LAs_mean, fill = solentFlag)) +
-  geom_col(position = "dodge") +
-  scale_fill_discrete(name="Districts") +
-  labs(x = "Source",
-       y = "Mean installed capacity (MW)") +
+  
+ggplot2::ggplot(t, aes(x = reorder(variable, -`Total kT CO2e`), 
+                       y = `Total kT CO2e`,
+                       fill = variable)) +
+  geom_col() +
+  #scale_fill_manual(values = detailed_pal) +
+  theme(legend.position = "none") +
+  labs(x = "Emissions source") +
   coord_flip()
 
 ```
 
+# Summary
 
+The `true` value of emissions for Hampshire depends how you measure it:
+
+ * BEIS territorial CO2 only: `r dkUtils::tidyNum(sumBEIS_kt)` kT
+ * CSE territorial emissions: `r dkUtils::tidyNum(sumCSETerr_kt)` kT
+ * CSE consumption emissions: `r dkUtils::tidyNum(sumCSECons_kt)` kT
+
+Which you choose to focus on depends what you want to show and what you want to achieve. The same is true of the emissions subcategories.
+
+For strategic planning purposes the next step is to map relevant policies to the categories of emissions. Which gaps can be filled and by whom?
+
+# End
