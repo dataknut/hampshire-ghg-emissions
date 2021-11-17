@@ -48,9 +48,9 @@ params$dataPath <- path.expand("~/Dropbox/data/")
 
 This data report uses two different datasets to estimate the greenhouse gas emissions of the Hampshire County under three different definitions:
 
- - total annual CO2 emissions for the period 2005 to 2019 using local authority level data from [BEIS](https://www.gov.uk/government/statistics/uk-local-authority-and-regional-carbon-dioxide-emissions-national-statistics-2005-to-2019)
- - total annual CO2e emissions (i.e. all emissions, including CH4 and others) using the [territorial emissions method](https://impact-tool.org.uk/using-the-tool) with data from the Centre for Sustainable Energy's [Impact Tool](https://impact-tool.org.uk/download) at the local authority level (see [methodology report](https://impact-tool.org.uk/static/doc/Impact-methodology-paper-v1.6.pdf) for details of how each category was estimated)
-  - total annual CO2e emissions (i.e. all emissions, including CH4 and others) using the [consumption emissions method](https://impact-tool.org.uk/using-the-tool) with data from the Centre for Sustainable Energy's [Impact Tool](https://impact-tool.org.uk/download) at the local authority level
+ - total annual _territorial_ CO2 emissions for the period 2005 to 2019 using local authority level data from [BEIS](https://www.gov.uk/government/statistics/uk-local-authority-and-regional-carbon-dioxide-emissions-national-statistics-2005-to-2019)
+ - total annual _territorial_ CO2e emissions (i.e. all emissions, including methane and others) using the [territorial emissions method](https://impact-tool.org.uk/using-the-tool) with data from the Centre for Sustainable Energy's [Impact Tool](https://impact-tool.org.uk/download) at the local authority level (see [methodology report](https://impact-tool.org.uk/static/doc/Impact-methodology-paper-v1.6.pdf) for details of how each category was estimated and the years from which the data is drawn)
+  - total annual _consumption_ CO2e emissions (i.e. all emissions) using the [consumption emissions method](https://impact-tool.org.uk/using-the-tool) with data from the Centre for Sustainable Energy's [Impact Tool](https://impact-tool.org.uk/download) at the local authority level
   
 For the avoidance of doubt the Hampshire County is taken to mean _all_ local authority districts in the Hampshire County including the unitary authorities of Portsmouth, Southampton and the Isle of Wight.
 
@@ -424,7 +424,7 @@ If we focus on CSE territorial emissions, which include all emissions, the main 
 
 These figures draw attention to the significant emissions due to aviation which not included in the BEIS LA level data.
 
-Note that under the CSE approach, `Agriculture - Livestock and crop-related emissions ` amount to `r dkUtils::tidyNum(cse_terr_AgricLivestock,0)` T CO2e compared to the BEIS value for `Cropland` at `r dkUtils::tidyNum(beis_crop,0)` T CO2e which gives some indication of the additional emissions due to methane (noting that fuel used for agriculture is already in a separate category under the CSE approach).
+Note that under the CSE approach, `Agriculture - Livestock and crop-related emissions ` amount to `r dkUtils::tidyNum(cse_terr_AgricLivestock,0)` T CO2e compared to the BEIS value for `Cropland` at `r dkUtils::tidyNum(beis_crop,0)` T CO2e which gives some indication of the additional emissions due to methane (noting that fuel used for agriculture is already in a separate category under the CSE approach - see [methodology, p15](https://impact-tool.org.uk/static/doc/Impact-methodology-paper-v1.6.pdf)).
 
 
 ## CSE consumption CO2e (all GHG) emissions
