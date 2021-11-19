@@ -221,7 +221,7 @@ p +
   geom_hline(aes(yintercept = pc_75), colour = "grey") +
   geom_hline(aes(yintercept = pc_90), colour = "grey") +
   annotate("text", x = "Transport Other", y = pc_50, label = "50%", colour = "grey") +
-  annotate("text", x = "Transport Other", y = pc_75, label = "50%", colour = "grey") +
+  annotate("text", x = "Transport Other", y = pc_75, label = "75%", colour = "grey") +
   annotate("text", x = "Transport Other", y = pc_90, label = "90%", colour = "grey")
 ```
 
@@ -341,7 +341,7 @@ p +
   geom_hline(aes(yintercept = pc_75), colour = "grey") +
   geom_hline(aes(yintercept = pc_90), colour = "grey") +
   annotate("text", x = "Other Transport (t CO2e)", y = pc_50, label = "50%", colour = "grey") +
-  annotate("text", x = "Other Transport (t CO2e)", y = pc_75, label = "50%", colour = "grey") +
+  annotate("text", x = "Other Transport (t CO2e)", y = pc_75, label = "75%", colour = "grey") +
   annotate("text", x = "Other Transport (t CO2e)", y = pc_90, label = "90%", colour = "grey")
 
 ```
@@ -413,7 +413,7 @@ p +
   geom_hline(aes(yintercept = pc_75), colour = "grey") +
   geom_hline(aes(yintercept = pc_90), colour = "grey") +
   annotate("text", x = "Housing - Oil (t CO2e)", y = pc_50, label = "50%", colour = "grey") +
-  annotate("text", x = "Housing - Oil (t CO2e)", y = pc_75, label = "50%", colour = "grey") +
+  annotate("text", x = "Housing - Oil (t CO2e)", y = pc_75, label = "75%", colour = "grey") +
   annotate("text", x = "Housing - Oil (t CO2e)", y = pc_90, label = "90%", colour = "grey")
 
 ```
