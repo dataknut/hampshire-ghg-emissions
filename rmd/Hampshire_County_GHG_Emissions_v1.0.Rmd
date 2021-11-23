@@ -52,15 +52,20 @@ This data report uses two different datasets to estimate the greenhouse gas emis
  - total annual _territorial_ CO2e emissions (i.e. all emissions, including methane and others) using the [territorial emissions method](https://impact-tool.org.uk/using-the-tool) with data from the Centre for Sustainable Energy's [Impact Tool](https://impact-tool.org.uk/download) at the local authority level (see [methodology report](https://impact-tool.org.uk/static/doc/Impact-methodology-paper-v1.6.pdf) for details of how each category was estimated and the years from which the data is drawn)
   - total annual _consumption_ CO2e emissions (i.e. all emissions) using the [consumption emissions method](https://impact-tool.org.uk/using-the-tool) with data from the Centre for Sustainable Energy's [Impact Tool](https://impact-tool.org.uk/download) at the local authority level
   
-For the avoidance of doubt the Hampshire County is taken to mean _all_ local authority districts in the Hampshire County including the unitary authorities of Portsmouth, Southampton and the Isle of Wight.
+The analysis is carried out for the 'Wider Hampshire' - _all_ local authority districts in the Hampshire County **including the unitary authorities of Portsmouth, Southampton and the Isle of Wight**. Note that this differs from the baseline estimated for Hampshire County Council by The Carbon Trust which _excluded_ Portsmouth, Southampton and the Isle of Wight.
 
 # Data
+
+Load data sources
+
+
+ - total annual _territorial_ CO2 emissions for 2005 to 2019 (BEIS)
  
 ```{r loadProcessBEIS}
 
 # BEIS LA co2 data
 beis_la_co2_DT <- data.table::fread(paste0(params$dataPath,
- "beis/localAuthority/carbon/",                                "2005-19_Local_Authority_CO2_emissions.csv"))
+ "beis/localAuthority/carbon/2005_2019/",                                "2005-19_Local_Authority_CO2_emissions.csv"))
 
 beis_la_co2_DT[, subSectorLabel := `LA CO2 Sub-sector`]
 beis_la_co2_DT[, subSectorLabel := ifelse(subSectorLabel == "Agriculture",
@@ -113,13 +118,16 @@ catList2 <- c(catList[1:15],catList[25] , catList[16:24])
 names(detailed_pal) <- catList2
 
 hampshire_beis_la_co2_DT <- getSolent(beis_la_co2_DT)
-
-t <- hampshire_beis_la_co2_DT[, .('Number of emissions categories' = .N), keyby = .(District = la_name, Year = as.character(`Calendar Year`))]
-makeFlexTable(dcast(t, District ~ Year), cap = "Data coverage for BEIS CO2 emissions data")
+hampshire_beis_la_co2_DT[, widerHampshire := ifelse(la_name == "Southampton" |
+                                                      la_name == "Portsmouth" |
+                                                      la_name == "Isle of Wight",
+                         "Wider Hampshire",
+                         "Hampshire CC")]
 ```
 
-Table \@ref(tab:loadProcessBEIS) shows the numnber of emissions categories for each district over time. Where this value is less than 24 this implies some categories had no emissions for this district.
 
+ - total annual _territorial_ CO2e (all GHG) emissions (CSE data)
+  
 ```{r loadProcessCSE_terrData}
 # CSE impact tool data
 cse_territorial_abs_DT <- data.table::fread(paste0(params$dataPath,
@@ -128,12 +136,17 @@ cse_territorial_abs_DT[, la_name := name]
 hampshire_cse_territorial_abs_DT <- getSolent(cse_territorial_abs_DT)
 
 # make long form for easy summary etc
-hampshire_cse_territorial_abs_DT <- melt(hampshire_cse_territorial_abs_DT)
-
-t <- hampshire_cse_territorial_abs_DT[, .('Number of emissions categories' = .N), keyby = .(District = la_name)]
-makeFlexTable(t, cap = "Data coverage for CSE territorial emissions data")
-
+lDT <- melt(hampshire_cse_territorial_abs_DT)
+# remove Power generation - CSE methodology: "Gridded data area apportioned, point data summed within area. Note: this category overlaps with electricity emissions and is provided for information only"
+hampshire_cse_territorial_abs_DT <- lDT[variable != "Power generation (t CO2e)"]
+hampshire_cse_territorial_abs_DT[, widerHampshire := ifelse(la_name == "Southampton" |
+                                                      la_name == "Portsmouth" |
+                                                      la_name == "Isle of Wight",
+                         "Wider Hampshire",
+                         "Hampshire CC")]
 ```
+
+- total annual _consumption_ CO2e emissions (CSE data)
 
 ```{r loadProcessCES_consData}
 
@@ -144,86 +157,53 @@ hampshire_cse_consumption_abs_DT <- getSolent(cse_consumption_abs_DT)
 
 # make long form for easy summary etc
 hampshire_cse_consumption_abs_DT <- melt(hampshire_cse_consumption_abs_DT)
-
-t <- hampshire_cse_consumption_abs_DT[, .('Number of emissions categories' = .N), keyby = .(District = la_name)]
-makeFlexTable(t, cap = "Data coverage for CSE consumptions emissions data")
+hampshire_cse_consumption_abs_DT[, widerHampshire := ifelse(la_name == "Southampton" |
+                                                      la_name == "Portsmouth" |
+                                                      la_name == "Isle of Wight",
+                         "Wider Hampshire",
+                         "Hampshire CC")]
 ```
 
-# Territorial CO2 emissions only (BEIS data)
+# Carbon Trust estimates
 
-These are calculated under the territorial emissions method and include _only_ CO2 emissions. Beis have produced a useful [mapping tool](https://naei.beis.gov.uk/laco2app/) which can be used to compare the spatial distribution of different emissions sources at district level.
+As background to the Hampshire County Council [Climate Change Strategy](https://www.hants.gov.uk/landplanningandenvironment/environment/climatechange/whatarewedoing/climatechangestrategy), the Carbon Trust was asked to establish baseline emissions for the County **excluding Southampton, Portsmouth and Isle of Wight**. This baseline was converted to the proportion of emissions from different energy sources and reported as a trend plot on p14 of the Strategy as shown below. This highlighted that the main components of emissions were:
 
-## Latest totals for 'Hampshire'
+ * Industry & Commercial (~ 39%) 
+ * Transport (~ 37%)
+ * Residential energy use (~ 24%). 
+ 
+Total kT CO2 baseline values were not included in this report.
 
-Table \@ref(tab:hampshireBEISCO2Total) shows the total emissions for 2019.
+![Hampshire emissions (CarbonTrust, 2020)](../plots/hcc_strategy_emissions_trend_plot.png)
 
-```{r hampshireBEISCO2Total}
-t <- hampshire_beis_la_co2_DT[`Calendar Year` == 2019, .(`Total kT CO2e` = sum(`Territorial emissions (kt CO2)`, na.rm = TRUE))]
-makeFlexTable(t, cap = "BEIS CO2 emissions (kT, Hampshire, 2019)")
+```{r hccCT}
+# imputed from values given in https://documents.hants.gov.uk/climate-change/ClimateChange-Strategic-Framework-of-Programmes.pdf
 
-sumBEIS_kt <- sum(hampshire_beis_la_co2_DT[`Calendar Year` == 2019]$`Territorial emissions (kt CO2)`)
+hampshire_CT_terr_Totals <- data.table::fread(here::here("data", "ClimateChange-Strategic-Framework-of-Programmes_imputed_Carbon_2019.csv"))
+ct_transport <- hampshire_CT_terr_Totals[compareLab == "Transport", .(ktco2_CT)]
+ct_res <- hampshire_CT_terr_Totals[compareLab == "Residential", .(ktco2_CT)]
+ct_ind <- hampshire_CT_terr_Totals[compareLab == "Industry & Commercial", .(ktco2_CT)]
+
+ct_total <- ct_transport + ct_res + ct_ind
+
+ct_transport_pc <- round(100*(ct_transport/ct_total))
+ct_res_pc <- round(100*(ct_res/ct_total))
+ct_ind_pc <- round(100*(ct_ind/ct_total))
 ```
 
-Table \@ref(tab:hampshireBEISCO2TotalByCat) shows the total emissions for 2019 by category. Figure \@ref(fig:hampshireBEISCO2TotalByCat) shows the data as a bar plot. The categroies have been colour-coded so that related categories have similar colours in the palette. The largest emissions sources under this method are clearly visible (domestic gas and transport).
+However the HCC Climate [Change Strategic Framework of Programmes](https://www.hants.gov.uk/landplanningandenvironment/environment/climatechange/whatarewedoing/strategicpriorities) which lays out the estimated total kT CO2 and % reduction for a range of proposed actions, enables the following baseline values to be imputed:
 
-```{r hampshireBEISCO2TotalByCat, fig.cap = "BEIS CO2 emissions by category (Hampshire, 2019 ordered by emissions value)"}
-hampshire_beis_terr_Totals <- hampshire_beis_la_co2_DT[`Calendar Year` == 2019, .(`Total kT CO2` = sum(`Territorial emissions (kt CO2)`, na.rm = TRUE)), keyby = .(subSectorLabelFact)]
+ * Industry & Commercial emissions = `r dkUtils::tidyNum(ct_ind,0)` kT CO2
+ * Transport emissions = `r dkUtils::tidyNum(ct_transport,0)` kT CO2
+ * Residential emissions = `r dkUtils::tidyNum(ct_res,0)` kT CO2
 
-absTotal <- sum(hampshire_beis_la_co2_DT[`Calendar Year` == 2019, abs(`Territorial emissions (kt CO2)`)])
-                
-hampshire_beis_terr_Totals[, `% of gross` := 100*(`Total kT CO2`/absTotal)]
+Giving a total of `r dkUtils::tidyNum(ct_total,0)` kT CO2 for the 11 districts.
 
-makeFlexTable(hampshire_beis_terr_Totals, cap = "BEIS CO2 emissions by category (Hampshire, 2019)")
+# BEIS: Territorial CO2 emissions
 
-ggplot2::ggplot(hampshire_beis_terr_Totals, aes(x = reorder(subSectorLabelFact, -`Total kT CO2`), 
-                       y = `Total kT CO2`,
-                       fill = subSectorLabelFact)) +
-  geom_col() +
-  scale_fill_manual(values = detailed_pal) +
-  theme(legend.position = "none") +
-  labs(x = "LA CO2 Sub-sector") +
-  coord_flip()
+These were calculated under the [territorial emissions method](https://assets.publishing.service.gov.uk/government/uploads/system/uploads/attachment_data/file/996059/local-authority-co2-emissions-technical-report-2019.pdf) and include _only_ CO2 emissions.
 
-# p <- ggplot2::ggplot(subsetDT, aes(x = `Calendar Year`, y = `Territorial emissions (kt CO2)`,
-#                             fill = subSectorLabel,
-#                             colour = subSectorLabel)) +
-#   geom_col(position = "stack") +
-#   scale_colour_manual(values = detailed_pal) +
-#   scale_fill_manual(values = detailed_pal) #
-# p
-```
-
-Figure \@ref(fig:beisCumulative) shows a cumulative emissions plot for the BEIS 2019 data ordered by the emissions source's magnitude. The largest increments are therefore due to domestic gas use various forms of transport. The plot shows the sources which comprise 50%, 75% and 90% of the total emissions. The plot curls due to the source categories with negative emissions such that the final point represents the total 'net' emissions.
-
-```{r beisCumulative, fig.cap="Plot of cumulative emissions (BEIS, 2019)"}
-t <- hampshire_beis_terr_Totals[order(-`Total kT CO2`)]
-t[, cumulative := cumsum(`Total kT CO2`)]
-
-pc_50 <- 0.5*(sum(t$`Total kT CO2`))
-pc_75 <- 0.75*(sum(t$`Total kT CO2`))
-pc_90 <- 0.90*(sum(t$`Total kT CO2`))
-
-p <- ggplot2::ggplot(t, aes(x = reorder(subSectorLabelFact, -`Total kT CO2`), 
-                       y = cumulative,
-                       colour = subSectorLabelFact)) +
-  geom_point() +
-  ylim(0,NA) +
-  scale_colour_manual(values = detailed_pal) +
-  theme(legend.position = "none") +
-  labs(x = "LA CO2 Sub-sector",
-       y = "Cumulative kT CO2/annum",
-       cap = "Vertical lines % of net emissions") +
-  coord_flip()
-
-# add reference lines
-p + 
-  geom_hline(aes(yintercept = pc_50), colour = "grey") +
-  geom_hline(aes(yintercept = pc_75), colour = "grey") +
-  geom_hline(aes(yintercept = pc_90), colour = "grey") +
-  annotate("text", x = "Transport Other", y = pc_50, label = "50%", colour = "grey") +
-  annotate("text", x = "Transport Other", y = pc_75, label = "75%", colour = "grey") +
-  annotate("text", x = "Transport Other", y = pc_90, label = "90%", colour = "grey")
-```
+BEIS have produced a useful [mapping tool](https://naei.beis.gov.uk/laco2app/) which can be used to compare the spatial distribution of different emissions sources at district level.
 
 ## Trends over time
 
@@ -267,15 +247,138 @@ library(plotly)
 plotly::ggplotly(p)
 ```
 
-## Totals for local authority districts
+## 2019 baseline
 
-To do
+Table \@ref(tab:hampshireBEISCO2Total) shows the total emissions for 2019 for all `r uniqueN(hampshire_beis_la_co2_DT$la_name)` districts.
 
-# Territorial-based emissions (CSE data)
+```{r hampshireBEISCO2Total}
+t <- hampshire_beis_la_co2_DT[`Calendar Year` == 2019, .(`Total kT CO2e` = sum(`Territorial emissions (kt CO2)`, na.rm = TRUE))]
+makeFlexTable(t, cap = "BEIS CO2 emissions (kT, 2019)")
+
+sumBEIS_kt <- sum(hampshire_beis_la_co2_DT[`Calendar Year` == 2019]$`Territorial emissions (kt CO2)`)
+```
+
+Table \@ref(tab:hampshireBEISCO2TotalByCat) shows the total emissions for 2019 ordered by category. Figure \@ref(fig:hampshireBEISCO2TotalByCat) shows the data as a bar plot ordered by value. The categories have been colour-coded so that related categories have similar colours in the palette. The largest emissions sources under this method are clearly visible (domestic gas, transport and domestic electricity).
+
+```{r hampshireBEISCO2TotalByCat, fig.cap = "BEIS CO2 emissions by category (Hampshire, 2019 ordered by emissions value)"}
+hampshire_beis_terr_Totals <- hampshire_beis_la_co2_DT[`Calendar Year` == 2019, .(`Total kT CO2` = sum(`Territorial emissions (kt CO2)`, na.rm = TRUE)), keyby = .(subSectorLabelFact)]
+
+absTotal <- sum(hampshire_beis_la_co2_DT[`Calendar Year` == 2019, abs(`Territorial emissions (kt CO2)`)])
+                
+hampshire_beis_terr_Totals[, `% of gross` := 100*(`Total kT CO2`/absTotal)]
+
+makeFlexTable(hampshire_beis_terr_Totals[, .(Source = subSectorLabelFact, 
+                                             `Total kT CO2`, `% of gross`)], cap = "BEIS CO2 emissions sorted by category (Hampshire, 2019)")
+
+ggplot2::ggplot(hampshire_beis_terr_Totals, aes(x = reorder(subSectorLabelFact, -`Total kT CO2`), 
+                       y = `Total kT CO2`,
+                       fill = subSectorLabelFact)) +
+  geom_col() +
+  scale_fill_manual(values = detailed_pal) +
+  theme(legend.position = "none") +
+  labs(x = "LA CO2 Sub-sector") +
+  coord_flip()
+
+# p <- ggplot2::ggplot(subsetDT, aes(x = `Calendar Year`, y = `Territorial emissions (kt CO2)`,
+#                             fill = subSectorLabel,
+#                             colour = subSectorLabel)) +
+#   geom_col(position = "stack") +
+#   scale_colour_manual(values = detailed_pal) +
+#   scale_fill_manual(values = detailed_pal) #
+# p
+```
+
+Figure \@ref(fig:beisCumulative) shows a cumulative emissions plot for the BEIS 2019 data ordered by the emissions source's magnitude. The largest increments are therefore due to domestic gas use and various forms of transport. The plot uses vertical lines to show the sources which comprise 50%, 75% and 90% of the total emissions. The plot curls due to the source categories with negative emissions such that the final point represents the total 'net' emissions.
+
+```{r beisCumulative, fig.cap="Plot of cumulative emissions (BEIS, 2019)"}
+t <- hampshire_beis_terr_Totals[order(-`Total kT CO2`)]
+t[, cumulative := cumsum(`Total kT CO2`)]
+
+pc_50 <- 0.5*(sum(t$`Total kT CO2`))
+pc_75 <- 0.75*(sum(t$`Total kT CO2`))
+pc_90 <- 0.90*(sum(t$`Total kT CO2`))
+
+p <- ggplot2::ggplot(t, aes(x = reorder(subSectorLabelFact, -`Total kT CO2`), 
+                       y = cumulative,
+                       colour = subSectorLabelFact)) +
+  geom_point() +
+  ylim(0,NA) +
+  scale_colour_manual(values = detailed_pal) +
+  theme(legend.position = "none") +
+  labs(x = "LA CO2 Sub-sector",
+       y = "Cumulative kT CO2/annum",
+       cap = "Vertical lines % of net emissions") +
+  coord_flip()
+
+# add reference lines
+p + 
+  geom_hline(aes(yintercept = pc_50), colour = "grey") +
+  geom_hline(aes(yintercept = pc_75), colour = "grey") +
+  geom_hline(aes(yintercept = pc_90), colour = "grey") +
+  annotate("text", x = "Transport Other", y = pc_50, label = "50%", colour = "grey") +
+  annotate("text", x = "Transport Other", y = pc_75, label = "75%", colour = "grey") +
+  annotate("text", x = "Transport Other", y = pc_90, label = "90%", colour = "grey")
+```
+
+
+```{r discBEISCO2}
+h_beis2019 <- hampshire_beis_la_co2_DT[`Calendar Year` == 2019]
+beis_trans <- sum(h_beis2019[`LA CO2 Sub-sector` %like% "Motorway" | `LA CO2 Sub-sector` %like% "roads", `Territorial emissions (kt CO2)`])
+
+beis_motorways <- sum(h_beis2019[`LA CO2 Sub-sector` %like% "Motorway", `Territorial emissions (kt CO2)`])
+
+beis_d_gas <- sum(h_beis2019[`LA CO2 Sub-sector` %like% "Domestic Gas", `Territorial emissions (kt CO2)`])
+beis_d_elec <- sum(h_beis2019[`LA CO2 Sub-sector` %like% "Domestic Electricity", `Territorial emissions (kt CO2)`])
+
+beis_forest <- sum(h_beis2019[`LA CO2 Sub-sector` %like% "Forest", `Territorial emissions (kt CO2)`])
+
+beis_grassland <- sum(h_beis2019[`LA CO2 Sub-sector` %like% "Grass", `Territorial emissions (kt CO2)`])
+
+beis_wetlands <- sum(h_beis2019[`LA CO2 Sub-sector` %like% "Wetland", `Territorial emissions (kt CO2)`])
+
+beis_crop <- sum(h_beis2019[`LA CO2 Sub-sector` %like% "Crop", `Territorial emissions (kt CO2)`])
+
+h_beis2019[, zeroC := ifelse(`LA CO2 Sub-sector` %like% "Gas",
+                             0,
+                             `Territorial emissions (kt CO2)`)]
+
+h_beis2019[, zeroC := ifelse(`LA CO2 Sub-sector` %like% "Electricity",
+                             0,
+                             `Territorial emissions (kt CO2)`)]
+
+h_beis2019[, zeroC := ifelse(`LA CO2 Sub-sector` %like% "roads",
+                             0,
+                             `Territorial emissions (kt CO2)`)]
+
+beis_allSum <- sum(h_beis2019$`Territorial emissions (kt CO2)`)
+zeroCsum <- sum(h_beis2019$zeroC)
+```
+
+Thus, if we focus on BEIS territorial CO2 only then the main sources of emissions are:
+
+ * Transport (Motorways, A roads and minor roads combined): `r dkUtils::tidyNum(beis_trans,0)` kT (`r round(100*(beis_trans/beis_allSum))` %);
+ * Domestic gas: `r dkUtils::tidyNum(beis_d_gas,0)` kT (2019);
+ * Domestic electricity: `r dkUtils::tidyNum(beis_d_elec,0)` kT (2019)
+
+Taken together these domestic (residential) emissions comprise `r round(100*((beis_d_gas + beis_d_elec)/beis_allSum))` % of the estimated total.
+
+Negative emissions (sequestration) sources are:
+
+ * Forest: `r dkUtils::tidyNum(beis_forest,0)` kT (2019)
+ * Grassland: `r dkUtils::tidyNum(beis_grassland,0)` kT (2019) - note that this does not allow for methane emissions from grazing livestock
+ * Wetlands: `r dkUtils::tidyNum(beis_wetlands,3)` kT (2019) - this is perhaps surprisingly small given the coastal nature of the County and the existence of a number of wetland habitats
+
+As Figure \@ref(fig:hampshireBEISCO2TotalByCat) showed, these levels of sequestration currently provide a negligible offset to the overall emissions. Note also that cropland is a net emitter at `r dkUtils::tidyNum(beis_crop,0)` kT (2019). 
+
+Figure \@ref(fig:hampshireBEISCO2TotalTrendsLine) showed that the only emissions sources showing substantial decreases over time have been electricity due to grid decarbonisation and (potentially) reductions in some industrial activity as well as the use of 'Other fuels' by industry. Although emissions from domestic gas use have also fallen over time they appear to have stabilised since 2014. Perhaps of most concern given their dominant contribution however is the relative stability of road transport emissions over the 2005 - 2019 period.
+
+
+
+# CSE: Territorial-based all GHG emissions
 
 These are calculated under the territorial emissions method and include _all_ greenhouse gas emissions.
 
-## Latest totals for 'Hampshire'
+## 2019 baseline
 
 Table \@ref(tab:hampshireCSETerrTotal) shows the total emissions for 2019.
 
@@ -285,7 +388,9 @@ makeFlexTable(t, cap = "CSE territorial emissions (Hampshire, 2019)")
 
 sumCSETerr_kt <- sum(hampshire_cse_territorial_abs_DT$value)/1000
 ```
-Table \@ref(tab:hampshireCSEterrTotalByCat) shows the total emissions for 2019 by category. Figure \@ref(fig:hampshireCSEterrTotalByCat) shows the data as a bar plot. The largest emissions sources under this method are clearly visible (domestic gas,  transport and pwoer generation). Note that some of the categories do not exactly match those used in the BEIS data. Ignore the (t CO2e) in the label - the plot shows kT for easy comparison.
+Table \@ref(tab:hampshireCSEterrTotalByCat) shows the total emissions for 2019 by category. Figure \@ref(fig:hampshireCSEterrTotalByCat) shows the data as a bar plot. The largest emissions sources under this method are clearly visible (domestic gas,  transport and aviation). Note that some of the categories do not exactly match those used in the BEIS data. 
+
+> Ignore the (t CO2e) in the label - the plot shows kT for easy comparison (labels to be fixed).
 
 ```{r hampshireCSEterrTotalByCat, fig.cap = "CSE all territorial emissions by category (Hampshire, 2019 ordered by emissions value)"}
 hampshire_cse_terr_Totals <- hampshire_cse_territorial_abs_DT[, .(`Total kT CO2e` = sum(value, na.rm = TRUE)/1000), keyby = .(variable)]
@@ -314,7 +419,7 @@ ggplot2::ggplot(hampshire_cse_terr_Totals, aes(x = reorder(variable, -`Total kT 
 # p
 ```
 
-Figure \@ref(fig:cseTerrCumulative) shows a cumulative emissions plot for the CSE territorial data ordered by the emissions source's magnitude. The largest increments are therefore due to personal transport, power generation, domestic gas use and aviation. The plot shows the sources which comprise 50%, 75% and 90% of the total emissions. The plot curls due to the source categories with negative emissions such that the final point represents the total 'net' emissions.
+Figure \@ref(fig:cseTerrCumulative) shows a cumulative emissions plot for the CSE territorial data ordered by the emissions source's magnitude. The largest increments are therefore due to personal transport, domestic gas use and aviation. The plot shows the sources which comprise 50%, 75% and 90% of the total emissions. The plot curls due to the source categories with negative emissions such that the final point represents the total 'net' emissions.
 
 ```{r cseTerrCumulative, fig.cap="Plot of cumulative emissions (BEIS, 2019)"}
 t <- hampshire_cse_terr_Totals[order(-`Total kT CO2e`)]
@@ -346,11 +451,50 @@ p +
 
 ```
 
-# Consumption-based emissions (CSE data)
+
+```{r discCSETerr}
+cse_terr_Transport <- hampshire_cse_terr_Totals[variable %like% "Road Trans"]$`Total kT CO2e`
+
+beis_terr_Transport <- sum(hampshire_beis_terr_Totals[subSectorLabelFact %like% "road" |
+                                                        subSectorLabelFact %like% "Motorway"]$`Total kT CO2`)
+
+cse_terr_DomGas <- hampshire_cse_terr_Totals[variable %like% "Housing - Mains gas"]$`Total kT CO2e`
+beis_terr_DomGas <- hampshire_beis_terr_Totals[subSectorLabelFact %like% "Domestic Gas"]$`Total kT CO2`
+
+cse_terr_aviation <- hampshire_cse_terr_Totals[variable %like% "Aviation"]$`Total kT CO2e`
+cse_terr_shipping <- hampshire_cse_terr_Totals[variable %like% "Shipping"]$`Total kT CO2e`
+cse_terr_fgas <- hampshire_cse_terr_Totals[variable %like% "F-gases"]$`Total kT CO2e`
+cse_terr_waste <- hampshire_cse_terr_Totals[variable %like% "Waste"]$`Total kT CO2e`
+cse_terr_AgricLivestock <- hampshire_cse_terr_Totals[variable %like% "Agriculture - Livestock"]$`Total kT CO2e`
+
+cse_terr_diff <- cse_terr_aviation + cse_terr_shipping + cse_terr_fgas + cse_terr_waste
+
+pc_diff <- 100*(cse_terr_diff/(sumCSETerr_kt - sumBEIS_kt))
+
+pc_tot_diff <- 100*((sumCSETerr_kt-sumBEIS_kt)/sumBEIS_kt)
+
+```
+
+Thus, if we focus on CSE territorial emissions, which include all emissions, the main sources are:
+
+ * Road transport (`r dkUtils::tidyNum(cse_terr_Transport,0)` T CO2e (`r round(100*(cse_terr_Transport/sumCSETerr_kt))` % of total);
+ * Housing (domestic) gas (`r dkUtils::tidyNum(cse_terr_DomGas,0)` T CO2e;
+ * Aviation (`r dkUtils::tidyNum(cse_terr_aviation,0)` T CO2e - flights and freight)
+
+These figures draw attention to the significant emissions due to aviation which are not included in the BEIS LA level data. Indeed, `r dkUtils::tidyNum(pc_diff,0)` % of the `r dkUtils::tidyNum(pc_tot_diff,0)` % increase from the BEIS figure comprises emissions from:
+
+  * _Aviation_ (`r dkUtils::tidyNum(cse_terr_aviation,0)` kT CO2e - i.e. flights & freight),
+  * _Waste management_ (`r dkUtils::tidyNum(cse_terr_waste,0)` kT CO2e - methane from landfill and CO2 from incineration),
+  * _Shipping_ (`r dkUtils::tidyNum(cse_terr_shipping,0)` kT CO2e) and 
+  * _F-Gases_ (`r dkUtils::tidyNum(cse_terr_fgas,0)` kT CO2e)
+
+Note that under the CSE approach, `Agriculture - Livestock and crop-related emissions ` amount to `r dkUtils::tidyNum(cse_terr_AgricLivestock,0)` T CO2e compared to the BEIS value for `Cropland` at `r dkUtils::tidyNum(beis_crop,0)` T CO2e which gives some indication of the additional emissions due to methane (noting that fuel used for agriculture is already in a separate category under the CSE approach - see [methodology, p15](https://impact-tool.org.uk/static/doc/Impact-methodology-paper-v1.6.pdf)).
+
+# CSE: Consumption-based all GHG emissions
 
 These are calculated under the consumption emissions method and include _all_ greenhouse gas emissions.
 
-## Latest totals for 'Hampshire'
+## 2019 baseline
 
 Table \@ref(tab:hampshireCSEConsTotal) shows the total emissions for 2019.
 
@@ -362,19 +506,23 @@ sumCSECons_kt <- sum(hampshire_cse_consumption_abs_DT$value)/1000
 
 Table \@ref(tab:hampshireCSEconsTotalByCat) shows the total emissions for 2019 by category. Figure \@ref(fig:hampshireCSEconsTotalByCat) shows the data as a bar plot. The largest emissions sources under this method are clearly visible (purchased goods, services and food/diet and gas-use). Note that some of the categories do not exactly match those used in the BEIS data. Ignore the (t CO2e) in the label - the plot shows kT for easy comparison.
 
-```{r hampshireCSEconsTotalByCat, fig.cap = "CSE all territorial emissions by category (Hampshire, 2019 ordered by emissions value)"}
+> Ignore the (t CO2e) in the label - the plot shows kT for easy comparison (labels to be fixed).
+
+```{r hampshireCSEconsTotalByCat, fig.cap = "CSE all territorial emissions ordered by category value (Hampshire, 2019 ordered by emissions value)"}
 hampshire_cse_cons_Totals <- hampshire_cse_consumption_abs_DT[, .(`Total kT CO2e` = sum(value, na.rm = TRUE)/1000), keyby = .(variable)]
 
-library(stringr)
-hampshire_cse_cons_Totals[, variable_n := stringr::str_remove(variable, "Consumption of goods and services - ")]
+
 
 absTotal <- sum(hampshire_cse_consumption_abs_DT[, abs(value)])/1000
                 
 hampshire_cse_cons_Totals[, `% of gross` := 100*(`Total kT CO2e`/absTotal)]
 
-makeFlexTable(hampshire_cse_cons_Totals, cap = "CSE all consumption emissions by category (Hampshire, 2019)")
+makeFlexTable(hampshire_cse_cons_Totals[, .(Source = variable,
+                                            `Total kT CO2e`, `% of gross`)], cap = "CSE all consumption emissions ordered by category (Hampshire, 2019)")
 
-  
+library(stringr)
+hampshire_cse_cons_Totals[, variable_n := stringr::str_remove(variable, "Consumption of goods and services - ")]
+
 ggplot2::ggplot(hampshire_cse_cons_Totals, aes(x = reorder(variable_n, -`Total kT CO2e`), 
                        y = `Total kT CO2e`,
                        fill = variable_n)) +
@@ -418,114 +566,6 @@ p +
 
 ```
 
-# Discussion
-
-```{r genDisc}
-cse_terr_powerGen <- hampshire_cse_terr_Totals[variable %like% "Power"]$`Total kT CO2e`
-cse_terr_aviation <- hampshire_cse_terr_Totals[variable %like% "Aviation"]$`Total kT CO2e`
-cse_terr_shipping <- hampshire_cse_terr_Totals[variable %like% "Shipping"]$`Total kT CO2e`
-cse_terr_fgas <- hampshire_cse_terr_Totals[variable %like% "F-gases"]$`Total kT CO2e`
-cse_terr_waste <- hampshire_cse_terr_Totals[variable %like% "Waste"]$`Total kT CO2e`
-cse_terr_AgricLivestock <- hampshire_cse_terr_Totals[variable %like% "Agriculture - Livestock"]$`Total kT CO2e`
-
-cse_terr_diff <- cse_terr_powerGen + cse_terr_aviation + cse_terr_shipping + cse_terr_fgas + cse_terr_waste
-
-pc_diff <- 100*(cse_terr_diff/(sumCSETerr_kt - sumBEIS_kt))
-
-pc_tot_diff <- 100*((sumCSETerr_kt-sumBEIS_kt)/sumBEIS_kt)
-```
-
-Overall, the total GHG emissions for Hampshire under different methodologies are:
-
- * BEIS territorial CO2 only: **`r dkUtils::tidyNum(sumBEIS_kt,0)`** kT CO2
- * CSE territorial emissions (all GHG): **`r dkUtils::tidyNum(sumCSETerr_kt,0)`** kT CO2e - `r dkUtils::tidyNum(pc_tot_diff,0)` % higher than the BEIS total
- * CSE consumption emissions (all GHG): **`r dkUtils::tidyNum(sumCSECons_kt,0)`** kT CO2e - unusually this value is _smaller_ than the territorial based emissions estimate
-
-## BEIS CO2 emissions
-
-```{r discBEISCO2}
-h_beis2019 <- hampshire_beis_la_co2_DT[`Calendar Year` == 2019]
-beis_trans <- sum(h_beis2019[`LA CO2 Sub-sector` %like% "Motorway" | `LA CO2 Sub-sector` %like% "roads", `Territorial emissions (kt CO2)`])
-
-beis_motorways <- sum(h_beis2019[`LA CO2 Sub-sector` %like% "Motorway", `Territorial emissions (kt CO2)`])
-
-beis_d_gas <- sum(h_beis2019[`LA CO2 Sub-sector` %like% "Domestic Gas", `Territorial emissions (kt CO2)`])
-beis_d_elec <- sum(h_beis2019[`LA CO2 Sub-sector` %like% "Domestic Electricity", `Territorial emissions (kt CO2)`])
-
-beis_forest <- sum(h_beis2019[`LA CO2 Sub-sector` %like% "Forest", `Territorial emissions (kt CO2)`])
-
-beis_grassland <- sum(h_beis2019[`LA CO2 Sub-sector` %like% "Grass", `Territorial emissions (kt CO2)`])
-
-beis_wetlands <- sum(h_beis2019[`LA CO2 Sub-sector` %like% "Wetland", `Territorial emissions (kt CO2)`])
-
-beis_crop <- sum(h_beis2019[`LA CO2 Sub-sector` %like% "Crop", `Territorial emissions (kt CO2)`])
-
-h_beis2019[, zeroC := ifelse(`LA CO2 Sub-sector` %like% "Gas",
-                             0,
-                             `Territorial emissions (kt CO2)`)]
-
-h_beis2019[, zeroC := ifelse(`LA CO2 Sub-sector` %like% "Electricity",
-                             0,
-                             `Territorial emissions (kt CO2)`)]
-
-h_beis2019[, zeroC := ifelse(`LA CO2 Sub-sector` %like% "roads",
-                             0,
-                             `Territorial emissions (kt CO2)`)]
-
-allSum <- sum(h_beis2019$`Territorial emissions (kt CO2)`)
-zeroCsum <- sum(h_beis2019$zeroC)
-```
-
-If we focus on BEIS territorial CO2 only then the main sources of emissions are:
-
- * Transport (Motorways, A roads and minor roads combined): `r dkUtils::tidyNum(beis_trans,0)` kT (2019)
- * Domestic gas: `r dkUtils::tidyNum(beis_d_gas,0)` kT (2019)
- * Domestic electricity: `r dkUtils::tidyNum(beis_d_elec,0)` kT (2019)
-
-Negative emissions (sequestration) sources are:
-
- * Forest: `r dkUtils::tidyNum(beis_forest,0)` kT (2019)
- * Grassland: `r dkUtils::tidyNum(beis_grassland,0)` kT (2019) - note that this does not allow for methane emissions from grazing livestock
- * Wetlands: `r dkUtils::tidyNum(beis_wetlands,3)` kT (2019) - this is perhaps surprisingly small given the coastal nature of the County and the existence of a number of wetland habitats
-
-As Figure \@ref(fig:hampshireBEISCO2TotalByCat) showed, these levels of sequestration currently provide a negligible offset to the overall emissions. Note also that cropland is a net emitter at `r dkUtils::tidyNum(beis_crop,0)` kT (2019). 
-
-Figure \@ref(fig:hampshireBEISCO2TotalTrendsLine) showed that the only emissions sources showing substantial decreases over time have been electricity due to grid decarbonisation and (potentially) reductions in some industrial activity as well as the use of 'Other fuels' by industry. Although emissions from domestic gas use have also fallen over time they appear to have stabilised since 2014. Perhaps of most concern given their dominant contribution however is the relative stability of road transport emissions over the 2005 - 2019 period.
-
-Under this method of calculation, if we were to entirely decarbonise the electricity grid and eradicate emissions from gas use as well as from use of `A Roads` and `Minor roads` we would have 'solved' `r round(100*zeroCsum/allSum)` % of the problem. `r round(100*beis_motorways/zeroCsum)` % of emissions are due to motorway use of which _some_ could be de-carbonised using electric vehicles or zero-carbon freight fuels if proven. However, [reducing the ratcheting of transport demand](https://www.creds.ac.uk/why-the-pm-is-wrong-we-cannot-avoid-hairshirtism-because-of-the-technological-promises-of-guilt-free-flights/) seems key alongside changes in the technical de-carbonisation of the service.
-
-## CSE territorial CO2e (all GHG) emissions
-
-```{r discCSETerr}
-cse_terr_Transport <- hampshire_cse_terr_Totals[variable %like% "Road Trans"]$`Total kT CO2e`
-
-beis_terr_Transport <- sum(hampshire_beis_terr_Totals[subSectorLabelFact %like% "road" |
-                                                        subSectorLabelFact %like% "Motorway"]$`Total kT CO2`)
-
-cse_terr_DomGas <- hampshire_cse_terr_Totals[variable %like% "Housing - Mains gas"]$`Total kT CO2e`
-beis_terr_DomGas <- hampshire_beis_terr_Totals[subSectorLabelFact %like% "Domestic Gas"]$`Total kT CO2`
-
-```
-
-If we focus on CSE territorial emissions, which include all emissions, the main sources are:
-
- * Road transport (`r dkUtils::tidyNum(cse_terr_Transport,0)` T CO2e compared to the BEIS total road transport figure of `r dkUtils::tidyNum(beis_terr_Transport,0)` T CO2e)
- * Power generation (`r dkUtils::tidyNum(cse_terr_powerGen,0)` T CO2e)
- * Housing (domestic) gas (`r dkUtils::tidyNum(cse_terr_DomGas,0)` T CO2e compared to the BEIS figure of `r dkUtils::tidyNum(beis_terr_DomGas,0)` T CO2e)
- * Aviation (`r dkUtils::tidyNum(cse_terr_aviation,0)` T CO2e - flights and freight)
-
-These figures draw attention to the significant emissions due to aviation which are not included in the BEIS LA level data. Indeed, `r dkUtils::tidyNum(pc_diff,0)` % of the `r dkUtils::tidyNum(pc_tot_diff,0)` % increase from the BEIS figure comprises emissions from:
-
-  * _Power generation_ (`r dkUtils::tidyNum(cse_terr_powerGen,0)` kT CO2e)
-  * _Aviation_ (`r dkUtils::tidyNum(cse_terr_aviation,0)` kT CO2e - i.e. flights & freight),
-  * _Waste management_ (`r dkUtils::tidyNum(cse_terr_waste,0)` kT CO2e - methane from landfill and CO2 from incineration),
-  * _Shipping_ (`r dkUtils::tidyNum(cse_terr_shipping,0)` kT CO2e) and 
-  * _F-Gases_ (`r dkUtils::tidyNum(cse_terr_fgas,0)` kT CO2e)
-
-Note that under the CSE approach, `Agriculture - Livestock and crop-related emissions ` amount to `r dkUtils::tidyNum(cse_terr_AgricLivestock,0)` T CO2e compared to the BEIS value for `Cropland` at `r dkUtils::tidyNum(beis_crop,0)` T CO2e which gives some indication of the additional emissions due to methane (noting that fuel used for agriculture is already in a separate category under the CSE approach - see [methodology, p15](https://impact-tool.org.uk/static/doc/Impact-methodology-paper-v1.6.pdf)).
-
-
-## CSE consumption CO2e (all GHG) emissions
 
 ```{r discCSECons}
 cse_cons_purch <- hampshire_cse_cons_Totals[variable %like% "Purchase of goods"]$`Total kT CO2`
@@ -541,7 +581,7 @@ cons_sum <- cse_cons_purch + cse_cons_food_meat + cse_cons_DomGas + cse_cons_foo
 con_sum_pc <- 100*(cons_sum/sumCSECons_kt)
 ```
 
-Finally, if we focus on CSE consumption-based emissions which include emissions 'outsourced' to other geographical areas (including overseas), the main emissions sources comprising `r dkUtils::tidyNum(con_sum_pc,0)` % of emissions are:
+Thus, if we focus on CSE consumption-based emissions which include emissions 'outsourced' to other geographical areas (including overseas), the main emissions sources comprising `r dkUtils::tidyNum(con_sum_pc,0)` % of emissions are:
  
  * Purchased goods (`r dkUtils::tidyNum(cse_cons_purch,0)` kT CO2e)
  * Food and diet - meat & fish (`r dkUtils::tidyNum(cse_cons_food_meat,0)` kT CO2e)
@@ -555,11 +595,75 @@ This approach to emissions accounting shows the extent to which the consumption 
 
 # Summary
 
-Which of these accounting methods we choose to focus on depends what we want to show and what we want to achieve. The same is true of the emissions subcategories. The BEIS data gives a partial view on territorial emissions as it excludes all non-CO2 emissions (such as methane from livestock) and also excludes aviation (flights & freight) and shipping.
+```{r genDisc}
 
-The CSE territorial emissions data includes these 'missing' emissions and so gives a much larger total as they are major contributors.
+sumBEIS_hcc_kt <- sum(hampshire_beis_la_co2_DT[widerHampshire != "Wider Hampshire" & `Calendar Year` == 2019, `Territorial emissions (kt CO2)`])
+```
 
-Finally, the CSE consumption emissions data demonstrates the significant contribution that consumption of services as well as food and diet make to our 'extended' emissions footprint if we consider the emissions we have effectively outsourced to other geographical areas. Nevertheless, emissions due to domestic gas and private transport remain substantial under this approach.
+Overall, the total GHG emissions for Hampshire under different methodologies were found to be:
+
+ * Carbon Trust analysis (`r uniqueN(hampshire_beis_la_co2_DT[widerHampshire != "Wider Hampshire", la_name])` districts _excluding_ Portsmouth, Southampton and the Isle of Wight): **`r dkUtils::tidyNum(ct_total,0)`** kT CO2
+ * BEIS territorial CO2 only: **`r dkUtils::tidyNum(sumBEIS_hcc_kt,0)`** kT CO2 (`r uniqueN(hampshire_beis_la_co2_DT[widerHampshire != "Wider Hampshire", la_name])` districts _excluding_ Portsmouth, Southampton and the Isle of Wight), **`r dkUtils::tidyNum(sumBEIS_kt,0)`** kT CO2 (`r uniqueN(hampshire_beis_la_co2_DT[, la_name])` districts _including_ Portsmouth, Southampton and the Isle of Wight)
+ * CSE territorial emissions (all GHG, all `r uniqueN(hampshire_beis_la_co2_DT[, la_name])` districts): **`r dkUtils::tidyNum(sumCSETerr_kt,0)`** kT CO2e - `r dkUtils::tidyNum(pc_tot_diff,0)` % higher than the BEIS total
+ * CSE consumption emissions (all GHG, all `r uniqueN(hampshire_beis_la_co2_DT[, la_name])` districts): **`r dkUtils::tidyNum(sumCSECons_kt,0)`** kT CO2e
+
+Given that the Carbon Trust area _excludes_ Portsmouth, Southampton and the Isle of Wight it is unclear why this total is similar to the '14 local authorities' BEIS data.
+
+Which of these accounting methods we choose to focus on depends what we want to show and what we want to achieve. The same is true of the emissions subcategories. The BEIS data gives a partial view on territorial emissions as it excludes all non-CO2 emissions (such as methane from livestock) and also excludes aviation (flights & freight) and shipping. The CSE territorial emissions data includes these 'missing' emissions and so gives a much larger total as they are major contributors. 
+
+Table \@ref(tab:tableCompareTerr) compares the Carbon Trust, BEIS and CSE data to the extent that it is possible to do so from the data reported here.
+
+```{r tableCompareTerr}
+hampshire_beis_terr_Totals[, compareLab := ifelse(subSectorLabelFact %like% "Transport", "Transport", "Other")]
+hampshire_beis_terr_Totals[, compareLab := ifelse(subSectorLabelFact %like% "Domestic", "Residential", compareLab)]
+hampshire_beis_terr_Totals[, compareLab := ifelse(subSectorLabelFact %like% "Commercial" | subSectorLabelFact %like% "Industry", "Industry & Commercial", compareLab)]
+# NB - Public is coded to Other
+hampshire_beis_Compare <- hampshire_beis_terr_Totals[, .(ktco2_beis = sum(`Total kT CO2`)), keyby = .(compareLab)]
+hampshire_beis_Compare[, ktco2_beis_pc := 100*(ktco2_beis / sum(hampshire_beis_Compare$ktco2_beis))]
+
+hampshire_cse_terr_Totals[, compareLab := ifelse(variable %like% "Transport", "Transport", "Other")]
+hampshire_cse_terr_Totals[, compareLab := ifelse(variable %like% "Housing", "Residential", compareLab)]
+hampshire_cse_terr_Totals[, compareLab := ifelse(variable %like% "Industrial" | variable %like% "Power", "Industry & Commercial", compareLab)]
+hampshire_cse_terr_Totals[, compareLab := ifelse(variable %like% "Aviation", "Aviation", compareLab)]
+hampshire_cse_terr_Compare <- hampshire_cse_terr_Totals[, .(ktco2_cse_terr = sum(`Total kT CO2e`)), keyby = .(compareLab)]
+hampshire_cse_terr_Compare[, ktco2_cse_terr_pc := 100*(ktco2_cse_terr / sum(hampshire_cse_terr_Compare$ktco2_cse_terr))]
+
+hampshire_cse_cons_Totals[, compareLab := ifelse(variable %like% "Travel", "Transport", "Other")]
+hampshire_cse_cons_Totals[, compareLab := ifelse(variable %like% "Housing", "Residential", compareLab)]
+hampshire_cse_cons_Totals[, compareLab := ifelse(variable %like% "Consumption", "Consumption of goods & services", compareLab)]
+hampshire_cse_cons_Totals[, compareLab := ifelse(variable %like% "Food", "Food & diet", compareLab)]
+hampshire_cse_cons_Totals[, compareLab := ifelse(variable %like% "Travel - Flights", "Aviation", compareLab)]
+
+hampshire_cse_cons_Compare <- hampshire_cse_cons_Totals[, .(ktco2_cse_cons = sum(`Total kT CO2e`)), keyby = .(compareLab)]
+hampshire_cse_cons_Compare[, ktco2_cse_cons_pc := 100*(ktco2_cse_cons / sum(hampshire_cse_cons_Compare$ktco2_cse))]
+
+
+setkey(hampshire_beis_Compare, compareLab)
+setkey(hampshire_cse_terr_Compare, compareLab)
+setkey(hampshire_cse_cons_Compare, compareLab)
+setkey(hampshire_CT_terr_Totals, compareLab)
+
+dt <- hampshire_CT_terr_Totals[hampshire_beis_Compare][hampshire_cse_terr_Compare]
+
+t <- merge(dt, hampshire_cse_cons_Compare, all = TRUE)
+
+makeFlexTable(t[,.(Source = compareLab,
+                   CarbonTrust = ktco2_CT,
+                   `Carbon Trust %` = ktco2_CT_pc,
+                   BEIS = ktco2_beis,
+                   `BEIS %` = ktco2_beis_pc,
+                   `CSE Territorial` = ktco2_cse_terr,
+                   `CSE Territorial %` = ktco2_cse_terr_pc,
+                   `CSE Consumption` = ktco2_cse_cons,
+                   `CSE Consumption %` = ktco2_cse_cons_pc)][order(CarbonTrust)], cap = "Comparing emissions baselines (values = kT CO2e or %)")
+```
+The table shows that the two main policy foci of the Hampshire County Council Climate Change Strategy - Transport and Residential - contribute at least 30% of emissions irrespective of the emissions accounting method used. 
+
+For reasons that are unclear, the Carbon Trust estimate for Industrial & Commercial emissions for the '11 districts' appears to be considerably larger than the comparable BEIS '14 districts' value. As a result the BEIS proportions for Transport and Residential emissions are higher (77% combined) compared to 58% in the Carbon Trust estimates for 11 districts.
+
+Although the '14 districts' BEIS and CSE (territorial) main categories are broadly similar in terms of kT CO2(e), the percentage contribution of Transport and Residential emissions are considerably lower (56%) for the CSE data. This is due to the **inclusion of additional sources** such as Aviation (10%, shown), as well as complete waste emissions, shipping, livestock emissions, F-gases and others (coded as 'Other', 14%, but see Table \@ref(tab:hampshireCSEterrTotalByCat) for details). These currently fall **outside** the scope of the Hampshire County Council Climate Change Strategy yet they represent over 20% of county-wide emissions under the CSE methodology.
+
+Finally, the CSE consumption emissions data demonstrates the significant contribution that consumption of services as well as food and diet make to our 'extended' emissions footprint if we consider the emissions we have effectively outsourced to other geographical areas. This method transfers all of the industrial/commercial emissions and a significant proportion of the Transport/Aviation emissions to 'Good and services' and 'Food and diet' (i.e. supply chain transportation and distribution). As a result emissions from homes and private transport comprise only 30% of the total under this approach with 'consumption' representing 58% and flights a further 7%.
 
 Future work could:
 
