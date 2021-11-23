@@ -1,6 +1,6 @@
 ---
 title: "Hampshire County GHG Emissions"
-subtitle: "Trends over time using various accounting methods and data sources"
+subtitle: "2018/19 snapshots and trends over time using various accounting methods and data sources"
 author: "Ben Anderson (b.anderson@soton.ac.uk)"
 date: 'Last run at: `r Sys.time()`'
 output:
