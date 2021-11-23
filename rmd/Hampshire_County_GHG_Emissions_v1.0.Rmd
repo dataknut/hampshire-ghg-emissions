@@ -44,6 +44,16 @@ params$dataPath <- path.expand("~/Dropbox/data/")
 
 ```
 
+# License
+
+This report is (c) University of Southampton and is published under the [CC-BY-4.0 license](https://creativecommons.org/licenses/by/4.0/). You may share, re-use or adapt for commercial or non-commercial purposes with citation.
+
+# Citation
+
+If you wish to use any of the material in this report please cite it as:
+
+ * Anderson, Ben (2021) Hampshire County GHG Emissions: 2018/19 snapshots and trends over time using various accounting methods and data sources. University of Southampton: Southampton.
+
 # Introduction
 
 This data report uses two different datasets to estimate the greenhouse gas emissions of the Hampshire County under three different definitions:
@@ -52,7 +62,7 @@ This data report uses two different datasets to estimate the greenhouse gas emis
  - total annual _territorial_ CO2e emissions (i.e. all emissions, including methane and others) using the [territorial emissions method](https://impact-tool.org.uk/using-the-tool) with data from the Centre for Sustainable Energy's [Impact Tool](https://impact-tool.org.uk/download) at the local authority level (see [methodology report](https://impact-tool.org.uk/static/doc/Impact-methodology-paper-v1.6.pdf) for details of how each category was estimated and the years from which the data is drawn)
   - total annual _consumption_ CO2e emissions (i.e. all emissions) using the [consumption emissions method](https://impact-tool.org.uk/using-the-tool) with data from the Centre for Sustainable Energy's [Impact Tool](https://impact-tool.org.uk/download) at the local authority level
   
-The analysis is carried out for the 'Wider Hampshire' - _all_ local authority districts in the Hampshire County **including the unitary authorities of Portsmouth, Southampton and the Isle of Wight**. Note that this differs from the baseline estimated for Hampshire County Council by The Carbon Trust which _excluded_ Portsmouth, Southampton and the Isle of Wight.
+The analysis is carried out for the 'Wider Hampshire' - _all_ local authority districts in the Hampshire County **including the unitary authorities of Portsmouth, Southampton and the Isle of Wight**. Note that this differs from the baseline estimated for the Hampshire County Council [Climate Change Strategy](https://www.hants.gov.uk/landplanningandenvironment/environment/climatechange/whatarewedoing/climatechangestrategy) by The Carbon Trust which _excluded_ Portsmouth, Southampton and the Isle of Wight.
 
 # Data
 
@@ -661,7 +671,7 @@ The table shows that the two main policy foci of the Hampshire County Council Cl
 
 For reasons that are unclear, the Carbon Trust estimate for Industrial & Commercial emissions for the '11 districts' appears to be considerably larger than the comparable BEIS '14 districts' value. As a result the BEIS proportions for Transport and Residential emissions are higher (77% combined) compared to 58% in the Carbon Trust estimates for 11 districts.
 
-Although the '14 districts' BEIS and CSE (territorial) main categories are broadly similar in terms of kT CO2(e), the percentage contribution of Transport and Residential emissions are considerably lower (56%) for the CSE data. This is due to the **inclusion of additional sources** such as Aviation (10%, shown), as well as complete waste emissions, shipping, livestock emissions, F-gases and others (coded as 'Other', 14%, but see Table \@ref(tab:hampshireCSEterrTotalByCat) for details). These currently fall **outside** the scope of the Hampshire County Council Climate Change Strategy yet they represent over 20% of county-wide emissions under the CSE methodology.
+Although the '14 districts' BEIS and CSE (territorial) main categories are broadly similar in terms of kT CO2(e), the percentage contribution of Transport and Residential emissions are considerably lower (56%) for the CSE data. This is due to the **inclusion of additional sources** such as Aviation (10%, shown), as well as complete waste emissions, shipping, livestock emissions, F-gases and others (coded as 'Other', 14%, but see Table \@ref(tab:hampshireCSEterrTotalByCat) for details). These represent over 20% of county-wide emissions under the CSE territorial methodology.
 
 Finally, the CSE consumption emissions data demonstrates the significant contribution that consumption of services as well as food and diet make to our 'extended' emissions footprint if we consider the emissions we have effectively outsourced to other geographical areas. This method transfers all of the industrial/commercial emissions and a significant proportion of the Transport/Aviation emissions to 'Good and services' and 'Food and diet' (i.e. supply chain transportation and distribution). As a result emissions from homes and private transport comprise only 30% of the total under this approach with 'consumption' representing 58% and flights a further 7%.
 
