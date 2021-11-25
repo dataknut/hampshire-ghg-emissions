@@ -571,7 +571,7 @@ Thus, if we focus on CSE territorial _all GHG_ emissions, 75% of emissions are d
 These figures draw attention to the significant emissions due to aviation which are not included in the BEIS LA level data. Indeed, `r dkUtils::tidyNum(pc_diff_main,0)` % of the `r dkUtils::tidyNum(pc_tot_diff,0)` % increase from the BEIS figure comprises emissions from:
 
   * _Aviation_ (`r dkUtils::tidyNum(cse_terr_aviation,0)` kT CO2e - i.e. flights & freight),
-  * _Waste management_ (`r dkUtils::tidyNum(cse_terr_waste,0)` kT CO2e - methane from landfill and CO2 from incineration),
+  * _Waste management_ (`r dkUtils::tidyNum(cse_terr_waste,0)` kT CO2e ,
   * _Shipping_ (`r dkUtils::tidyNum(cse_terr_shipping,0)` kT CO2e) and 
   * _F-Gases_ (`r dkUtils::tidyNum(cse_terr_fgas,0)` kT CO2e)
 
