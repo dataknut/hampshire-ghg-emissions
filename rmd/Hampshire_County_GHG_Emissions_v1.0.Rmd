@@ -748,7 +748,9 @@ sumBEIS_hcc_kt <- sum(hampshire_beis_la_co2_DT[widerHampshire != "Wider Hampshir
 Overall, the total GHG emissions for Hampshire under different methodologies were found to be:
 
  * Carbon Trust analysis (`r uniqueN(hampshire_beis_la_co2_DT[widerHampshire != "Wider Hampshire", la_name])` districts _excluding_ Portsmouth, Southampton and the Isle of Wight): **`r dkUtils::tidyNum(ct_total,0)`** kT CO2
- * BEIS territorial CO2 only: **`r dkUtils::tidyNum(sumBEIS_hcc_kt,0)`** kT CO2 (`r uniqueN(hampshire_beis_la_co2_DT[widerHampshire != "Wider Hampshire", la_name])` districts _excluding_ Portsmouth, Southampton and the Isle of Wight), **`r dkUtils::tidyNum(sumBEIS_kt,0)`** kT CO2 (`r uniqueN(hampshire_beis_la_co2_DT[, la_name])` districts _including_ Portsmouth, Southampton and the Isle of Wight)
+ * BEIS territorial CO2 only: 
+   * **`r dkUtils::tidyNum(sumBEIS_hcc_kt,0)`** kT CO2 (`r uniqueN(hampshire_beis_la_co2_DT[widerHampshire != "Wider Hampshire", la_name])` districts _excluding_ Portsmouth, Southampton and the Isle of Wight),
+   * **`r dkUtils::tidyNum(sumBEIS_kt,0)`** kT CO2 (`r uniqueN(hampshire_beis_la_co2_DT[, la_name])` districts _including_ Portsmouth, Southampton and the Isle of Wight)
  * CSE territorial emissions (all GHG, all `r uniqueN(hampshire_beis_la_co2_DT[, la_name])` districts): **`r dkUtils::tidyNum(sumCSETerr_kt,0)`** kT CO2e - `r dkUtils::tidyNum(pc_tot_diff,0)` % higher than the BEIS total
  * CSE consumption emissions (all GHG, all `r uniqueN(hampshire_beis_la_co2_DT[, la_name])` districts): **`r dkUtils::tidyNum(sumCSECons_kt,0)`** kT CO2e
 
