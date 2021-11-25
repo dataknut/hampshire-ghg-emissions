@@ -53,7 +53,7 @@ params$dataPath <- path.expand("~/Dropbox/data/") # change to suit your context
 
 # About
 
-This report is a contribution to the Hampshire County Council Climate Change [Expert Consultative Forum](https://www.hants.gov.uk/landplanningandenvironment/environment/climatechange/whoweworkwith/climatechangeforumevent)'s Data sub-group.
+This report is a contribution to the Hampshire County Council Climate Change [Expert Stakeholder Forum](https://www.hants.gov.uk/landplanningandenvironment/environment/climatechange/whoweworkwith/climatechangeforumevent)'s Data sub-group.
 
 Code: https://github.com/HCC-CCECF-DataGroup/hampshire-ghg-emissions/tree/main/rmd
 
@@ -69,7 +69,7 @@ This report is (c) University of Southampton and is published under the [CC-BY-4
 
 If you wish to use any of the material in this report please cite as:
 
- * Anderson, Ben (2021) _[Hampshire 'County' GHG Emissions: 2018/19 snapshots and trends over time comparing various accounting methods and data sources](https://hcc-ccecf-datagroup.github.io/hampshire-ghg-emissions/rmd/Hampshire_County_GHG_Emissions_v1.0.html): A contribution to the Hampshire County Council Climate Change [Expert Consultative Forum](https://www.hants.gov.uk/landplanningandenvironment/environment/climatechange/whoweworkwith/climatechangeforumevent)_. University of Southampton: Southampton.
+ * Anderson, Ben (2021) _[Hampshire 'County' GHG Emissions: 2018/19 snapshots and trends over time comparing various accounting methods and data sources](https://hcc-ccecf-datagroup.github.io/hampshire-ghg-emissions/rmd/Hampshire_County_GHG_Emissions_v1.0.html): A contribution to the Hampshire County Council Climate Change [Expert Stakeholder Forum](https://www.hants.gov.uk/landplanningandenvironment/environment/climatechange/whoweworkwith/climatechangeforumevent)_. University of Southampton: Southampton.
 
 # Introduction
 
