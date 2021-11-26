@@ -816,11 +816,15 @@ Finally, the CSE consumption emissions data demonstrates the significant contrib
 
 Based on the preceding discussion, this report makes the following recommendations to HCC:
 
- * adopt the annually updated BEIS district level emissions dataset as the benchmark for: 
+ * adopt the annually updated [BEIS district level emissions data](https://www.gov.uk/government/collections/uk-local-authority-and-regional-carbon-dioxide-emissions-national-statistics) as the benchmark for: 
     * estimation of baseline emissions; 
+    * transparent modelling of the potential impact of HCC programmes on CO2 emissions;
     * annual assessment of the district and county level emissions reduction progress;
     * assessment of the impact of district and county level emissions reduction policies where feasible;
- * work with BEIS to ensure the inclusion of _all_ territorial emissions (e.g. due to aviation, shipping, F-gases) and _all GHGs_ (i.e. [carbon dioxide, methane, nitrous oxide and fluorinated gases](https://naei.beis.gov.uk/overview/ghg-overview)) in the annual BEIS district level dataset. This would enable the **complete territorial emissions** of the area to be estimated and bring the district level data into line with the [national and sector level data reporting](https://naei.beis.gov.uk/resources/Sector_Summary_Factsheet_2020-v2.html) as well as with the CSE data reported here;
+ * work with BEIS to ensure the inclusion of _all_ territorial emissions (e.g. due to aviation, shipping, F-gases) and _all GHGs_ (i.e. [carbon dioxide, methane, nitrous oxide and fluorinated gases](https://naei.beis.gov.uk/overview/ghg-overview)) in the annual BEIS district level dataset. This would enable the **complete territorial emissions** of the area to be estimated and bring the district level data into line with the [national and sector level data reporting](https://naei.beis.gov.uk/resources/Sector_Summary_Factsheet_2020-v2.html) as well as with the CSE data reported here. This will enable:
+    * robust baselining of emissions for **all territorial GHGs**, not just CO2;
+    * transparent modelling of the potential impact of HCC programmes on _all territorial GHGs_;
+    * effective monitoring of reductions in emissions of _all territorial GHGs_ over time.
  * include a section in the HCC's annual Climate Change Report which:
     * reviews the mapping between current HCC programmes and the major emissions sources under each emissions accounting method;
     * reviews the capability and capacity of County and District Authorities to influence the emissions sources for which no current programmes exist (c.f. the [Committee on Climate Change's recommendations](https://www.theccc.org.uk/publication/local-authorities-and-the-sixth-carbon-budget/) as part of the 6th Carbon Budget and the more recent [National Audit Office 2021 report](https://www.nao.org.uk/report/local-government-and-net-zero-in-england/) on local government capabilities with respect to net zero in England);
@@ -828,7 +832,8 @@ Based on the preceding discussion, this report makes the following recommendatio
 Future work could:
 
  * analyse the district level emissions to understand their distributions according to the different methodologies and hence inform district level prioritisation where this is not already in hand;
- * use [the underlying LULUCF data](https://naei.beis.gov.uk/reports/reports?report_id=1025) to investigate the relatively low sequestration attributed to wetlands in the Hampshire area
+ * use [the underlying LULUCF data](https://naei.beis.gov.uk/reports/reports?report_id=1025) to investigate the relatively low sequestration attributed to wetlands in the Hampshire area;
+ * compare the results reported here with a similar analysis of the [CREDS Place-Based Carbon Calculator](https://www.carbon.place/data/) consumption-based footprint data. 
 
 # Appendix: Data
 
