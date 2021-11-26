@@ -225,7 +225,7 @@ data.table::fwrite(h_beis_sum_allYears_DT, here::here("data", "h_beis_kTco2_allY
 Figure \@ref(fig:hampshireBEISCO2TotalTrendsLine) shows trends over time for these categories using a line plot to make it easier to see which categories have declined. This makes the recent trends in the reduction of emissions from the increasingly decarbonised electricity grid clearly visible. There has also been a slight decline in emissions due to domestic gas use but few other sources show substantial change.
 
 ```{r hampshireBEISCO2TotalTrendsLine, fig.height = 6, fig.cap = "BEIS CO2 emissions by category (Hampshire)"}
-p <- ggplot2::ggplot(t, aes(x = `Calendar Year`, 
+p <- ggplot2::ggplot(h_beis_sum_allYears_DT, aes(x = `Calendar Year`, 
                        y = `Total kT CO2e`,
                        colour = subSectorLabelFact)) +
   geom_line() +
