@@ -13,6 +13,7 @@ dataPath <- "~/Dropbox/data/CREDS/carbon.place/PBCC_LSOA_data/"
 # Libraries ----
 library(data.table)
 library(here)
+library(skimr)
 
 # Functions ----
 source(here::here("R", "functions.R"))
@@ -64,21 +65,20 @@ creds_solent_laDT
 sum(creds_solent_laDT$kT_co2e_creds)
 
 # load in the estimates from the other sources
-compareDT <- data.table::fread(here::here("data", "all_hampshire_districts_sum_ktCO2_v1_methods.csv"))
+compareDT <- data.table::fread(here::here("data", 
+                                          "all_hampshire_districts_sum_ktCO2(e)_v1_methods.csv"))
 
 setkey(creds_solent_laDT, la_name)
 setkey(compareDT, District)
 
-dt <- compareDT[creds_solent_laDT]
-
-dt
+dt <- compareDT[creds_solent_laDT[, .(la_name, kT_co2e_creds)]]
 
 plotDT <- melt(dt[, .(District, `BEIS territorial emissions (kt CO2, 2019)`,
                        `CSE territorial emissions (kt CO2e)`,
                        `CSE consumption emissions (kt CO2e)`,
                        `CREDS consumption emissions (kt CO2e)` = kT_co2e_creds)])
 
- p <- ggplot2::ggplot(plotDT, aes(x = reorder(District, -value), y = value, fill = variable)) +
+p <- ggplot2::ggplot(plotDT, aes(x = reorder(District, -value), y = value, fill = variable)) +
   geom_col(position = "dodge") +
   scale_fill_discrete(name = "Method") +
   coord_flip() +
@@ -88,6 +88,13 @@ plotDT <- melt(dt[, .(District, `BEIS territorial emissions (kt CO2, 2019)`,
        y = "kT CO2(e)",
        cap = "Ordered")
  
- p
+p
  
- ggplot2::ggsave(here::here("plots", "comparisonAllMethodsByDistrict.png"), p)
+ggplot2::ggsave(here::here("plots", "comparisonAllMethodsByDistrict.png"), p)
+
+# how much higher are the CREDS consumption estimates?
+dt[, pc_diff_cons := (100*kT_co2e_creds/`CSE consumption emissions (kt CO2e)`)-100]
+
+dt
+
+skimr::skim(dt)
