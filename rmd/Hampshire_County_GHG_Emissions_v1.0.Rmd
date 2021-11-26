@@ -206,9 +206,9 @@ BEIS have produced a useful [mapping tool](https://naei.beis.gov.uk/laco2app/) w
 Figure \@ref(fig:hampshireBEISCO2TotalTrends) shows trends over the period 2005 to 2019 for the CO2 emissions sources in the data. Overall there has been a clear reduction in emissions over the time period. The categories have been colour-coded so that related categories have similar colours in the palette.
 
 ```{r hampshireBEISCO2TotalTrends, fig.height = 6, fig.cap = "BEIS CO2 emissions by category (Hampshire, 2019)"}
-t <- hampshire_beis_la_co2_DT[, .(`Total kT CO2e` = sum(`Territorial emissions (kt CO2)`, na.rm = TRUE)), keyby = .(`Calendar Year`, subSectorLabelFact)]
+h_beis_sum_allYears_DT <- hampshire_beis_la_co2_DT[, .(`Total kT CO2e` = sum(`Territorial emissions (kt CO2)`, na.rm = TRUE)), keyby = .(`Calendar Year`, subSectorLabelFact)]
 
-ggplot2::ggplot(t, aes(x = `Calendar Year`, 
+ggplot2::ggplot(h_beis_sum_allYears_DT, aes(x = `Calendar Year`, 
                        y = `Total kT CO2e`,
                        fill = subSectorLabelFact)) +
   geom_col(position = "stack") +
@@ -218,6 +218,8 @@ ggplot2::ggplot(t, aes(x = `Calendar Year`,
   theme(legend.title = element_blank()) +
   labs(x = "LA CO2 Sub-sector")
 
+# save this data out for future use
+data.table::fwrite(h_beis_sum_allYears_DT, here::here("data", "h_beis_kTco2_allYears.csv"))
 ```
 
 Figure \@ref(fig:hampshireBEISCO2TotalTrendsLine) shows trends over time for these categories using a line plot to make it easier to see which categories have declined. This makes the recent trends in the reduction of emissions from the increasingly decarbonised electricity grid clearly visible. There has also been a slight decline in emissions due to domestic gas use but few other sources show substantial change.
@@ -327,6 +329,8 @@ p +
 
 ```{r discBEISCO2}
 h_beis2019 <- hampshire_beis_la_co2_DT[`Calendar Year` == 2019]
+h_beis_allYears <- hampshire_beis_la_co2_DT[, .(kT_co2_beis = sum(`Territorial emissions (kt CO2)`)), keyby = .(`Calendar Year`, `LA CO2 Sub-sector`)]
+
 beis_trans <- sum(h_beis2019[`LA CO2 Sub-sector` %like% "Motorway" | `LA CO2 Sub-sector` %like% "roads", `Territorial emissions (kt CO2)`])
 
 beis_motorways <- sum(h_beis2019[`LA CO2 Sub-sector` %like% "Motorway", `Territorial emissions (kt CO2)`])
