@@ -219,7 +219,7 @@ ggplot2::ggplot(h_beis_sum_allYears_DT, aes(x = `Calendar Year`,
   labs(x = "LA CO2 Sub-sector")
 
 # save this data out for future use
-data.table::fwrite(h_beis_sum_allYears_DT, here::here("data", "h_beis_kTco2_allYears.csv"))
+data.table::fwrite(h_beis_sum_allYears_DT, here::here("data", "all_hampshire_beis_categories_sum_kTCO2_allYears.csv"))
 ```
 
 Figure \@ref(fig:hampshireBEISCO2TotalTrendsLine) shows trends over time for these categories using a line plot to make it easier to see which categories have declined. This makes the recent trends in the reduction of emissions from the increasingly decarbonised electricity grid clearly visible. There has also been a slight decline in emissions due to domestic gas use but few other sources show substantial change.
@@ -768,7 +768,7 @@ t <- districts[, .(District, `BEIS territorial emissions (kt CO2, 2019)`,
 makeFlexTable(t,cap = "Totals per district by method and source (kT)")
 
 data.table::fwrite(districts,
-                   here::here("data", "all_hampshire_districts_sum_ktCO2_v1_methods.csv"))
+                   here::here("data", "all_hampshire_districts_sum_ktCO2(e)_v1_methods.csv"))
 
 plotDT <- melt(districts[, .( District, `BEIS territorial emissions (kt CO2, 2019)`, `CSE territorial emissions (kt CO2e)`, `CSE consumption emissions (kt CO2e)`)])
 
