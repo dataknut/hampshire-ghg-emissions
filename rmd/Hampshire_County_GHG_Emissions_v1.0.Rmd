@@ -91,7 +91,7 @@ As background to the Hampshire County Council [Climate Change Strategy](https://
  
 Total kT CO2 baseline values were not included in this report.
 
-![Hampshire emissions (CarbonTrust, 2020)](../plots/hcc_strategy_emissions_trend_plot.png)
+![Hampshire emissions (CarbonTrust, 2020)](../includes/hcc_strategy_emissions_trend_plot.png)
 
 ```{r hccCT}
 # imputed from values given in https://documents.hants.gov.uk/climate-change/ClimateChange-Strategic-Framework-of-Programmes.pdf
