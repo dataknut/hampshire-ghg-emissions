@@ -205,7 +205,7 @@ BEIS have produced a useful [mapping tool](https://naei.beis.gov.uk/laco2app/) w
 
 Figure \@ref(fig:hampshireBEISCO2TotalTrends) shows trends over the period 2005 to 2019 for the CO2 emissions sources in the data. Overall there has been a clear reduction in emissions over the time period. The categories have been colour-coded so that related categories have similar colours in the palette.
 
-```{r hampshireBEISCO2TotalTrends, fig.height = 6, fig.cap = "BEIS CO2 emissions by category (Hampshire, 2019 ordered by emissions value)"}
+```{r hampshireBEISCO2TotalTrends, fig.height = 6, fig.cap = "BEIS CO2 emissions by category (Hampshire, 2019)"}
 t <- hampshire_beis_la_co2_DT[, .(`Total kT CO2e` = sum(`Territorial emissions (kt CO2)`, na.rm = TRUE)), keyby = .(`Calendar Year`, subSectorLabelFact)]
 
 ggplot2::ggplot(t, aes(x = `Calendar Year`, 
@@ -222,7 +222,7 @@ ggplot2::ggplot(t, aes(x = `Calendar Year`,
 
 Figure \@ref(fig:hampshireBEISCO2TotalTrendsLine) shows trends over time for these categories using a line plot to make it easier to see which categories have declined. This makes the recent trends in the reduction of emissions from the increasingly decarbonised electricity grid clearly visible. There has also been a slight decline in emissions due to domestic gas use but few other sources show substantial change.
 
-```{r hampshireBEISCO2TotalTrendsLine, fig.height = 6, fig.cap = "BEIS CO2 emissions by category (Hampshire, 2019 ordered by emissions value)"}
+```{r hampshireBEISCO2TotalTrendsLine, fig.height = 6, fig.cap = "BEIS CO2 emissions by category (Hampshire)"}
 p <- ggplot2::ggplot(t, aes(x = `Calendar Year`, 
                        y = `Total kT CO2e`,
                        colour = subSectorLabelFact)) +
@@ -738,6 +738,46 @@ Emissions due to Flights (`r dkUtils::tidyNum(cse_cons_flights,0)` kT CO2e) are 
 
 This approach to emissions accounting shows the extent to which the consumption of goods and services, diet and food as well as transport and domestic gas use dominate Hampshire's 'consumption' emissions footprint.
 
+# District level total emissions by method
+
+Table \@ref(tab:districtTotals) and Figure \@ref(fig:districtTotals) show the total emissions under each method and source per district. As expected, in all cases CSE territorial emissions are higher than BEIS territorial emissions. Similarly, in most cases CSE consumption emissions are higher than territorial emissions except for Winchester, Test Valley, Basingstoke and Deane and New Forest. More detailed analysis of the underlying data would be required to understand the reasons for this.
+
+```{r districtTotals, fig.cap = "Total emissions per district by method"}
+# save the totals out at LA level for comparison with other data
+districts_beis_2019 <- hampshire_beis_la_co2_DT[`Calendar Year` == 2019, .(`BEIS territorial emissions (kt CO2, 2019)` = sum(`Territorial emissions (kt CO2)`),
+                                                                           `Mid-year population (thousands, 2019)` = mean(`Mid-year Population (thousands)`)),
+                                                keyby = .(District = la_name)]
+
+districts_cse_terr <- hampshire_cse_territorial_abs_DT[, .(`CSE territorial emissions (kt CO2e)` = sum(value)/1000),
+                                                keyby = .(District = la_name)]
+
+
+districts_cse_cons <- hampshire_cse_consumption_abs_DT[, .(`CSE consumption emissions (kt CO2e)` = sum(value)/1000),
+                                                keyby = .(District = la_name)]
+
+districts <- districts_beis_2019[districts_cse_terr][districts_cse_cons]
+
+t <- districts[, .(District, `BEIS territorial emissions (kt CO2, 2019)`,
+                        `CSE territorial emissions (kt CO2e)`,
+                        `CSE consumption emissions (kt CO2e)`)]
+               
+makeFlexTable(t,cap = "Totals per district by method and source (kT)")
+
+data.table::fwrite(districts,
+                   here::here("data", "all_hampshire_districts_sum_ktCO2_v1_methods.csv"))
+
+plotDT <- melt(districts[, .( District, `BEIS territorial emissions (kt CO2, 2019)`, `CSE territorial emissions (kt CO2e)`, `CSE consumption emissions (kt CO2e)`)])
+
+ggplot2::ggplot(plotDT, aes(x = reorder(District, -value), y = value, fill = variable)) +
+  geom_col(position = "dodge") +
+  scale_fill_discrete(name = "Method") +
+  coord_flip() +
+  labs(x = "District",
+         y = "kT CO2(e)",
+         cap = "Ordered by CSE consumption emissions")
+```
+
+
 # Discussion
 
 ```{r genDisc}
@@ -811,6 +851,7 @@ The Carbon Trust estimate for Industrial & Commercial emissions for the '11 dist
 Although the '14 districts' BEIS and CSE (territorial) main categories are broadly similar in terms of kT CO2(e), the percentage contribution of Transport and Residential emissions are considerably lower (56%) for the CSE data. This is due to the **inclusion of additional sources in the CSE data** such as Aviation (10%, shown) shipping and F-gases as well as _all GHG_ emissions (not just CO2) from transport, waste, agriculture, and others (see Table \@ref(tab:hampshireCSEterrTotalByCat) for details). Collectively these represent over 20% of county-wide emissions under the CSE territorial methodology.
 
 Finally, the CSE consumption emissions data demonstrates the significant contribution that consumption of services as well as food and diet make to our 'extended' emissions footprint if we consider the emissions we have effectively outsourced to other geographical areas. This method transfers all of the industrial/commercial emissions and a significant proportion of the Transport/Aviation emissions to 'Good and services' and 'Food and diet' (i.e. supply chain transportation and distribution). As a result emissions from homes and private transport comprise only 33% of the total under this approach, flights a further 7% and the total for consumption of goods and services & food is ~58%
+
 
 # Recommendations and future work
 
