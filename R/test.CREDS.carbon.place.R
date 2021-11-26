@@ -62,3 +62,32 @@ creds_solent_laDT[, kT_co2e_creds := (pop_2018 * total_kgco2e_percap)/1000000]
 creds_solent_laDT
 
 sum(creds_solent_laDT$kT_co2e_creds)
+
+# load in the estimates from the other sources
+compareDT <- data.table::fread(here::here("data", "all_hampshire_districts_sum_ktCO2_v1_methods.csv"))
+
+setkey(creds_solent_laDT, la_name)
+setkey(compareDT, District)
+
+dt <- compareDT[creds_solent_laDT]
+
+dt
+
+plotDT <- melt(dt[, .(District, `BEIS territorial emissions (kt CO2, 2019)`,
+                       `CSE territorial emissions (kt CO2e)`,
+                       `CSE consumption emissions (kt CO2e)`,
+                       `CREDS consumption emissions (kt CO2e)` = kT_co2e_creds)])
+
+ p <- ggplot2::ggplot(plotDT, aes(x = reorder(District, -value), y = value, fill = variable)) +
+  geom_col(position = "dodge") +
+  scale_fill_discrete(name = "Method") +
+  coord_flip() +
+  guides(fill=guide_legend(ncol=2)) +
+  theme(legend.position="bottom") +
+  labs(x = "District",
+       y = "kT CO2(e)",
+       cap = "Ordered")
+ 
+ p
+ 
+ ggplot2::ggsave(here::here("plots", "comparisonAllMethodsByDistrict.png"), p)
