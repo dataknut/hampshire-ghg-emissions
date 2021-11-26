@@ -3,8 +3,8 @@ A repo to support estimation of Hampshire GHG emissions using various data sourc
 
 What's here:
 
-  * data analysis code (Rmd file)
-  * html (or other format) outputs
+  * data analysis code (Rmd files)
+  * html (or other format) outputs created by running the Rmd file(s)
   
 The outputs are best viewed via [github pages](https://hcc-ccecf-datagroup.github.io/hampshire-ghg-emissions/).
 
