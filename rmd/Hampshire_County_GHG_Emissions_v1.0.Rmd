@@ -118,7 +118,7 @@ Using the proportion values in the figure above, this gives a total of `r dkUtil
 
 # BEIS: Territorial CO2 emissions
 
-These official [BEIS National Statistics](https://www.gov.uk/government/statistics/uk-local-authority-and-regional-carbon-dioxide-emissions-national-statistics-2005-to-2019) use the end-user [territorial emissions method](https://assets.publishing.service.gov.uk/government/uploads/system/uploads/attachment_data/file/996059/local-authority-co2-emissions-technical-report-2019.pdf) (_"meaning CO2 emissions that occur within the UK’s borders"_) and include _only_ CO2 emissions. As a result international aviation and shipping are _excluded_ from these estimates.
+These official local authority/district level [BEIS National Statistics](https://www.gov.uk/government/statistics/uk-local-authority-and-regional-carbon-dioxide-emissions-national-statistics-2005-to-2019) use the end-user [territorial emissions method](https://assets.publishing.service.gov.uk/government/uploads/system/uploads/attachment_data/file/996059/local-authority-co2-emissions-technical-report-2019.pdf) (_"meaning CO2 emissions that occur within the UK’s borders"_) and include _only_ CO2 emissions. As a result international aviation and shipping are _excluded_ from these estimates.
 
 Note also that:
 
@@ -205,7 +205,7 @@ BEIS have produced a useful [mapping tool](https://naei.beis.gov.uk/laco2app/) w
 
 Figure \@ref(fig:hampshireBEISCO2TotalTrends) shows trends over the period 2005 to 2019 for the CO2 emissions sources in the data. Overall there has been a clear reduction in emissions over the time period. The categories have been colour-coded so that related categories have similar colours in the palette.
 
-```{r hampshireBEISCO2TotalTrends, fig.height = 6, fig.cap = "BEIS CO2 emissions by category (Hampshire, 2019)"}
+```{r hampshireBEISCO2TotalTrends, fig.height = 6, fig.cap = "BEIS CO2 emissions by category (Hampshire)"}
 h_beis_sum_allYears_DT <- hampshire_beis_la_co2_DT[, .(`Total kT CO2e` = sum(`Territorial emissions (kt CO2)`, na.rm = TRUE)), keyby = .(`Calendar Year`, subSectorLabelFact)]
 
 ggplot2::ggplot(h_beis_sum_allYears_DT, aes(x = `Calendar Year`, 
@@ -222,7 +222,7 @@ ggplot2::ggplot(h_beis_sum_allYears_DT, aes(x = `Calendar Year`,
 data.table::fwrite(h_beis_sum_allYears_DT, here::here("data","outputs", "all_hampshire_beis_categories_sum_kTCO2_allYears.csv"))
 ```
 
-Figure \@ref(fig:hampshireBEISCO2TotalTrendsLine) shows trends over time for these categories using a line plot to make it easier to see which categories have declined. This makes the recent trends in the reduction of emissions from the increasingly decarbonised electricity grid clearly visible. There has also been a slight decline in emissions due to domestic gas use but few other sources show substantial change.
+Figure \@ref(fig:hampshireBEISCO2TotalTrendsLine) shows trends over time for these categories using a line plot to make it easier to see which categories have declined. This makes the recent trends in the reduction of emissions from the increasingly decarbonised electricity grid clearly visible. There has also been a slight decline in emissions due to domestic gas use but few other sources show substantial change except for '_large industrial installations_'.
 
 ```{r hampshireBEISCO2TotalTrendsLine, fig.height = 6, fig.cap = "BEIS CO2 emissions by category (Hampshire)"}
 p <- ggplot2::ggplot(h_beis_sum_allYears_DT, aes(x = `Calendar Year`, 
@@ -240,7 +240,7 @@ p
 
 Figure \@ref(fig:hampshireBEISCO2TotalTrendsLinePlotly) shows an interactive version of the same plot. Hovering over specific lines is useful for identifying the sources.
 
-```{r hampshireBEISCO2TotalTrendsLinePlotly, fig.height = 6, fig.cap = "BEIS CO2 emissions by category (Hampshire, 2019 ordered by emissions value)"}
+```{r hampshireBEISCO2TotalTrendsLinePlotly, fig.height = 6, fig.cap = "BEIS CO2 emissions by category (Hampshire)"}
 library(plotly)
 plotly::ggplotly(p)
 ```
@@ -376,7 +376,7 @@ Negative CO2 emissions (sequestration) sources are:
  * Grassland: `r dkUtils::tidyNum(beis_grassland,0)` kT - note that this does not include methane emissions from grazing livestock nor N2O emissions from waste
  * Wetlands: `r dkUtils::tidyNum(beis_wetlands,3)` kT - this is perhaps surprisingly small given the coastal nature of the County and the existence of a number of wetland habitats. it may be worth investigating [the underlying data](https://naei.beis.gov.uk/reports/reports?report_id=1025) to confirm.
 
-As Figure \@ref(fig:beisCumulative) showed, these levels of sequestration currently provided a negligible offset to the overall emissions. Note also that cropland was a net emitter at `r dkUtils::tidyNum(beis_crop,0)` kT. 
+As Figure \@ref(fig:beisCumulative) showed, these levels of sequestration currently provide a negligible offset to the overall emissions. Note also that cropland was a net emitter at `r dkUtils::tidyNum(beis_crop,0)` kT. 
 
 Figure \@ref(fig:hampshireBEISCO2TotalTrendsLine) showed that the only emissions sources showing substantial decreases over time have been electricity due to grid decarbonisation and (potentially) reductions in some industrial activity as well as the use of 'Other fuels' by industry. Although emissions from domestic gas use have also fallen over time they appear to have stabilised since 2014. Perhaps of most concern given their dominant contribution however is the relative stability of road transport emissions over the 2005 - 2019 period.
 
@@ -622,7 +622,7 @@ sumCSECons_kt <- sum(hampshire_cse_consumption_abs_DT$value)/1000
 
 Table \@ref(tab:hampshireCSEconsTotalByCat) shows the total emissions for 2019 by category. Figure \@ref(fig:hampshireCSEconsTotalByCat) shows the data as a bar plot. Note that most of the categories do not exactly match those used in the BEIS/CSE territorial-based data but again, the colour palettes have been kept as similar as possible.
 
-The largest emissions sources under this method are clearly visible (purchased goods, services and food/diet and gas-use). Note that some of the categories do not exactly match those used in the BEIS data. Ignore the (t CO2e) in the label - the plot shows kT for easy comparison.
+The largest emissions sources under this method are clearly visible (purchased goods, services and food/diet and gas-use).
 
 > Ignore the (t CO2e) in the label - the plot shows kT for easy comparison (labels to be fixed).
 
@@ -680,7 +680,7 @@ ggplot2::ggplot(hampshire_cse_cons_Totals, aes(x = reorder(variable_n, -`Total k
   coord_flip()
 ```
 
-Figure \@ref(fig:cseConsCumulative) shows a cumulative emissions plot for the CSE territorial data ordered by the emissions source's magnitude. The largest increments are therefore due to consumpiton of goods and services, food and diet (meat & fish) and mains gas use. The plot shows the sources which comprise 50%, 75% and 90% of the total emissions.
+Figure \@ref(fig:cseConsCumulative) shows a cumulative emissions plot for the CSE territorial data ordered by the emissions source's magnitude. The largest increments are therefore due to consumption of goods and services, food and diet (meat & fish) and mains gas use. The plot shows the sources which comprise 50%, 75% and 90% of the total emissions.
 
 ```{r cseConsCumulative, fig.cap="Plot of cumulative emissions (BEIS, 2019)"}
 t <- hampshire_cse_cons_Totals[order(-`Total kT CO2e`)]
@@ -729,7 +729,7 @@ cons_sum <- cse_cons_purch + cse_cons_food_meat + cse_cons_DomGas + cse_cons_foo
 con_sum_pc <- 100*(cons_sum/sumCSECons_kt)
 ```
 
-Thus, if we focus on CSE consumption-based emissions which include emissions 'outsourced' to other geographical areas (including overseas), the main emissions sources comprising `r dkUtils::tidyNum(con_sum_pc,0)` % of emissions are:
+Thus, if we focus on CSE consumption-based emissions which include emissions 'outsourced' to other geographical areas (including overseas), 75% of emissions sources are due to:
  
  * Purchased goods: `r dkUtils::tidyNum(cse_cons_purch,0)` kT CO2e ( `r round(100*cse_cons_purch/sumCSECons_kt)` %)
  * Food and diet - meat & fish: `r dkUtils::tidyNum(cse_cons_food_meat,0)` kT CO2e ( `r round(100*cse_cons_food_meat/sumCSECons_kt)` %)
@@ -800,7 +800,7 @@ Overall, the total GHG emissions for Hampshire under different methodologies wer
 
 Given that the Carbon Trust area _excludes_ Portsmouth, Southampton and the Isle of Wight it is unclear why this total is similar to the '14 local authorities' BEIS data.
 
-Which of these accounting methods we choose to focus on depends what we want to show and what we want to achieve. The same is true of the emissions subcategories. The BEIS data gives a partial view on territorial emissions as it excludes all non-CO2 emissions and also excludes aviation (flights & freight) and shipping. The CSE territorial emissions data includes these 'missing' emissions and so gives a much larger total. The CSE consumption emissions are (generally) larger still because they include emissions 'off-shored' by our consumption of goods and services from outside the Hampshire area.
+Which of these accounting methods we choose to focus on depends what we want to show and what we want to achieve. The same is true of the emissions subcategories. The BEIS data gives a partial view on territorial emissions as it excludes all non-CO2 emissions and also excludes aviation (flights & freight) and shipping. The CSE territorial emissions data includes these 'missing' emissions and so gives a much larger total. The CSE consumption emissions are (generally) larger still because they include emissions 'off-shored' by our consumption of goods and services produced outside the Hampshire area.
 
 Table \@ref(tab:tableCompareTerr) compares the Carbon Trust, BEIS and CSE data to the extent that it is possible to do so from the data reported here.
 
@@ -854,7 +854,7 @@ The Carbon Trust estimate for Industrial & Commercial emissions for the '11 dist
 
 Although the '14 districts' BEIS and CSE (territorial) main categories are broadly similar in terms of kT CO2(e), the percentage contribution of Transport and Residential emissions are considerably lower (56%) for the CSE data. This is due to the **inclusion of additional sources in the CSE data** such as Aviation (10%, shown) shipping and F-gases as well as _all GHG_ emissions (not just CO2) from transport, waste, agriculture, and others (see Table \@ref(tab:hampshireCSEterrTotalByCat) for details). Collectively these represent over 20% of county-wide emissions under the CSE territorial methodology.
 
-Finally, the CSE consumption emissions data demonstrates the significant contribution that consumption of services as well as food and diet make to our 'extended' emissions footprint if we consider the emissions we have effectively off-shored to other geographical areas. This method transfers all of the industrial/commercial emissions and a significant proportion of the Transport/Aviation emissions to 'Good and services' and 'Food and diet' (i.e. supply chain transportation and distribution). As a result emissions from homes and private transport comprise only 33% of the total under this approach, flights a further 7% and the total for consumption of goods and services & food is ~58%
+Finally, the CSE consumption emissions data demonstrates the significant contribution that consumption of services as well as food and diet make to our 'extended' emissions footprint if we consider the emissions we have effectively off-shored to other geographical areas. This method transfers all of the industrial/commercial emissions and a significant proportion of the Transport/Aviation emissions to 'Good and services' and 'Food and diet' (i.e. supply chain transportation and distribution). As a result emissions from homes and private transport comprise only 33% of the total under this approach, flights a further 7% while the total for consumption of goods and services & food is ~58%
 
 
 # Recommendations and future work
@@ -876,6 +876,7 @@ Based on the preceding discussion, this report makes the following recommendatio
 
 Future work could:
 
+ * use the BEIS district level and (aggregated to) county level data to establish [Science Based Targets](https://sciencebasedtargetsnetwork.org/take-action-now/take-action-as-a-city/) for emissions reduction that align with or improve upon national 'net-zero' targets;
  * analyse the district level emissions to understand their distributions according to the different methodologies and hence inform district level prioritisation where this is not already in hand;
  * use [the underlying LULUCF data](https://naei.beis.gov.uk/reports/reports?report_id=1025) to investigate the relatively low sequestration attributed to wetlands in the Hampshire area;
  * compare the results reported here with a similar analysis of the [CREDS Place-Based Carbon Calculator](https://www.carbon.place/data/) consumption-based footprint data. 
