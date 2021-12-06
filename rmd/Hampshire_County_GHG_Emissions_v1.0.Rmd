@@ -194,8 +194,8 @@ hampshire_beis_la_co2_DT[, widerHampshire := ifelse(la_name == "Southampton" |
                          "Hampshire CC")]
 message("Number of emissions categories: ", uniqueN(hampshire_beis_la_co2_DT$`LA CO2 Sub-sector`))
 message("Number of districts: ", uniqueN(hampshire_beis_la_co2_DT$`Local Authority`))
-message("Total emissions for 2019: ", round(sum(hampshire_beis_la_co2_DT[`Calendar Year` == 2019]$`Territorial emissions (kt CO2)`)), " kT CO2e")
-message("Total emissions deemed to be 'within the scope of influence of LAs' for 2019: ", round(sum(hampshire_beis_la_co2_DT[`Calendar Year` == 2019]$`Emissions within the scope of influence of LAs (kt CO2)`)), " kT CO2e")
+message("Total emissions for 2019: ", round(sum(hampshire_beis_la_co2_DT[`Calendar Year` == 2019]$`Territorial emissions (kt CO2)`)), " kT CO2")
+message("Total emissions deemed to be 'within the scope of influence of LAs' for 2019: ", round(sum(hampshire_beis_la_co2_DT[`Calendar Year` == 2019]$`Emissions within the scope of influence of LAs (kt CO2)`)), " kT CO2")
 ```
 
 
@@ -206,10 +206,10 @@ BEIS have produced a useful [mapping tool](https://naei.beis.gov.uk/laco2app/) w
 Figure \@ref(fig:hampshireBEISCO2TotalTrends) shows trends over the period 2005 to 2019 for the CO2 emissions sources in the data. Overall there has been a clear reduction in emissions over the time period. The categories have been colour-coded so that related categories have similar colours in the palette.
 
 ```{r hampshireBEISCO2TotalTrends, fig.height = 6, fig.cap = "BEIS CO2 emissions by category (Hampshire)"}
-h_beis_sum_allYears_DT <- hampshire_beis_la_co2_DT[, .(`Total kT CO2e` = sum(`Territorial emissions (kt CO2)`, na.rm = TRUE)), keyby = .(`Calendar Year`, subSectorLabelFact)]
+h_beis_sum_allYears_DT <- hampshire_beis_la_co2_DT[, .(`Total kT CO2` = sum(`Territorial emissions (kt CO2)`, na.rm = TRUE)), keyby = .(`Calendar Year`, subSectorLabelFact)]
 
 p <- ggplot2::ggplot(h_beis_sum_allYears_DT, aes(x = `Calendar Year`, 
-                       y = `Total kT CO2e`,
+                       y = `Total kT CO2`,
                        fill = subSectorLabelFact)) +
   geom_col(position = "stack") +
   scale_fill_manual(values = beis_emissions_colours) +
@@ -229,7 +229,7 @@ Figure \@ref(fig:hampshireBEISCO2TotalTrendsLine) shows trends over time for the
 
 ```{r hampshireBEISCO2TotalTrendsLine, fig.height = 6, fig.cap = "BEIS CO2 emissions by category (Hampshire)"}
 p <- ggplot2::ggplot(h_beis_sum_allYears_DT, aes(x = `Calendar Year`, 
-                       y = `Total kT CO2e`,
+                       y = `Total kT CO2`,
                        colour = subSectorLabelFact)) +
   geom_line() +
   scale_colour_manual(values = beis_emissions_colours) +
