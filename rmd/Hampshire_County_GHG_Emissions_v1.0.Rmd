@@ -208,7 +208,7 @@ Figure \@ref(fig:hampshireBEISCO2TotalTrends) shows trends over the period 2005 
 ```{r hampshireBEISCO2TotalTrends, fig.height = 6, fig.cap = "BEIS CO2 emissions by category (Hampshire)"}
 h_beis_sum_allYears_DT <- hampshire_beis_la_co2_DT[, .(`Total kT CO2e` = sum(`Territorial emissions (kt CO2)`, na.rm = TRUE)), keyby = .(`Calendar Year`, subSectorLabelFact)]
 
-ggplot2::ggplot(h_beis_sum_allYears_DT, aes(x = `Calendar Year`, 
+p <- ggplot2::ggplot(h_beis_sum_allYears_DT, aes(x = `Calendar Year`, 
                        y = `Total kT CO2e`,
                        fill = subSectorLabelFact)) +
   geom_col(position = "stack") +
@@ -217,6 +217,9 @@ ggplot2::ggplot(h_beis_sum_allYears_DT, aes(x = `Calendar Year`,
   guides(fill=guide_legend(ncol=3)) +
   theme(legend.title = element_blank()) +
   labs(x = "LA CO2 Sub-sector")
+
+ggplot2::ggsave(here::here("plots", "beis2005_2019_trendsCol.png"), plot = p)
+p
 
 # save this data out for future use
 data.table::fwrite(h_beis_sum_allYears_DT, here::here("data","outputs", "all_hampshire_beis_categories_sum_kTCO2_allYears.csv"))
@@ -234,6 +237,8 @@ p <- ggplot2::ggplot(h_beis_sum_allYears_DT, aes(x = `Calendar Year`,
   guides(colour=guide_legend(ncol=3)) +
   theme(legend.title = element_blank()) +
   labs(x = "LA CO2 Sub-sector")
+
+ggplot2::ggsave(here::here("plots", "beis2005_2019_trendsLine.png"), plot = p)
 
 p
 ```
@@ -276,7 +281,7 @@ hampshire_beis_terr_Totals[, `% of gross` := 100*(`Total kT CO2`/absTotal)]
 makeFlexTable(hampshire_beis_terr_Totals[, .(Source = subSectorLabelFact, 
                                              `Total kT CO2`, `% of gross`)], cap = "BEIS CO2 emissions sorted by category (Hampshire, 2019)")
 
-ggplot2::ggplot(hampshire_beis_terr_Totals, aes(x = reorder(subSectorLabelFact, -`Total kT CO2`), 
+p <- ggplot2::ggplot(hampshire_beis_terr_Totals, aes(x = reorder(subSectorLabelFact, -`Total kT CO2`), 
                        y = `Total kT CO2`,
                        fill = subSectorLabelFact)) +
   geom_col() +
@@ -285,6 +290,9 @@ ggplot2::ggplot(hampshire_beis_terr_Totals, aes(x = reorder(subSectorLabelFact, 
   labs(x = "LA CO2 Sub-sector") +
   coord_flip()
 
+ggplot2::ggsave(here::here("plots", "beis2019_col.png"), plot = p)
+
+p
 # p <- ggplot2::ggplot(subsetDT, aes(x = `Calendar Year`, y = `Territorial emissions (kt CO2)`,
 #                             fill = subSectorLabel,
 #                             colour = subSectorLabel)) +
@@ -317,13 +325,17 @@ p <- ggplot2::ggplot(t, aes(x = reorder(subSectorLabelFact, -`Total kT CO2`),
   coord_flip()
 
 # add reference lines
-p + 
+p <- p + 
   geom_hline(aes(yintercept = pc_50), colour = "grey") +
   geom_hline(aes(yintercept = pc_75), colour = "grey") +
   geom_hline(aes(yintercept = pc_90), colour = "grey") +
   annotate("text", x = "Transport Other", y = pc_50, label = "50%", colour = "grey") +
   annotate("text", x = "Transport Other", y = pc_75, label = "75%", colour = "grey") +
   annotate("text", x = "Transport Other", y = pc_90, label = "90%", colour = "grey")
+
+ggplot2::ggsave(here::here("plots", "beis2019_cumulative.png"), plot = p)
+
+p
 ```
 
 
@@ -486,7 +498,7 @@ cse_terr_catList2 <- c(cse_terr_catList[1:15], cse_terr_catList[17:18],
 
 names(cse_terr_colours) <- cse_terr_catList2 # associate the names (in this order) with the colours
 
-ggplot2::ggplot(hampshire_cse_terr_Totals, aes(x = reorder(variable, -`Total kT CO2e`), 
+p <- ggplot2::ggplot(hampshire_cse_terr_Totals, aes(x = reorder(variable, -`Total kT CO2e`), 
                        y = `Total kT CO2e`,
                        fill = variable)) +
   geom_col() +
@@ -494,6 +506,10 @@ ggplot2::ggplot(hampshire_cse_terr_Totals, aes(x = reorder(variable, -`Total kT 
   theme(legend.position = "none") +
   labs(x = "Emissions source") +
   coord_flip()
+
+ggplot2::ggsave(here::here("plots", "cseTerr_col.png"), plot = p)
+
+p
 
 # p <- ggplot2::ggplot(subsetDT, aes(x = `Calendar Year`, y = `Territorial emissions (kt CO2)`,
 #                             fill = subSectorLabel,
@@ -527,7 +543,7 @@ p <- ggplot2::ggplot(t, aes(x = reorder(variable, -`Total kT CO2e`),
   coord_flip()
 
 # add reference lines
-p + 
+p <- p + 
   geom_hline(aes(yintercept = pc_50), colour = "grey") +
   geom_hline(aes(yintercept = pc_75), colour = "grey") +
   geom_hline(aes(yintercept = pc_90), colour = "grey") +
@@ -535,6 +551,9 @@ p +
   annotate("text", x = "Other Transport (t CO2e)", y = pc_75, label = "75%", colour = "grey") +
   annotate("text", x = "Other Transport (t CO2e)", y = pc_90, label = "90%", colour = "grey")
 
+ggplot2::ggsave(here::here("plots", "cseTerr_cumulative.png"), plot = p)
+
+p
 ```
 
 
@@ -670,7 +689,7 @@ cse_cons_catList <- unique(hampshire_cse_cons_Totals$variableFact) # correct ord
 
 names(cse_cons_colours) <- cse_cons_catList # associate the names (in this order) with the colours
 
-ggplot2::ggplot(hampshire_cse_cons_Totals, aes(x = reorder(variable_n, -`Total kT CO2e`), 
+p <- ggplot2::ggplot(hampshire_cse_cons_Totals, aes(x = reorder(variable_n, -`Total kT CO2e`), 
                        y = `Total kT CO2e`,
                        fill = variable_n)) +
   geom_col() +
@@ -678,6 +697,10 @@ ggplot2::ggplot(hampshire_cse_cons_Totals, aes(x = reorder(variable_n, -`Total k
   theme(legend.position = "none") +
   labs(x = "Emissions source") +
   coord_flip()
+
+ggplot2::ggsave(here::here("plots", "cseCons_col.png"), plot = p)
+
+p
 ```
 
 Figure \@ref(fig:cseConsCumulative) shows a cumulative emissions plot for the CSE territorial data ordered by the emissions source's magnitude. The largest increments are therefore due to consumption of goods and services, food and diet (meat & fish) and mains gas use. The plot shows the sources which comprise 50%, 75% and 90% of the total emissions.
@@ -703,7 +726,7 @@ p <- ggplot2::ggplot(t, aes(x = reorder(variable_n, -`Total kT CO2e`),
   coord_flip()
 
 # add reference lines
-p + 
+p <- p + 
   geom_hline(aes(yintercept = pc_50), colour = "grey") +
   geom_hline(aes(yintercept = pc_75), colour = "grey") +
   geom_hline(aes(yintercept = pc_90), colour = "grey") +
@@ -711,6 +734,9 @@ p +
   annotate("text", x = "Housing - Oil (t CO2e)", y = pc_75, label = "75%", colour = "grey") +
   annotate("text", x = "Housing - Oil (t CO2e)", y = pc_90, label = "90%", colour = "grey")
 
+ggplot2::ggsave(here::here("plots", "cseCons_cumulative.png"), plot = p)
+
+p
 ```
 
 
@@ -772,13 +798,17 @@ data.table::fwrite(districts,
 
 plotDT <- melt(districts[, .( District, `BEIS territorial emissions (kt CO2, 2019)`, `CSE territorial emissions (kt CO2e)`, `CSE consumption emissions (kt CO2e)`)])
 
-ggplot2::ggplot(plotDT, aes(x = reorder(District, -value), y = value, fill = variable)) +
+p <- ggplot2::ggplot(plotDT, aes(x = reorder(District, -value), y = value, fill = variable)) +
   geom_col(position = "dodge") +
   scale_fill_discrete(name = "Method") +
   coord_flip() +
+  theme(legend.position="bottom") +
   labs(x = "District",
          y = "kT CO2(e)",
          cap = "Ordered by CSE consumption emissions")
+
+ggplot2::ggsave(here::here("plots", "allMethodsComparison_by_districts.png"), plot = p)
+p
 ```
 
 
