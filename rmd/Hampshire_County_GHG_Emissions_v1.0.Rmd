@@ -61,6 +61,11 @@ If you are viewing this report as a web page then you can also click on the 'cod
 
 Feedback: https://github.com/HCC-CCECF-DataGroup/hampshire-ghg-emissions/labels/v1
 
+## History
+
+  * **[Version 1.1](https://hcc-ccecf-datagroup.github.io/hampshire-ghg-emissions/rmd/Hampshire_County_GHG_Emissions_v1.1.html) - updated to include [CSE data revisions](https://impact-tool.org.uk/changelog) which result in slightly lower emissions for "Agriculture - Livestock and crop-related emissions" under the territorial method.**
+ * Version 1 - [original analysis (this report)](https://hcc-ccecf-datagroup.github.io/hampshire-ghg-emissions/rmd/Hampshire_County_GHG_Emissions_v1.0.html) presented to HCC Climate Change Expert Forum on 7th December 2021
+
 ## License
 
 This report is (c) University of Southampton and is published under the [CC-BY-4.0 license](https://creativecommons.org/licenses/by/4.0/). You may share, re-use or adapt for commercial or non-commercial purposes with citation.
@@ -69,7 +74,7 @@ This report is (c) University of Southampton and is published under the [CC-BY-4
 
 If you wish to use any of the material in this report please cite as:
 
- * Anderson, Ben (2021) _[Hampshire 'County' GHG Emissions: 2018/19 snapshots and trends over time comparing various accounting methods and data sources](https://hcc-ccecf-datagroup.github.io/hampshire-ghg-emissions/rmd/Hampshire_County_GHG_Emissions_v1.0.html): A contribution to the Hampshire County Council Climate Change [Expert Stakeholder Forum](https://www.hants.gov.uk/landplanningandenvironment/environment/climatechange/whoweworkwith/climatechangeforumevent)_. University of Southampton: Southampton.
+ * Anderson, Ben (2021) _[Hampshire 'County' GHG Emissions: 2018/19 snapshots and trends over time comparing various accounting methods and data sources](https://hcc-ccecf-datagroup.github.io/hampshire-ghg-emissions/rmd/Hampshire_County_GHG_Emissions_v1.0.html), Report to the Hampshire County Council Climate Change [Expert Stakeholder Forum](https://www.hants.gov.uk/landplanningandenvironment/environment/climatechange/whoweworkwith/climatechangeforumevent)_. University of Southampton: Southampton.
 
 # Introduction
 
