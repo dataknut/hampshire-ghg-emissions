@@ -1,0 +1,94 @@
+---
+title: "Hampshire GHG emissions (CO2e analysis)"
+author: "Ben Anderson"
+format: html
+editor: visual
+---
+
+```{r}
+#| label: setup
+library(data.table)
+library(flextable)
+library(ggplot2)
+library(here)
+
+source(here::here("R", "functions.R"))
+qmdParams <- list()
+
+qmdParams$dataPath <- "~/Dropbox/data/beis/localAuthority/allGHG/uk-local-authority-ghg-emissions-2020-dataset.csv"
+```
+
+# Introduction
+
+Latest CO2e data from BEIS at [district](https://www.gov.uk/government/statistics/uk-local-authority-and-regional-greenhouse-gas-emissions-national-statistics-2005-to-2020) level - now has CO2e (i.e methane etc as well)
+
+# Load and filter data
+
+```{r}
+#| label: loadData
+dt <- data.table::fread(qmdParams$dataPath)
+```
+
+Extract just the 14 districts we are interested in.
+
+```{r}
+#| label: filter_areas
+dt[, la_name := `Local Authority`]
+
+solent <- getSolent(dt)
+
+t <- solent[`Calendar Year` == 2020 & `Greenhouse gas` == "CO2", .(n = .N,
+                           sumkT_CO2e = sum(`Territorial emissions (kt CO2e)`)), keyby = .(`Local Authority`)]
+
+makeFlexTable(t, cap = "Check LAs (sum CO2 for 2020, kt CO2e")
+
+plotDT <- solent[, .(n = .N,
+                           sumkT_CO2e = sum(`Territorial emissions (kt CO2e)`)), keyby = .(`Local Authority`, `Greenhouse gas`, `Calendar Year`)]
+
+ggplot2::ggplot(plotDT[`Calendar Year` > 2017], aes(x = `Calendar Year`, y = sumkT_CO2e,
+                            fill = `Local Authority`)) +
+  geom_col(position = "stack") +
+  facet_wrap(. ~ `Greenhouse gas`) +
+  labs(y = "kT CO2e")
+```
+
+# Analysis
+
+## Sequestration estimates
+
+```{r}
+#| label: extractLandUse
+# Net Emissions: Forest land	
+# Net Emissions: Cropland	
+# Net Emissions: Grassland	
+# Net Emissions: Wetlands	
+# Net Emissions: Settlements	
+# Net Emissions: Harvested Wood Products	
+# Net Emissions: Indirect N2O
+solent_LULUCF <- solent[`LA GHG Sub-sector` %like% "LULUCF" & 
+                          `LA GHG Sub-sector` != "LULUCF Net Emissions: Settlements"]
+
+message("Summing:")
+
+table(solent_LULUCF$`LA GHG Sub-sector`, 
+      solent_LULUCF$`Greenhouse gas`)
+
+t <- solent_LULUCF[, .(sum_kT_Co2e = sum(`Territorial emissions (kt CO2e)`)), 
+                   keyby =.(la_name = `Local Authority`, 
+                            year = `Calendar Year`)]
+
+t_dcast <- data.table::dcast(t[year > 2017], 
+                             la_name ~ year)
+
+makeFlexTable(t_dcast, cap = "Land use 'emissions' sum by district (kT CO2e)")
+
+annualtotals <- t[year > 2017, .(kT_CO2e = sum(sum_kT_Co2e)), keyby = .(year)]
+annualtotals[, year := as.factor(year)]
+makeFlexTable(annualtotals, cap = "Land use 'emissions' sum (kT CO2e)")
+message("Districts included:")
+t[, .(n = .N), keyby = .(la_name)]
+```
+
+```{r}
+#| label: theEnd
+```

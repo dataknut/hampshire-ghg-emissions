@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-0.9.583">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Ben Anderson">
+
+<title>Hampshire GHG emissions (CO2e analysis)</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+span.underline{text-decoration: underline;}
+div.column{display: inline-block; vertical-align: top; width: 50%;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+
+<script src="hampshire-ghg-co2e_files/libs/clipboard/clipboard.min.js"></script>
+<script src="hampshire-ghg-co2e_files/libs/quarto-html/quarto.js"></script>
+<script src="hampshire-ghg-co2e_files/libs/quarto-html/popper.min.js"></script>
+<script src="hampshire-ghg-co2e_files/libs/quarto-html/tippy.umd.min.js"></script>
+<script src="hampshire-ghg-co2e_files/libs/quarto-html/anchor.min.js"></script>
+<link href="hampshire-ghg-co2e_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="hampshire-ghg-co2e_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="hampshire-ghg-co2e_files/libs/bootstrap/bootstrap.min.js"></script>
+<link href="hampshire-ghg-co2e_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="hampshire-ghg-co2e_files/libs/bootstrap/bootstrap.min.css" rel="stylesheet">
+<link href="hampshire-ghg-co2e_files/libs/tabwid-1.0.0/tabwid.css" rel="stylesheet">
+<link href="hampshire-ghg-co2e_files/libs/tabwid-1.0.0/scrool.css" rel="stylesheet">
+
+
+</head>
+
+<body class="fullcontent">
+
+<div id="quarto-content" class="page-columns page-rows-contents page-layout-article">
+
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Hampshire GHG emissions (CO2e analysis)</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Ben Anderson </p>
+          </div>
+  </div>
+    
+    
+  </div>
+  
+
+</header>
+
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(data.table)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(flextable)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(here)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>here() starts at /Users/ben/repos/git.soton/ba1e12/forks/SERG/HCC-engagement/hampshire-ghg-emissions</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">source</span>(here<span class="sc">::</span><span class="fu">here</span>(<span class="st">"R"</span>, <span class="st">"functions.R"</span>))</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>qmdParams <span class="ot">&lt;-</span> <span class="fu">list</span>()</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>qmdParams<span class="sc">$</span>dataPath <span class="ot">&lt;-</span> <span class="st">"~/Dropbox/data/beis/localAuthority/allGHG/uk-local-authority-ghg-emissions-2020-dataset.csv"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<section id="introduction" class="level1">
+<h1>Introduction</h1>
+<p>Latest CO2e data from BEIS at <a href="https://www.gov.uk/government/statistics/uk-local-authority-and-regional-greenhouse-gas-emissions-national-statistics-2005-to-2020">district</a> level - now has CO2e (i.e methane etc as well)</p>
+</section>
+<section id="load-and-filter-data" class="level1">
+<h1>Load and filter data</h1>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>dt <span class="ot">&lt;-</span> data.table<span class="sc">::</span><span class="fu">fread</span>(qmdParams<span class="sc">$</span>dataPath)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Extract just the 14 districts we are interested in.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>dt[, la_name <span class="sc">:</span><span class="er">=</span> <span class="st">`</span><span class="at">Local Authority</span><span class="st">`</span>]</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>solent <span class="ot">&lt;-</span> <span class="fu">getSolent</span>(dt)</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>t <span class="ot">&lt;-</span> solent[<span class="st">`</span><span class="at">Calendar Year</span><span class="st">`</span> <span class="sc">==</span> <span class="dv">2020</span> <span class="sc">&amp;</span> <span class="st">`</span><span class="at">Greenhouse gas</span><span class="st">`</span> <span class="sc">==</span> <span class="st">"CO2"</span>, .(<span class="at">n =</span> .N,</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>                           <span class="at">sumkT_CO2e =</span> <span class="fu">sum</span>(<span class="st">`</span><span class="at">Territorial emissions (kt CO2e)</span><span class="st">`</span>)), keyby <span class="ot">=</span> .(<span class="st">`</span><span class="at">Local Authority</span><span class="st">`</span>)]</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a><span class="fu">makeFlexTable</span>(t, <span class="at">cap =</span> <span class="st">"Check LAs (sum CO2 for 2020, kt CO2e"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+
+<div class="tabwid"><style>.cl-fb47bf9a{}.cl-fb3ee2f8{font-family:'Helvetica';font-size:10pt;font-weight:normal;font-style:normal;text-decoration:none;color:rgba(0, 0, 0, 1.00);background-color:transparent;}.cl-fb3ee302{font-family:'Helvetica';font-size:9pt;font-weight:normal;font-style:normal;text-decoration:none;color:rgba(0, 0, 0, 1.00);background-color:transparent;}.cl-fb4064fc{margin:0;text-align:left;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-fb406510{margin:0;text-align:right;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-fb40b182{width:30.5pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-fb40b18c{width:82.2pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-fb40b18d{width:116.1pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-fb40b18e{width:82.2pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-fb40b196{width:116.1pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-fb40b197{width:30.5pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-fb40b198{width:82.2pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-fb40b199{width:30.5pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-fb40b1a0{width:116.1pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-fb40b1a1{width:30.5pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-fb40b1a2{width:82.2pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-fb40b1a3{width:116.1pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-fb40b1aa{width:116.1pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-fb40b1ab{width:30.5pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-fb40b1ac{width:82.2pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-fb40b1ad{width:82.2pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-fb40b1ae{width:30.5pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-fb40b1b4{width:116.1pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-fb40b1b5{width:82.2pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-fb40b1b6{width:30.5pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-fb40b1be{width:116.1pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-fb40b1bf{width:82.2pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-fb40b1c0{width:30.5pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-fb40b1c1{width:116.1pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-fb40b1c8{width:82.2pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-fb40b1c9{width:30.5pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-fb40b1ca{width:116.1pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-fb40b1cb{width:116.1pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-fb40b1cc{width:30.5pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-fb40b1d2{width:82.2pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-fb40b1d3{width:116.1pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-fb40b1d4{width:30.5pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-fb40b1d5{width:82.2pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}</style><table class="cl-fb47bf9a">
+<caption class="Table Caption">
+<p>Check LAs (sum CO2 for 2020, kt CO2e</p>
+</caption>
+
+<thead><tr style="overflow-wrap:break-word;"><td class="cl-fb40b1d3"><p class="cl-fb4064fc"><span class="cl-fb3ee2f8">Local Authority</span></p></td><td class="cl-fb40b1d4"><p class="cl-fb406510"><span class="cl-fb3ee2f8">n</span></p></td><td class="cl-fb40b1d5"><p class="cl-fb406510"><span class="cl-fb3ee2f8">sumkT_CO2e</span></p></td></tr></thead><tbody><tr style="overflow-wrap:break-word;"><td class="cl-fb40b18d"><p class="cl-fb4064fc"><span class="cl-fb3ee302">Basingstoke and Deane</span></p></td><td class="cl-fb40b182"><p class="cl-fb406510"><span class="cl-fb3ee302">27</span></p></td><td class="cl-fb40b18c"><p class="cl-fb406510"><span class="cl-fb3ee302">795.4</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-fb40b1b4"><p class="cl-fb4064fc"><span class="cl-fb3ee302">East Hampshire</span></p></td><td class="cl-fb40b1ae"><p class="cl-fb406510"><span class="cl-fb3ee302">25</span></p></td><td class="cl-fb40b1ad"><p class="cl-fb406510"><span class="cl-fb3ee302">500.8</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-fb40b18d"><p class="cl-fb4064fc"><span class="cl-fb3ee302">Eastleigh</span></p></td><td class="cl-fb40b182"><p class="cl-fb406510"><span class="cl-fb3ee302">26</span></p></td><td class="cl-fb40b18c"><p class="cl-fb406510"><span class="cl-fb3ee302">500.9</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-fb40b1be"><p class="cl-fb4064fc"><span class="cl-fb3ee302">Fareham</span></p></td><td class="cl-fb40b1b6"><p class="cl-fb406510"><span class="cl-fb3ee302">26</span></p></td><td class="cl-fb40b1b5"><p class="cl-fb406510"><span class="cl-fb3ee302">398.3</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-fb40b1a0"><p class="cl-fb4064fc"><span class="cl-fb3ee302">Gosport</span></p></td><td class="cl-fb40b199"><p class="cl-fb406510"><span class="cl-fb3ee302">23</span></p></td><td class="cl-fb40b198"><p class="cl-fb406510"><span class="cl-fb3ee302">198.3</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-fb40b1c1"><p class="cl-fb4064fc"><span class="cl-fb3ee302">Hart</span></p></td><td class="cl-fb40b1c0"><p class="cl-fb406510"><span class="cl-fb3ee302">27</span></p></td><td class="cl-fb40b1bf"><p class="cl-fb406510"><span class="cl-fb3ee302">397.0</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-fb40b1c1"><p class="cl-fb4064fc"><span class="cl-fb3ee302">Havant</span></p></td><td class="cl-fb40b1c0"><p class="cl-fb406510"><span class="cl-fb3ee302">26</span></p></td><td class="cl-fb40b1bf"><p class="cl-fb406510"><span class="cl-fb3ee302">366.8</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-fb40b1ca"><p class="cl-fb4064fc"><span class="cl-fb3ee302">Isle of Wight</span></p></td><td class="cl-fb40b1c9"><p class="cl-fb406510"><span class="cl-fb3ee302">25</span></p></td><td class="cl-fb40b1c8"><p class="cl-fb406510"><span class="cl-fb3ee302">443.6</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-fb40b1cb"><p class="cl-fb4064fc"><span class="cl-fb3ee302">New Forest</span></p></td><td class="cl-fb40b1cc"><p class="cl-fb406510"><span class="cl-fb3ee302">27</span></p></td><td class="cl-fb40b1d2"><p class="cl-fb406510"><span class="cl-fb3ee302">804.8</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-fb40b196"><p class="cl-fb4064fc"><span class="cl-fb3ee302">Portsmouth</span></p></td><td class="cl-fb40b197"><p class="cl-fb406510"><span class="cl-fb3ee302">24</span></p></td><td class="cl-fb40b18e"><p class="cl-fb406510"><span class="cl-fb3ee302">685.5</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-fb40b196"><p class="cl-fb4064fc"><span class="cl-fb3ee302">Rushmoor</span></p></td><td class="cl-fb40b197"><p class="cl-fb406510"><span class="cl-fb3ee302">25</span></p></td><td class="cl-fb40b18e"><p class="cl-fb406510"><span class="cl-fb3ee302">321.0</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-fb40b1a0"><p class="cl-fb4064fc"><span class="cl-fb3ee302">Southampton</span></p></td><td class="cl-fb40b199"><p class="cl-fb406510"><span class="cl-fb3ee302">25</span></p></td><td class="cl-fb40b198"><p class="cl-fb406510"><span class="cl-fb3ee302">661.0</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-fb40b1a3"><p class="cl-fb4064fc"><span class="cl-fb3ee302">Test Valley</span></p></td><td class="cl-fb40b1a1"><p class="cl-fb406510"><span class="cl-fb3ee302">27</span></p></td><td class="cl-fb40b1a2"><p class="cl-fb406510"><span class="cl-fb3ee302">666.0</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-fb40b1aa"><p class="cl-fb4064fc"><span class="cl-fb3ee302">Winchester</span></p></td><td class="cl-fb40b1ab"><p class="cl-fb406510"><span class="cl-fb3ee302">26</span></p></td><td class="cl-fb40b1ac"><p class="cl-fb406510"><span class="cl-fb3ee302">634.8</span></p></td></tr></tbody></table></div>
+</div>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>plotDT <span class="ot">&lt;-</span> solent[, .(<span class="at">n =</span> .N,</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>                           <span class="at">sumkT_CO2e =</span> <span class="fu">sum</span>(<span class="st">`</span><span class="at">Territorial emissions (kt CO2e)</span><span class="st">`</span>)), keyby <span class="ot">=</span> .(<span class="st">`</span><span class="at">Local Authority</span><span class="st">`</span>, <span class="st">`</span><span class="at">Greenhouse gas</span><span class="st">`</span>, <span class="st">`</span><span class="at">Calendar Year</span><span class="st">`</span>)]</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>ggplot2<span class="sc">::</span><span class="fu">ggplot</span>(plotDT[<span class="st">`</span><span class="at">Calendar Year</span><span class="st">`</span> <span class="sc">&gt;</span> <span class="dv">2017</span>], <span class="fu">aes</span>(<span class="at">x =</span> <span class="st">`</span><span class="at">Calendar Year</span><span class="st">`</span>, <span class="at">y =</span> sumkT_CO2e,</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>                            <span class="at">fill =</span> <span class="st">`</span><span class="at">Local Authority</span><span class="st">`</span>)) <span class="sc">+</span></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_col</span>(<span class="at">position =</span> <span class="st">"stack"</span>) <span class="sc">+</span></span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(. <span class="sc">~</span> <span class="st">`</span><span class="at">Greenhouse gas</span><span class="st">`</span>) <span class="sc">+</span></span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">y =</span> <span class="st">"kT CO2e"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="hampshire-ghg-co2e_files/figure-html/filter_areas-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+</section>
+<section id="analysis" class="level1">
+<h1>Analysis</h1>
+<section id="sequestration-estimates" class="level2">
+<h2 class="anchored" data-anchor-id="sequestration-estimates">Sequestration estimates</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Net Emissions: Forest land    </span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Net Emissions: Cropland   </span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Net Emissions: Grassland  </span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Net Emissions: Wetlands   </span></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Net Emissions: Settlements    </span></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Net Emissions: Harvested Wood Products    </span></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Net Emissions: Indirect N2O</span></span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>solent_LULUCF <span class="ot">&lt;-</span> solent[<span class="st">`</span><span class="at">LA GHG Sub-sector</span><span class="st">`</span> <span class="sc">%like%</span> <span class="st">"LULUCF"</span> <span class="sc">&amp;</span> </span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>                          <span class="st">`</span><span class="at">LA GHG Sub-sector</span><span class="st">`</span> <span class="sc">!=</span> <span class="st">"LULUCF Net Emissions: Settlements"</span>]</span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a><span class="fu">message</span>(<span class="st">"Summing:"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Summing:</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(solent_LULUCF<span class="sc">$</span><span class="st">`</span><span class="at">LA GHG Sub-sector</span><span class="st">`</span>, </span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>      solent_LULUCF<span class="sc">$</span><span class="st">`</span><span class="at">Greenhouse gas</span><span class="st">`</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>                                    
+                                     CH4 CO2 N2O
+  LULUCF Net Emissions: Cropland     180 224 224
+  LULUCF Net Emissions: Forest land  176 224 224
+  LULUCF Net Emissions: Grassland    224 224 224
+  LULUCF Net Emissions: Indirect N2O   0   0 224
+  LULUCF Net Emissions: Wetlands     128 128   0</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>t <span class="ot">&lt;-</span> solent_LULUCF[, .(<span class="at">sum_kT_Co2e =</span> <span class="fu">sum</span>(<span class="st">`</span><span class="at">Territorial emissions (kt CO2e)</span><span class="st">`</span>)), </span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>                   keyby <span class="ot">=</span>.(<span class="at">la_name =</span> <span class="st">`</span><span class="at">Local Authority</span><span class="st">`</span>, </span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>                            <span class="at">year =</span> <span class="st">`</span><span class="at">Calendar Year</span><span class="st">`</span>)]</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>t_dcast <span class="ot">&lt;-</span> data.table<span class="sc">::</span><span class="fu">dcast</span>(t[year <span class="sc">&gt;</span> <span class="dv">2017</span>], </span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>                             la_name <span class="sc">~</span> year)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Using 'sum_kT_Co2e' as value column. Use 'value.var' to override</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">makeFlexTable</span>(t_dcast, <span class="at">cap =</span> <span class="st">"Land use 'emissions' sum by district (kT CO2e)"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+
+<div class="tabwid"><style>.cl-fc09a9f2{}.cl-fc02d6cc{font-family:'Helvetica';font-size:10pt;font-weight:normal;font-style:normal;text-decoration:none;color:rgba(0, 0, 0, 1.00);background-color:transparent;}.cl-fc02d6d6{font-family:'Helvetica';font-size:9pt;font-weight:normal;font-style:normal;text-decoration:none;color:rgba(0, 0, 0, 1.00);background-color:transparent;}.cl-fc02e70c{margin:0;text-align:left;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-fc02e70d{margin:0;text-align:right;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-fc0326a4{width:46.1pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-fc0326ae{width:116.1pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-fc0326af{width:46.1pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-fc0326b0{width:116.1pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-fc0326b8{width:46.1pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-fc0326b9{width:116.1pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-fc0326c2{width:46.1pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-fc0326c3{width:116.1pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-fc0326c4{width:46.1pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-fc0326c5{width:116.1pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-fc0326cc{width:46.1pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-fc0326cd{width:116.1pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-fc0326ce{width:116.1pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-fc0326cf{width:46.1pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-fc0326d6{width:46.1pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-fc0326d7{width:116.1pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-fc0326d8{width:116.1pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-fc0326e0{width:46.1pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-fc0326e1{width:46.1pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-fc0326e2{width:116.1pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-fc0326ea{width:46.1pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-fc0326eb{width:116.1pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}</style><table class="cl-fc09a9f2">
+<caption class="Table Caption">
+<p>Land use ‘emissions’ sum by district (kT CO2e)</p>
+</caption>
+
+<thead><tr style="overflow-wrap:break-word;"><td class="cl-fc0326eb"><p class="cl-fc02e70c"><span class="cl-fc02d6cc">la_name</span></p></td><td class="cl-fc0326ea"><p class="cl-fc02e70d"><span class="cl-fc02d6cc">2018</span></p></td><td class="cl-fc0326ea"><p class="cl-fc02e70d"><span class="cl-fc02d6cc">2019</span></p></td><td class="cl-fc0326ea"><p class="cl-fc02e70d"><span class="cl-fc02d6cc">2020</span></p></td></tr></thead><tbody><tr style="overflow-wrap:break-word;"><td class="cl-fc0326ae"><p class="cl-fc02e70c"><span class="cl-fc02d6d6">Basingstoke and Deane</span></p></td><td class="cl-fc0326a4"><p class="cl-fc02e70d"><span class="cl-fc02d6d6">-65.8</span></p></td><td class="cl-fc0326a4"><p class="cl-fc02e70d"><span class="cl-fc02d6d6">-66.7</span></p></td><td class="cl-fc0326a4"><p class="cl-fc02e70d"><span class="cl-fc02d6d6">-66.7</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-fc0326cd"><p class="cl-fc02e70c"><span class="cl-fc02d6d6">East Hampshire</span></p></td><td class="cl-fc0326cc"><p class="cl-fc02e70d"><span class="cl-fc02d6d6">-59.8</span></p></td><td class="cl-fc0326cc"><p class="cl-fc02e70d"><span class="cl-fc02d6d6">-60.5</span></p></td><td class="cl-fc0326cc"><p class="cl-fc02e70d"><span class="cl-fc02d6d6">-60.3</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-fc0326ae"><p class="cl-fc02e70c"><span class="cl-fc02d6d6">Eastleigh</span></p></td><td class="cl-fc0326a4"><p class="cl-fc02e70d"><span class="cl-fc02d6d6">-3.3</span></p></td><td class="cl-fc0326a4"><p class="cl-fc02e70d"><span class="cl-fc02d6d6">-3.4</span></p></td><td class="cl-fc0326a4"><p class="cl-fc02e70d"><span class="cl-fc02d6d6">-3.3</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-fc0326ce"><p class="cl-fc02e70c"><span class="cl-fc02d6d6">Fareham</span></p></td><td class="cl-fc0326cf"><p class="cl-fc02e70d"><span class="cl-fc02d6d6">-7.4</span></p></td><td class="cl-fc0326cf"><p class="cl-fc02e70d"><span class="cl-fc02d6d6">-7.5</span></p></td><td class="cl-fc0326cf"><p class="cl-fc02e70d"><span class="cl-fc02d6d6">-7.4</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-fc0326b9"><p class="cl-fc02e70c"><span class="cl-fc02d6d6">Gosport</span></p></td><td class="cl-fc0326b8"><p class="cl-fc02e70d"><span class="cl-fc02d6d6">-2.2</span></p></td><td class="cl-fc0326b8"><p class="cl-fc02e70d"><span class="cl-fc02d6d6">-2.2</span></p></td><td class="cl-fc0326b8"><p class="cl-fc02e70d"><span class="cl-fc02d6d6">-2.2</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-fc0326d7"><p class="cl-fc02e70c"><span class="cl-fc02d6d6">Hart</span></p></td><td class="cl-fc0326d6"><p class="cl-fc02e70d"><span class="cl-fc02d6d6">-28.9</span></p></td><td class="cl-fc0326d6"><p class="cl-fc02e70d"><span class="cl-fc02d6d6">-29.1</span></p></td><td class="cl-fc0326d6"><p class="cl-fc02e70d"><span class="cl-fc02d6d6">-29.0</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-fc0326d7"><p class="cl-fc02e70c"><span class="cl-fc02d6d6">Havant</span></p></td><td class="cl-fc0326d6"><p class="cl-fc02e70d"><span class="cl-fc02d6d6">-5.7</span></p></td><td class="cl-fc0326d6"><p class="cl-fc02e70d"><span class="cl-fc02d6d6">-5.8</span></p></td><td class="cl-fc0326d6"><p class="cl-fc02e70d"><span class="cl-fc02d6d6">-5.8</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-fc0326d8"><p class="cl-fc02e70c"><span class="cl-fc02d6d6">Isle of Wight</span></p></td><td class="cl-fc0326e0"><p class="cl-fc02e70d"><span class="cl-fc02d6d6">-34.1</span></p></td><td class="cl-fc0326e0"><p class="cl-fc02e70d"><span class="cl-fc02d6d6">-34.3</span></p></td><td class="cl-fc0326e0"><p class="cl-fc02e70d"><span class="cl-fc02d6d6">-34.0</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-fc0326e2"><p class="cl-fc02e70c"><span class="cl-fc02d6d6">New Forest</span></p></td><td class="cl-fc0326e1"><p class="cl-fc02e70d"><span class="cl-fc02d6d6">-127.6</span></p></td><td class="cl-fc0326e1"><p class="cl-fc02e70d"><span class="cl-fc02d6d6">-128.0</span></p></td><td class="cl-fc0326e1"><p class="cl-fc02e70d"><span class="cl-fc02d6d6">-127.2</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-fc0326b0"><p class="cl-fc02e70c"><span class="cl-fc02d6d6">Portsmouth</span></p></td><td class="cl-fc0326af"><p class="cl-fc02e70d"><span class="cl-fc02d6d6">-3.4</span></p></td><td class="cl-fc0326af"><p class="cl-fc02e70d"><span class="cl-fc02d6d6">-3.5</span></p></td><td class="cl-fc0326af"><p class="cl-fc02e70d"><span class="cl-fc02d6d6">-3.5</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-fc0326b0"><p class="cl-fc02e70c"><span class="cl-fc02d6d6">Rushmoor</span></p></td><td class="cl-fc0326af"><p class="cl-fc02e70d"><span class="cl-fc02d6d6">-8.0</span></p></td><td class="cl-fc0326af"><p class="cl-fc02e70d"><span class="cl-fc02d6d6">-8.0</span></p></td><td class="cl-fc0326af"><p class="cl-fc02e70d"><span class="cl-fc02d6d6">-8.0</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-fc0326b9"><p class="cl-fc02e70c"><span class="cl-fc02d6d6">Southampton</span></p></td><td class="cl-fc0326b8"><p class="cl-fc02e70d"><span class="cl-fc02d6d6">-6.8</span></p></td><td class="cl-fc0326b8"><p class="cl-fc02e70d"><span class="cl-fc02d6d6">-6.8</span></p></td><td class="cl-fc0326b8"><p class="cl-fc02e70d"><span class="cl-fc02d6d6">-6.8</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-fc0326c3"><p class="cl-fc02e70c"><span class="cl-fc02d6d6">Test Valley</span></p></td><td class="cl-fc0326c2"><p class="cl-fc02e70d"><span class="cl-fc02d6d6">-41.1</span></p></td><td class="cl-fc0326c2"><p class="cl-fc02e70d"><span class="cl-fc02d6d6">-41.8</span></p></td><td class="cl-fc0326c2"><p class="cl-fc02e70d"><span class="cl-fc02d6d6">-41.8</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-fc0326c5"><p class="cl-fc02e70c"><span class="cl-fc02d6d6">Winchester</span></p></td><td class="cl-fc0326c4"><p class="cl-fc02e70d"><span class="cl-fc02d6d6">-53.2</span></p></td><td class="cl-fc0326c4"><p class="cl-fc02e70d"><span class="cl-fc02d6d6">-54.1</span></p></td><td class="cl-fc0326c4"><p class="cl-fc02e70d"><span class="cl-fc02d6d6">-54.0</span></p></td></tr></tbody></table></div>
+</div>
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>annualtotals <span class="ot">&lt;-</span> t[year <span class="sc">&gt;</span> <span class="dv">2017</span>, .(<span class="at">kT_CO2e =</span> <span class="fu">sum</span>(sum_kT_Co2e)), keyby <span class="ot">=</span> .(year)]</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>annualtotals[, year <span class="sc">:</span><span class="er">=</span> <span class="fu">as.factor</span>(year)]</span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a><span class="fu">makeFlexTable</span>(annualtotals, <span class="at">cap =</span> <span class="st">"Land use 'emissions' sum (kT CO2e)"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+
+<div class="tabwid"><style>.cl-fc3c7864{}.cl-fc2e9294{font-family:'Helvetica';font-size:10pt;font-weight:normal;font-style:normal;text-decoration:none;color:rgba(0, 0, 0, 1.00);background-color:transparent;}.cl-fc2e929e{font-family:'Helvetica';font-size:9pt;font-weight:normal;font-style:normal;text-decoration:none;color:rgba(0, 0, 0, 1.00);background-color:transparent;}.cl-fc2ea86a{margin:0;text-align:left;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-fc2ea874{margin:0;text-align:right;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-fc2f0094{width:63.3pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-fc2f009e{width:40.6pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-fc2f00a8{width:63.3pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-fc2f00a9{width:40.6pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-fc2f00b2{width:63.3pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-fc2f00b3{width:40.6pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-fc2f00b4{width:63.3pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-fc2f00bc{width:40.6pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}</style><table class="cl-fc3c7864">
+<caption class="Table Caption">
+<p>Land use ‘emissions’ sum (kT CO2e)</p>
+</caption>
+
+<thead><tr style="overflow-wrap:break-word;"><td class="cl-fc2f00bc"><p class="cl-fc2ea86a"><span class="cl-fc2e9294">year</span></p></td><td class="cl-fc2f00b4"><p class="cl-fc2ea874"><span class="cl-fc2e9294">kT_CO2e</span></p></td></tr></thead><tbody><tr style="overflow-wrap:break-word;"><td class="cl-fc2f009e"><p class="cl-fc2ea86a"><span class="cl-fc2e929e">2018</span></p></td><td class="cl-fc2f0094"><p class="cl-fc2ea874"><span class="cl-fc2e929e">-447.3</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-fc2f00a9"><p class="cl-fc2ea86a"><span class="cl-fc2e929e">2019</span></p></td><td class="cl-fc2f00a8"><p class="cl-fc2ea874"><span class="cl-fc2e929e">-451.7</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-fc2f00b3"><p class="cl-fc2ea86a"><span class="cl-fc2e929e">2020</span></p></td><td class="cl-fc2f00b2"><p class="cl-fc2ea874"><span class="cl-fc2e929e">-450.0</span></p></td></tr></tbody></table></div>
+</div>
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">message</span>(<span class="st">"Districts included:"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Districts included:</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>t[, .(<span class="at">n =</span> .N), keyby <span class="ot">=</span> .(la_name)]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>                  la_name  n
+ 1: Basingstoke and Deane 16
+ 2:        East Hampshire 16
+ 3:             Eastleigh 16
+ 4:               Fareham 16
+ 5:               Gosport 16
+ 6:                  Hart 16
+ 7:                Havant 16
+ 8:         Isle of Wight 16
+ 9:            New Forest 16
+10:            Portsmouth 16
+11:              Rushmoor 16
+12:           Southampton 16
+13:           Test Valley 16
+14:            Winchester 16</code></pre>
+</div>
+</div>
+</section>
+</section>
+
+</main>
+<!-- /main column -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    target: function(trigger) {
+      return trigger.previousElementSibling;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    setTimeout(function() {
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      let href = ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const cites = ref.parentNode.getAttribute('data-cites').split(' ');
+    tippyHover(ref, function() {
+      var popup = window.document.createElement('div');
+      cites.forEach(function(cite) {
+        var citeDiv = window.document.createElement('div');
+        citeDiv.classList.add('hanging-indent');
+        citeDiv.classList.add('csl-entry');
+        var biblioDiv = window.document.getElementById('ref-' + cite);
+        if (biblioDiv) {
+          citeDiv.innerHTML = biblioDiv.innerHTML;
+        }
+        popup.appendChild(citeDiv);
+      });
+      return popup.innerHTML;
+    });
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+</body></html>
