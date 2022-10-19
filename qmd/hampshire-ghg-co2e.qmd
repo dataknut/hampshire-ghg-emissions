@@ -2,6 +2,7 @@
 title: "Hampshire GHG emissions (CO2e analysis)"
 author: "Ben Anderson"
 format: html
+self-contained: true
 editor: visual
 ---
 
@@ -15,7 +16,7 @@ library(here)
 source(here::here("R", "functions.R"))
 qmdParams <- list()
 
-qmdParams$dataPath <- "~/Dropbox/data/beis/localAuthority/allGHG/uk-local-authority-ghg-emissions-2020-dataset.csv"
+qmdParams$dataPath <- "~/Dropbox/data/beis/localAuthority/allGHG/uk-local-authority-ghg-emissions-2020-dataset.csv" # includes all GHGs
 ```
 
 # Introduction
@@ -54,7 +55,9 @@ ggplot2::ggplot(plotDT[`Calendar Year` > 2017], aes(x = `Calendar Year`, y = sum
 
 # Analysis
 
-## Sequestration estimates
+## Land Use: Sequestration estimates
+
+The land use data includes the categories shown in Table XX. Of these we would expect net positive emissions from cropland and settlements and also net positive emissions from CH4 and N2O. To understand the potential for sequestration we will therefore need to filter out these two categories and these two GHGs.
 
 ```{r}
 #| label: extractLandUse
@@ -65,26 +68,57 @@ ggplot2::ggplot(plotDT[`Calendar Year` > 2017], aes(x = `Calendar Year`, y = sum
 # Net Emissions: Settlements	
 # Net Emissions: Harvested Wood Products	
 # Net Emissions: Indirect N2O
-solent_LULUCF <- solent[`LA GHG Sub-sector` %like% "LULUCF" & 
-                          `LA GHG Sub-sector` != "LULUCF Net Emissions: Settlements"]
+solent_LULUCF <- solent[`LA GHG Sub-sector` %like% "LULUCF"]
 
-message("Summing:")
+t <- solent_LULUCF[, .(nYears = uniqueN(`Calendar Year`),
+                       min_kTCO2e = min(`Territorial emissions (kt CO2e)`),
+                       mean_kTCO2e = mean(`Territorial emissions (kt CO2e)`),
+                       max_kTCO2e = max(`Territorial emissions (kt CO2e)`)),
+                   keyby = .(`Greenhouse gas`,`LA GHG Sub-sector`)]
+makeFlexTable(t, cap = "Min, mean and max values for LULUCF sub-sectors by GHG")
+```
 
-table(solent_LULUCF$`LA GHG Sub-sector`, 
-      solent_LULUCF$`Greenhouse gas`)
+Figure @landUsePlot shows...
 
-t <- solent_LULUCF[, .(sum_kT_Co2e = sum(`Territorial emissions (kt CO2e)`)), 
+```{r}
+#| label: landUsePlot
+#| fig-cap: "Land use plot - all GHGs by sector over time"
+#| fig-link: fig-landUsePlot
+
+ggplot2::ggplot(solent_LULUCF, aes(x = `Calendar Year`,
+                                   y = `Territorial emissions (kt CO2e)`,
+                                   colour = `Local Authority`)) +
+  geom_line() +
+  facet_grid(`LA GHG Sub-sector` ~ `Greenhouse gas`) +
+  theme(legend.position = "bottom")
+
+```
+
+Selecting just CO2 data for:
+
+-   Forest land
+
+-   Grassland
+
+-   Wetlands
+
+```{r}
+#| label: sequestrationTotals
+
+t <- solent_LULUCF[`LA GHG Sub-sector` %like% "Forest" |
+                     `LA GHG Sub-sector` %like% "Grassland" |
+                     `LA GHG Sub-sector` %like% "Wetland", .(sum_kT_Co2e = sum(`Territorial emissions (kt CO2e)`)), 
                    keyby =.(la_name = `Local Authority`, 
                             year = `Calendar Year`)]
 
 t_dcast <- data.table::dcast(t[year > 2017], 
                              la_name ~ year)
 
-makeFlexTable(t_dcast, cap = "Land use 'emissions' sum by district (kT CO2e)")
+makeFlexTable(t_dcast, cap = "Land use 'sequestration' sum by district (kT CO2e)")
 
 annualtotals <- t[year > 2017, .(kT_CO2e = sum(sum_kT_Co2e)), keyby = .(year)]
 annualtotals[, year := as.factor(year)]
-makeFlexTable(annualtotals, cap = "Land use 'emissions' sum (kT CO2e)")
+makeFlexTable(annualtotals, cap = "Land use 'sequestration' sum (kT CO2e)")
 message("Districts included:")
 t[, .(n = .N), keyby = .(la_name)]
 ```
