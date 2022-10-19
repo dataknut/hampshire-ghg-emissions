@@ -4,6 +4,16 @@ subtitle: "2018/19 snapshots and trends over time comparing various accounting m
 author: "Ben Anderson (b.anderson@soton.ac.uk)"
 date: 'Last run at: `r Sys.time()`'
 output:
+  bookdown::word_document2: 
+    fig_caption: yes
+    number_sections: yes
+    toc: yes
+    toc_depth: 4
+    fig_width: 5
+  bookdown::pdf_document2:
+    toc: yes
+    fig_caption: yes
+    number_sections: yes
   bookdown::html_document2:
     fig_caption: yes
     code_folding: hide
@@ -11,16 +21,6 @@ output:
     toc: yes
     toc_depth: 4
     toc_float: TRUE
-  bookdown::pdf_document2:
-    toc: yes
-    fig_caption: yes
-    number_sections: yes
-  bookdown::word_document2: 
-    fig_caption: yes
-    number_sections: yes
-    toc: yes
-    toc_depth: 4
-    fig_width: 5
 bibliography: '`r  path.expand("~/bibliography.bib")`'
 ---
 
@@ -28,7 +28,7 @@ bibliography: '`r  path.expand("~/bibliography.bib")`'
 startTime <- proc.time()
 
 # Knitr options ----
-knitr::opts_chunk$set(echo = TRUE) # code visible
+knitr::opts_chunk$set(echo = FALSE) # code visible
 knitr::opts_chunk$set(warning = FALSE) # no warnings for cleaner output
 
 # Libraries ----
