@@ -1,6 +1,6 @@
 ---
 title: "Hampshire 'County' GHG Emissions (v2.0)"
-subtitle: "2018/19 snapshots and trends over time using the latest BEIS district level data"
+subtitle: "2018/19 snapshots and trends over time using the latest BEIS/DESNZ district level data"
 author: "Ben Anderson (b.anderson@soton.ac.uk)"
 date: 'Last run at: `r Sys.time()`'
 output:
@@ -66,7 +66,7 @@ Feedback: https://github.com/HCC-CCECF-DataGroup/hampshire-ghg-emissions/labels/
 
 ## History
 
- * Version 1 - [original analysis]
+ * Version 2.0 - [updated to use 2023 DESNZ CO2e data]
 
 ## License
 
@@ -76,14 +76,15 @@ This report is (c) University of Southampton and is published under the [CC-BY-4
 
 If you wish to use any of the material in this report please cite as:
 
- * Anderson, Ben (2023) _[Hampshire 'County' GHG Emissions (v2.0): 2018/19 snapshots and trends over time using the latest BEIS district level data](), Report to the Hampshire County Council Climate Change [Expert Stakeholder Forum](https://www.hants.gov.uk/landplanningandenvironment/environment/climatechange/whoweworkwith/climatechangeforumevent)_. University of Southampton: Southampton.
+ * Anderson, Ben (2023) _[Hampshire 'County' GHG Emissions (v2.0): 2018/19 snapshots and trends over time using the latest BEIS/DESNZ district level data](), Report to the Hampshire County Council Climate Change [Expert Stakeholder Forum](https://www.hants.gov.uk/landplanningandenvironment/environment/climatechange/whoweworkwith/climatechangeforumevent)_. University of Southampton: Southampton.
 
 # Introduction
 
 This report estimates greenhouse gas (GHG) emissions from the Hampshire County using:
 
- * estimates of total annual _[territorial-based](https://www.ons.gov.uk/economy/environmentalaccounts/articles/netzeroandthedifferentofficialmeasuresoftheuksgreenhousegasemissions/2019-07-24#measuring-the-uks-progress-to-net-zero)_ **CO2** emissions for the period 2005 to 2021 using local authority district level data from [BEIS 2023 data](https://www.gov.uk/government/statistics/uk-local-authority-and-regional-greenhouse-gas-emissions-national-statistics-2005-to-2021);
-* estimates of total annual _[territorial-based](https://www.ons.gov.uk/economy/environmentalaccounts/articles/netzeroandthedifferentofficialmeasuresoftheuksgreenhousegasemissions/2019-07-24#measuring-the-uks-progress-to-net-zero)_ **CH4** and **NO** emissions for the period XXXX to YYY using local authority district level data from [BEIS 2023 data](https://www.gov.uk/government/statistics/uk-local-authority-and-regional-greenhouse-gas-emissions-national-statistics-2005-to-2021);
+ * estimates of total annual _[territorial-based](https://www.ons.gov.uk/economy/environmentalaccounts/articles/netzeroandthedifferentofficialmeasuresoftheuksgreenhousegasemissions/2019-07-24#measuring-the-uks-progress-to-net-zero)_ **CO2e** emissions for the period 2005 onwards using the latest local authority district level data from [BEIS 2023 data](https://www.gov.uk/government/collections/uk-local-authority-and-regional-greenhouse-gas-emissions-national-statistics);
+ * estimates of total annual _[territorial-based](https://www.ons.gov.uk/economy/environmentalaccounts/articles/netzeroandthedifferentofficialmeasuresoftheuksgreenhousegasemissions/2019-07-24#measuring-the-uks-progress-to-net-zero)_ **CO2e** emissions for 2018/19 using the [CSE Impact tool](https://impact-tool.org.uk/download) dataset;
+  * estimates of total annual _[consumption-based](https://www.ons.gov.uk/economy/environmentalaccounts/articles/netzeroandthedifferentofficialmeasuresoftheuksgreenhousegasemissions/2019-07-24#the-uks-carbon-footprint)_ **CO2e** emissions for 2018/19 using the [CSE Impact tool](https://impact-tool.org.uk/download) dataset.
   
 The analysis is carried out for the 'Wider Hampshire' area, i.e. _all 14_ local authority districts in the Hampshire County **including the unitary authorities of Portsmouth, Southampton and the Isle of Wight**. Note that this differs from the baseline estimated for the Hampshire County Council [Climate Change Strategy](https://www.hants.gov.uk/landplanningandenvironment/environment/climatechange/whatarewedoing/climatechangestrategy) by The Carbon Trust which _excluded_ Portsmouth, Southampton and the Isle of Wight. 
 
@@ -122,13 +123,13 @@ However the HCC Climate [Change Strategic Framework of Programmes](https://www.h
 
 Using the proportion values in the figure above, this gives a total of `r dkUtils::tidyNum(ct_total,0)` kT CO2 for the 11 districts.
 
-# BEIS: Territorial CO2 emissions (2005 to current)
+# BEIS/DESNZ: Territorial CO2 emissions (2005 to current)
 
-These official local authority/district level [BEIS National Statistics](https://www.gov.uk/government/statistics/uk-local-authority-and-regional-greenhouse-gas-emissions-national-statistics-2005-to-2021) use the end-user [territorial emissions method](https://assets.publishing.service.gov.uk/government/uploads/system/uploads/attachment_data/file/996059/local-authority-co2-emissions-technical-report-2020.pdf) (_"meaning CO2 emissions that occur within the UK’s borders"_) and include _only_ CO2 emissions. As a result international aviation and shipping are _excluded_ from these estimates.
+These official local authority/district level [BEIS/DESNZ National Statistics](https://www.gov.uk/government/collections/uk-local-authority-and-regional-greenhouse-gas-emissions-national-statistics) use the end-user territorial emissions method(_"meaning CO2 emissions that occur within the UK’s borders"_). As a result international aviation and shipping are _excluded_ from these estimates.
 
 Note also that:
 
-"_The end user basis for reporting emissions has been chosen for this dataset because it accounts for the emissions from energy use at the local level and does not penalise local areas for emissions from the production of energy which is then ‘exported’ to and used in other areas._" ([technical report](https://assets.publishing.service.gov.uk/government/uploads/system/uploads/attachment_data/file/996059/local-authority-co2-emissions-technical-report-2020.pdf), p8)
+"_The end user basis for reporting emissions has been chosen for this dataset because it accounts for the emissions from energy use at the local level and does not penalise local areas for emissions from the production of energy which is then ‘exported’ to and used in other areas._" ([technical report](https://assets.publishing.service.gov.uk/government/uploads/system/uploads/attachment_data/file/1168163/uk-local-and-regional-ghg-emissions-2005-to-2021-technical-report.pdf), p8)
 
 The following code loads the data and reports basic checks. A full data description can be found in Section \@ref(skimBeis).
 
