@@ -16,7 +16,7 @@ library(here)
 source(here::here("R", "functions.R"))
 qmdParams <- list()
 
-qmdParams$dataPath <- "~/Dropbox/data/beis/localAuthority/allGHG/uk-local-authority-ghg-emissions-2020-dataset.csv" # includes all GHGs
+qmdParams$dataPath <- "~/Dropbox/data/beis/localAuthority/allGHG/2005-21-local-authority-ghg-emissions-csv-dataset-update-060723.csv" # includes all GHGs
 ```
 
 # Introduction
@@ -30,26 +30,35 @@ Latest CO2e data from BEIS at [district](https://www.gov.uk/government/statistic
 dt <- data.table::fread(qmdParams$dataPath)
 ```
 
+How many years are available?
+
+```{r}
+#| label: checkYears
+summary(dt$`Calendar Year`)
+```
+
 Extract just the 14 districts we are interested in.
 
 ```{r}
 #| label: filter_areas
 dt[, la_name := `Local Authority`]
 
+maxYear <- max(dt$`Calendar Year`)
+
 solent <- getSolent(dt)
 
-t <- solent[`Calendar Year` == 2020 & `Greenhouse gas` == "CO2", .(n = .N,
+t <- solent[`Calendar Year` == maxYear & `Greenhouse gas` == "CO2", .(n = .N,
                            sumkT_CO2e = sum(`Territorial emissions (kt CO2e)`)), keyby = .(`Local Authority`)]
 
-makeFlexTable(t, cap = "Check LAs (sum CO2 for 2020, kt CO2e")
+makeFlexTable(t[order(-sumkT_CO2e)], cap = paste0("Check LAs (sum CO2 for ", maxYear, ", kt CO2e"))
 
 plotDT <- solent[, .(n = .N,
                            sumkT_CO2e = sum(`Territorial emissions (kt CO2e)`)), keyby = .(`Local Authority`, `Greenhouse gas`, `Calendar Year`)]
 
-ggplot2::ggplot(plotDT[`Calendar Year` > 2017], aes(x = `Calendar Year`, y = sumkT_CO2e,
+ggplot2::ggplot(plotDT[`Calendar Year` > 2015], aes(x = `Calendar Year`, y = sumkT_CO2e,
                             fill = `Local Authority`)) +
   geom_col(position = "stack") +
-  facet_wrap(. ~ `Greenhouse gas`) +
+  facet_grid(`Greenhouse gas` ~ .) +
   labs(y = "kT CO2e")
 ```
 
