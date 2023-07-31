@@ -1,0 +1,528 @@
+Calendar Year,subSectorLabel,Total kT CO2e
+2005,Agriculture 'Other',91.02177383
+2005,Agriculture Electricity,38.582929449
+2005,Agriculture Gas,11.96974867
+2005,Agriculture Livestock,377.384612193
+2005,Agriculture Soils,163.50442399
+2005,Commercial 'Other',11.00407691
+2005,Commercial Electricity,1822.519926109
+2005,Commercial Gas,395.599050327
+2005,Domestic 'Other',312.039217989
+2005,Domestic Electricity,2060.31176513
+2005,Domestic Gas,2201.923210853
+2005,Industry 'Other',608.948893722
+2005,Industry Electricity,693.162354636
+2005,Industry Gas,309.020634018
+2005,Industry: Large Industrial Installations,1421.092839157
+2005,LULUCF Net Emissions: Cropland,109.19059271515
+2005,LULUCF Net Emissions: Forest land,-453.7818880744
+2005,LULUCF Net Emissions: Grassland,-36.324026294
+2005,LULUCF Net Emissions: Indirect N2O,2.838953284
+2005,LULUCF Net Emissions: Settlements,76.982847873
+2005,LULUCF Net Emissions: Wetlands,0.029445527
+2005,Public Sector 'Other',60.564892874
+2005,Public Sector Electricity,385.688981386
+2005,Public Sector Gas,349.825409456
+2005,Transport: (A roads),1754.152872122
+2005,Transport: (Minor roads),1551.635292481
+2005,Transport: (Motorways),1064.328331279
+2005,Transport: Diesel Railways,45.462421059
+2005,Transport: other,31.341013376
+2005,Waste: Landfill,777.70952706
+2005,Waste: other,209.1015258
+2006,Agriculture 'Other',89.664558813
+2006,Agriculture Electricity,40.0895346
+2006,Agriculture Gas,8.724095632
+2006,Agriculture Livestock,362.309202681
+2006,Agriculture Soils,155.917040323
+2006,Commercial 'Other',11.113321517
+2006,Commercial Electricity,1895.632128847
+2006,Commercial Gas,326.393719892
+2006,Domestic 'Other',315.340880473
+2006,Domestic Electricity,2097.327553152
+2006,Domestic Gas,2157.783700774
+2006,Industry 'Other',591.614061701
+2006,Industry Electricity,718.667749089
+2006,Industry Gas,245.587823533
+2006,Industry: Large Industrial Installations,1246.969970323
+2006,LULUCF Net Emissions: Cropland,110.60575215678
+2006,LULUCF Net Emissions: Forest land,-460.93191525
+2006,LULUCF Net Emissions: Grassland,-38.629365045
+2006,LULUCF Net Emissions: Indirect N2O,2.771663686
+2006,LULUCF Net Emissions: Settlements,74.517784221
+2006,LULUCF Net Emissions: Wetlands,0.029445527
+2006,Public Sector 'Other',41.15304834
+2006,Public Sector Electricity,398.665712796
+2006,Public Sector Gas,292.744051843
+2006,Transport: (A roads),1734.619838881
+2006,Transport: (Minor roads),1517.929412753
+2006,Transport: (Motorways),1075.697086751
+2006,Transport: Diesel Railways,44.561385253
+2006,Transport: other,33.49597098
+2006,Waste: Landfill,721.99719537
+2006,Waste: other,182.144228067
+2007,Agriculture 'Other',91.340874661
+2007,Agriculture Electricity,39.568653148
+2007,Agriculture Gas,8.247541424
+2007,Agriculture Livestock,367.433541999
+2007,Agriculture Soils,152.185238689
+2007,Commercial 'Other',9.482285248
+2007,Commercial Electricity,1832.843497733
+2007,Commercial Gas,304.900951887
+2007,Domestic 'Other',292.542120441
+2007,Domestic Electricity,2027.857989705
+2007,Domestic Gas,2048.415257681
+2007,Industry 'Other',606.856155568
+2007,Industry Electricity,699.194110564
+2007,Industry Gas,228.713814338
+2007,Industry: Large Industrial Installations,1499.768140958
+2007,LULUCF Net Emissions: Cropland,106.64282919515
+2007,LULUCF Net Emissions: Forest land,-465.0697479493
+2007,LULUCF Net Emissions: Grassland,-40.829373549
+2007,LULUCF Net Emissions: Indirect N2O,2.713470426
+2007,LULUCF Net Emissions: Settlements,73.184123675
+2007,LULUCF Net Emissions: Wetlands,0.029445527
+2007,Public Sector 'Other',36.277499857
+2007,Public Sector Electricity,382.681525911
+2007,Public Sector Gas,271.458846044
+2007,Transport: (A roads),1719.399135478
+2007,Transport: (Minor roads),1546.005576766
+2007,Transport: (Motorways),1065.582174225
+2007,Transport: Diesel Railways,47.213737829
+2007,Transport: other,33.294274122
+2007,Waste: Landfill,601.06630986
+2007,Waste: other,201.914877691
+2008,Agriculture 'Other',107.736413783
+2008,Agriculture Electricity,40.702140458
+2008,Agriculture Gas,7.613814948
+2008,Agriculture Livestock,355.718320662
+2008,Agriculture Soils,157.386538456
+2008,Commercial 'Other',11.731334619
+2008,Commercial Electricity,1869.690204881
+2008,Commercial Gas,296.615622257
+2008,Domestic 'Other',310.68974492
+2008,Domestic Electricity,2014.887317015
+2008,Domestic Gas,2096.87877147
+2008,Industry 'Other',467.180601112
+2008,Industry Electricity,711.165909129
+2008,Industry Gas,219.609013274
+2008,Industry: Large Industrial Installations,1367.959088714
+2008,LULUCF Net Emissions: Cropland,102.079122768344
+2008,LULUCF Net Emissions: Forest land,-473.3707203172
+2008,LULUCF Net Emissions: Grassland,-43.950682265
+2008,LULUCF Net Emissions: Indirect N2O,2.628738414
+2008,LULUCF Net Emissions: Settlements,70.539748183
+2008,LULUCF Net Emissions: Wetlands,0.029445527
+2008,Public Sector 'Other',21.42366722
+2008,Public Sector Electricity,391.694548856
+2008,Public Sector Gas,267.765964721
+2008,Transport: (A roads),1655.266426777
+2008,Transport: (Minor roads),1497.746589461
+2008,Transport: (Motorways),1001.610626092
+2008,Transport: Diesel Railways,46.377476146
+2008,Transport: other,33.735973953
+2008,Waste: Landfill,604.45292031
+2008,Waste: other,170.663842031
+2009,Agriculture 'Other',99.54103001
+2009,Agriculture Electricity,36.00990504
+2009,Agriculture Gas,6.445800508
+2009,Agriculture Livestock,344.121701854
+2009,Agriculture Soils,154.160517594
+2009,Commercial 'Other',13.344603824
+2009,Commercial Electricity,1630.115940938
+2009,Commercial Gas,264.377297671
+2009,Domestic 'Other',296.386078455
+2009,Domestic Electricity,1829.921787769
+2009,Domestic Gas,1890.473159972
+2009,Industry 'Other',465.951553701
+2009,Industry Electricity,617.496900082
+2009,Industry Gas,202.993254531
+2009,Industry: Large Industrial Installations,1353.158599441
+2009,LULUCF Net Emissions: Cropland,109.479188685
+2009,LULUCF Net Emissions: Forest land,-478.183773868
+2009,LULUCF Net Emissions: Grassland,-45.8457373545
+2009,LULUCF Net Emissions: Indirect N2O,2.537745031
+2009,LULUCF Net Emissions: Settlements,68.227962125
+2009,LULUCF Net Emissions: Wetlands,0.029445527
+2009,Public Sector 'Other',17.754267298
+2009,Public Sector Electricity,340.969667703
+2009,Public Sector Gas,249.953886869
+2009,Transport: (A roads),1592.935633661
+2009,Transport: (Minor roads),1429.313890751
+2009,Transport: (Motorways),988.973325891
+2009,Transport: Diesel Railways,46.199427259
+2009,Transport: other,31.607261041
+2009,Waste: Landfill,472.933249382
+2009,Waste: other,154.66659592
+2010,Agriculture 'Other',92.385183961
+2010,Agriculture Electricity,36.760871486
+2010,Agriculture Gas,7.991111424
+2010,Agriculture Livestock,338.499068591
+2010,Agriculture Soils,152.954460029
+2010,Commercial 'Other',9.971466998
+2010,Commercial Electricity,1650.429176868
+2010,Commercial Gas,323.054475498
+2010,Domestic 'Other',329.987039613
+2010,Domestic Electricity,1876.197781563
+2010,Domestic Gas,2090.076991625
+2010,Industry 'Other',574.853378334
+2010,Industry Electricity,626.938211967
+2010,Industry Gas,234.586689291
+2010,Industry: Large Industrial Installations,507.923744306
+2010,LULUCF Net Emissions: Cropland,110.410434518
+2010,LULUCF Net Emissions: Forest land,-483.654034444
+2010,LULUCF Net Emissions: Grassland,-45.1145604691
+2010,LULUCF Net Emissions: Indirect N2O,2.439484902
+2010,LULUCF Net Emissions: Settlements,69.777232791
+2010,LULUCF Net Emissions: Wetlands,0.029445527
+2010,Public Sector 'Other',18.050514148
+2010,Public Sector Electricity,345.504775891
+2010,Public Sector Gas,285.547791469
+2010,Transport: (A roads),1593.229315757
+2010,Transport: (Minor roads),1381.873763484
+2010,Transport: (Motorways),1002.371771423
+2010,Transport: Diesel Railways,46.564429079
+2010,Transport: other,31.525947708
+2010,Waste: Landfill,421.899925985
+2010,Waste: other,158.090788616
+2011,Agriculture 'Other',81.289028977
+2011,Agriculture Electricity,35.084962373
+2011,Agriculture Gas,6.844440599
+2011,Agriculture Livestock,329.061563439
+2011,Agriculture Soils,155.966031235
+2011,Commercial 'Other',10.851756635
+2011,Commercial Electricity,1545.238444973
+2011,Commercial Gas,267.158587328
+2011,Domestic 'Other',276.904624444
+2011,Domestic Electricity,1776.416398852
+2011,Domestic Gas,1714.562094458
+2011,Industry 'Other',482.992188675
+2011,Industry Electricity,590.050671343
+2011,Industry Gas,187.961176884
+2011,Industry: Large Industrial Installations,355.476927018
+2011,LULUCF Net Emissions: Cropland,109.893196809
+2011,LULUCF Net Emissions: Forest land,-487.257940442
+2011,LULUCF Net Emissions: Grassland,-48.6891380098
+2011,LULUCF Net Emissions: Indirect N2O,2.395876282
+2011,LULUCF Net Emissions: Settlements,67.627529163
+2011,LULUCF Net Emissions: Wetlands,0.029445527
+2011,Public Sector 'Other',21.060247402
+2011,Public Sector Electricity,325.496688737
+2011,Public Sector Gas,238.137027476
+2011,Transport: (A roads),1585.893810856
+2011,Transport: (Minor roads),1344.818141148
+2011,Transport: (Motorways),989.873316461
+2011,Transport: Diesel Railways,44.021193158
+2011,Transport: other,30.58015448
+2011,Waste: Landfill,421.965014216
+2011,Waste: other,160.90269502
+2012,Agriculture 'Other',98.199816348
+2012,Agriculture Electricity,36.871223244
+2012,Agriculture Gas,7.332473589
+2012,Agriculture Livestock,324.202317608
+2012,Agriculture Soils,151.616470062
+2012,Commercial 'Other',8.236281482
+2012,Commercial Electricity,1646.788447808
+2012,Commercial Gas,284.547215831
+2012,Domestic 'Other',274.712705932
+2012,Domestic Electricity,1882.388805498
+2012,Domestic Gas,1897.884320904
+2012,Industry 'Other',447.275992199
+2012,Industry Electricity,624.414812893
+2012,Industry Gas,208.065473671
+2012,Industry: Large Industrial Installations,368.667241452
+2012,LULUCF Net Emissions: Cropland,111.331148593
+2012,LULUCF Net Emissions: Forest land,-471.268051701
+2012,LULUCF Net Emissions: Grassland,-50.1208336727
+2012,LULUCF Net Emissions: Indirect N2O,2.342662087
+2012,LULUCF Net Emissions: Settlements,65.553040212
+2012,LULUCF Net Emissions: Wetlands,0.029445527
+2012,Public Sector 'Other',16.796394354
+2012,Public Sector Electricity,347.862965928
+2012,Public Sector Gas,258.564617117
+2012,Transport: (A roads),1562.017636507
+2012,Transport: (Minor roads),1325.62775911
+2012,Transport: (Motorways),979.071897501
+2012,Transport: Diesel Railways,45.172914331
+2012,Transport: other,30.224675305
+2012,Waste: Landfill,424.037599597
+2012,Waste: other,163.817519165
+2013,Agriculture 'Other',82.032467457
+2013,Agriculture Electricity,33.593148686
+2013,Agriculture Gas,7.835240551
+2013,Agriculture Livestock,318.212235539
+2013,Agriculture Soils,150.095845025
+2013,Commercial 'Other',9.087367019
+2013,Commercial Electricity,1489.906992185
+2013,Commercial Gas,288.050009003
+2013,Domestic 'Other',287.405220697
+2013,Domestic Electricity,1708.196500854
+2013,Domestic Gas,1932.925354303
+2013,Industry 'Other',419.090482106
+2013,Industry Electricity,569.050096749
+2013,Industry Gas,213.614482014
+2013,Industry: Large Industrial Installations,378.414970121
+2013,LULUCF Net Emissions: Cropland,109.239366148
+2013,LULUCF Net Emissions: Forest land,-477.694469584
+2013,LULUCF Net Emissions: Grassland,-56.6572983178
+2013,LULUCF Net Emissions: Indirect N2O,2.271189479
+2013,LULUCF Net Emissions: Settlements,61.180830967
+2013,LULUCF Net Emissions: Wetlands,0.029445527
+2013,Public Sector 'Other',16.771504652
+2013,Public Sector Electricity,315.111016783
+2013,Public Sector Gas,257.246129653
+2013,Transport: (A roads),1544.114371057
+2013,Transport: (Minor roads),1308.092068218
+2013,Transport: (Motorways),975.802926096
+2013,Transport: Diesel Railways,45.488961743
+2013,Transport: other,30.055444357
+2013,Waste: Landfill,392.375842141
+2013,Waste: other,162.707326842
+2014,Agriculture 'Other',86.202364448
+2014,Agriculture Electricity,28.753822195
+2014,Agriculture Gas,6.732176436
+2014,Agriculture Livestock,318.892677199
+2014,Agriculture Soils,150.876303689
+2014,Commercial 'Other',10.249555351
+2014,Commercial Electricity,1268.257256797
+2014,Commercial Gas,247.369125812
+2014,Domestic 'Other',260.566828775
+2014,Domestic Electricity,1452.918946107
+2014,Domestic Gas,1649.26638776
+2014,Industry 'Other',448.686335086
+2014,Industry Electricity,486.237709892
+2014,Industry Gas,181.81120423
+2014,Industry: Large Industrial Installations,103.823660484
+2014,LULUCF Net Emissions: Cropland,108.635332642
+2014,LULUCF Net Emissions: Forest land,-481.641527798
+2014,LULUCF Net Emissions: Grassland,-47.9942873394
+2014,LULUCF Net Emissions: Indirect N2O,2.208761792
+2014,LULUCF Net Emissions: Settlements,60.22804058
+2014,LULUCF Net Emissions: Wetlands,0.029445527
+2014,Public Sector 'Other',17.541067834
+2014,Public Sector Electricity,266.889261852
+2014,Public Sector Gas,218.236139378
+2014,Transport: (A roads),1573.561350907
+2014,Transport: (Minor roads),1336.603501505
+2014,Transport: (Motorways),974.595507499
+2014,Transport: Diesel Railways,46.270686917
+2014,Transport: other,29.794877498
+2014,Waste: Landfill,366.533212834
+2014,Waste: other,171.040281955
+2015,Agriculture 'Other',97.05562534
+2015,Agriculture Electricity,24.0895015
+2015,Agriculture Gas,7.057933423
+2015,Agriculture Livestock,311.396716501
+2015,Agriculture Soils,146.846899165
+2015,Commercial 'Other',12.297911008
+2015,Commercial Electricity,1060.058088049
+2015,Commercial Gas,261.958060233
+2015,Domestic 'Other',262.885001559
+2015,Domestic Electricity,1240.656680702
+2015,Domestic Gas,1705.766699788
+2015,Industry 'Other',450.098911433
+2015,Industry Electricity,408.022586612
+2015,Industry Gas,192.481911727
+2015,Industry: Large Industrial Installations,55.822376569
+2015,LULUCF Net Emissions: Cropland,106.486848461
+2015,LULUCF Net Emissions: Forest land,-476.340344539
+2015,LULUCF Net Emissions: Grassland,-64.39523745849
+2015,LULUCF Net Emissions: Indirect N2O,2.16381925
+2015,LULUCF Net Emissions: Settlements,63.556208307
+2015,LULUCF Net Emissions: Wetlands,0.029445527
+2015,Public Sector 'Other',4.645846611
+2015,Public Sector Electricity,222.202381924
+2015,Public Sector Gas,228.566442438
+2015,Transport: (A roads),1622.777009591
+2015,Transport: (Minor roads),1346.543001299
+2015,Transport: (Motorways),1016.452146145
+2015,Transport: Diesel Railways,44.396568115
+2015,Transport: other,30.17416021
+2015,Waste: Landfill,385.098302472
+2015,Waste: other,169.666718215
+2016,Agriculture 'Other',90.05549333
+2016,Agriculture Electricity,19.647226068
+2016,Agriculture Gas,6.085043055
+2016,Agriculture Livestock,302.710127144
+2016,Agriculture Soils,139.373222935
+2016,Commercial 'Other',10.56122687
+2016,Commercial Electricity,842.866326172
+2016,Commercial Gas,302.94459983
+2016,Domestic 'Other',262.673492123
+2016,Domestic Electricity,1005.710359402
+2016,Domestic Gas,1806.085415871
+2016,Industry 'Other',472.655280048
+2016,Industry Electricity,338.544747754
+2016,Industry Gas,182.832791228
+2016,Industry: Large Industrial Installations,63.43076731
+2016,LULUCF Net Emissions: Cropland,109.147443869
+2016,LULUCF Net Emissions: Forest land,-478.987585895
+2016,LULUCF Net Emissions: Grassland,-55.0821928411
+2016,LULUCF Net Emissions: Indirect N2O,2.111849368
+2016,LULUCF Net Emissions: Settlements,72.605629595
+2016,LULUCF Net Emissions: Wetlands,0.029445527
+2016,Public Sector 'Other',4.622620953
+2016,Public Sector Electricity,169.878580306
+2016,Public Sector Gas,214.165757118
+2016,Transport: (A roads),1663.658504679
+2016,Transport: (Minor roads),1373.853896483
+2016,Transport: (Motorways),1035.675454594
+2016,Transport: Diesel Railways,43.359157865
+2016,Transport: other,31.141547961
+2016,Waste: Landfill,367.14313734
+2016,Waste: other,178.833776572
+2017,Agriculture 'Other',95.446052191
+2017,Agriculture Electricity,24.23601112
+2017,Agriculture Gas,5.495423443
+2017,Agriculture Livestock,296.85966654
+2017,Agriculture Soils,143.122770193
+2017,Commercial 'Other',11.124293907
+2017,Commercial Electricity,621.557967898
+2017,Commercial Gas,262.885740233
+2017,Domestic 'Other',257.416935062
+2017,Domestic Electricity,873.238500518
+2017,Domestic Gas,1747.261041908
+2017,Industry 'Other',470.259385863
+2017,Industry Electricity,361.397133275
+2017,Industry Gas,155.714262424
+2017,Industry: Large Industrial Installations,71.963467561
+2017,LULUCF Net Emissions: Cropland,109.758846495
+2017,LULUCF Net Emissions: Forest land,-478.230839342
+2017,LULUCF Net Emissions: Grassland,-62.70275878821
+2017,LULUCF Net Emissions: Indirect N2O,2.062810783
+2017,LULUCF Net Emissions: Settlements,63.541851663
+2017,LULUCF Net Emissions: Wetlands,0.029445527
+2017,Public Sector 'Other',5.082948714
+2017,Public Sector Electricity,203.415235296
+2017,Public Sector Gas,216.758841253
+2017,Transport: (A roads),1669.935234896
+2017,Transport: (Minor roads),1360.739829268
+2017,Transport: (Motorways),1046.580555347
+2017,Transport: Diesel Railways,42.687983653
+2017,Transport: other,31.456570545
+2017,Waste: Landfill,346.287737005
+2017,Waste: other,180.541416112
+2018,Agriculture 'Other',94.785649767
+2018,Agriculture Electricity,36.880463712
+2018,Agriculture Gas,9.531181744
+2018,Agriculture Livestock,300.342141023
+2018,Agriculture Soils,138.407436093
+2018,Commercial 'Other',11.736885445
+2018,Commercial Electricity,421.416005279
+2018,Commercial Gas,187.528070215
+2018,Domestic 'Other',266.516404065
+2018,Domestic Electricity,796.90623681
+2018,Domestic Gas,1744.946543543
+2018,Industry 'Other',472.448976495
+2018,Industry Electricity,456.615497586
+2018,Industry Gas,249.945061219
+2018,Industry: Large Industrial Installations,72.262877301
+2018,LULUCF Net Emissions: Cropland,108.09314716
+2018,LULUCF Net Emissions: Forest land,-478.5944799807
+2018,LULUCF Net Emissions: Grassland,-63.94848547805
+2018,LULUCF Net Emissions: Indirect N2O,2.033454368
+2018,LULUCF Net Emissions: Settlements,70.126630881
+2018,LULUCF Net Emissions: Wetlands,0.029445527
+2018,Public Sector 'Other',5.663017245
+2018,Public Sector Electricity,215.205445464
+2018,Public Sector Gas,278.599248199
+2018,Transport: (A roads),1639.915459028
+2018,Transport: (Minor roads),1309.639495241
+2018,Transport: (Motorways),1015.430542802
+2018,Transport: Diesel Railways,40.257280938
+2018,Transport: other,32.164959591
+2018,Waste: Landfill,334.826967386
+2018,Waste: other,182.939853795
+2019,Agriculture 'Other',84.867047801
+2019,Agriculture Electricity,33.785279737
+2019,Agriculture Gas,7.282752752
+2019,Agriculture Livestock,298.339958967
+2019,Agriculture Soils,148.004662268
+2019,Commercial 'Other',11.179887322
+2019,Commercial Electricity,367.245981033
+2019,Commercial Gas,134.392530381
+2019,Domestic 'Other',257.822916414
+2019,Domestic Electricity,711.017699137
+2019,Domestic Gas,1711.403850632
+2019,Industry 'Other',451.131310356
+2019,Industry Electricity,402.023576768
+2019,Industry Gas,275.942848277
+2019,Industry: Large Industrial Installations,80.678489351
+2019,LULUCF Net Emissions: Cropland,108.552799991
+2019,LULUCF Net Emissions: Forest land,-476.4969817188
+2019,LULUCF Net Emissions: Grassland,-67.43301504922
+2019,LULUCF Net Emissions: Indirect N2O,2.018474032
+2019,LULUCF Net Emissions: Settlements,66.491024309
+2019,LULUCF Net Emissions: Wetlands,0.029445527
+2019,Public Sector 'Other',4.538113402
+2019,Public Sector Electricity,180.242591721
+2019,Public Sector Gas,244.655448745
+2019,Transport: (A roads),1586.654597127
+2019,Transport: (Minor roads),1289.134302664
+2019,Transport: (Motorways),992.289426988
+2019,Transport: Diesel Railways,42.353846605
+2019,Transport: other,34.724894793
+2019,Waste: Landfill,249.141555151
+2019,Waste: other,177.180267953
+2020,Agriculture 'Other',81.727583637
+2020,Agriculture Electricity,28.386786408
+2020,Agriculture Gas,13.801637837
+2020,Agriculture Livestock,281.882689539
+2020,Agriculture Soils,130.400692704
+2020,Commercial 'Other',6.258043551
+2020,Commercial Electricity,275.913202715
+2020,Commercial Gas,114.10876069
+2020,Domestic 'Other',250.743642455
+2020,Domestic Electricity,676.685467867
+2020,Domestic Gas,1716.370167724
+2020,Industry 'Other',471.060325808
+2020,Industry Electricity,332.857468361
+2020,Industry Gas,317.113394934
+2020,Industry: Large Industrial Installations,73.314992198
+2020,LULUCF Net Emissions: Cropland,109.974163265
+2020,LULUCF Net Emissions: Forest land,-474.2228615998
+2020,LULUCF Net Emissions: Grassland,-69.93228180274
+2020,LULUCF Net Emissions: Indirect N2O,2.004506589
+2020,LULUCF Net Emissions: Settlements,60.149384531
+2020,LULUCF Net Emissions: Wetlands,0.029445527
+2020,Public Sector 'Other',2.612757925
+2020,Public Sector Electricity,145.063145419
+2020,Public Sector Gas,228.586561034
+2020,Transport: (A roads),1245.651472276
+2020,Transport: (Minor roads),1073.558117938
+2020,Transport: (Motorways),775.058331968
+2020,Transport: Diesel Railways,33.846009891
+2020,Transport: other,26.110188711
+2020,Waste: Landfill,192.871418386
+2020,Waste: other,173.321025342
+2021,Agriculture 'Other',95.38594625
+2021,Agriculture Electricity,29.315801505
+2021,Agriculture Gas,22.139658782
+2021,Agriculture Livestock,273.158237461
+2021,Agriculture Soils,134.996058981
+2021,Commercial 'Other',7.189821227
+2021,Commercial Electricity,314.113186624
+2021,Commercial Gas,137.155783866
+2021,Domestic 'Other',252.941113912
+2021,Domestic Electricity,696.3015973
+2021,Domestic Gas,1771.385836659
+2021,Industry 'Other',481.505780044
+2021,Industry Electricity,371.385273789
+2021,Industry Gas,335.0415388
+2021,Industry: Large Industrial Installations,71.68490687
+2021,LULUCF Net Emissions: Cropland,110.775552925
+2021,LULUCF Net Emissions: Forest land,-471.0459096713
+2021,LULUCF Net Emissions: Grassland,-70.88138133494
+2021,LULUCF Net Emissions: Indirect N2O,1.984657234
+2021,LULUCF Net Emissions: Settlements,60.27463858
+2021,LULUCF Net Emissions: Wetlands,0.029445527
+2021,Public Sector 'Other',2.726134108
+2021,Public Sector Electricity,163.126673103
+2021,Public Sector Gas,260.61105974
+2021,Transport: (A roads),1362.940655128
+2021,Transport: (Minor roads),1104.694962442
+2021,Transport: (Motorways),868.429060984
+2021,Transport: Diesel Railways,36.238232187
+2021,Transport: other,26.892579973
+2021,Waste: Landfill,204.832127916
+2021,Waste: other,197.116815343
