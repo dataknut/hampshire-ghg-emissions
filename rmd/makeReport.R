@@ -2,28 +2,16 @@
 
 # Packages ----
 library(here)
+library(rmarkdown)
 library(bookdown)
 
 # Functions ----
 makeReport <- function(f){
   # default = whatever is set in yaml
   rmarkdown::render(input = here::here("rmd", paste0(f, ".Rmd")),
-                    output_format = "html_document2",
+                    #output_format ="all", # output all formats specified in the rmd
                     output_file = paste0(here::here("docs/"), f, ".html")
   )
-  # there must be some way of preserving the .md and just running pandoc?
-  rmarkdown::render(input = here::here("rmd", paste0(f, ".Rmd")),
-                    output_format = "word_document2",
-                    output_file = paste0(here::here("docs/"), f, ".docx")
-  )
-  # pdf fails on a table (kable_latex)
-  # rmarkdown::render(input = here::here("rmd", paste0(f, ".Rmd")),
-  #                   params = list(title = title,
-  #                                 subtitle = subtitle,
-  #                                 parish = parish),
-  #                   output_format = "pdf_document2",
-  #                   output_file = paste0(here::here("docs/"), f, ".pdf")
-  # )
 }
 
 # versions
