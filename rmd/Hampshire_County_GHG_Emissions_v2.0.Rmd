@@ -5,22 +5,18 @@ author: "Ben Anderson (b.anderson@soton.ac.uk)"
 date: 'Last run at: `r Sys.time()`'
 output:
   bookdown::html_document2:
-    fig_caption: yes
     code_folding: hide
     number_sections: yes
     toc: yes
     toc_depth: 4
     toc_float: TRUE
-  bookdown::pdf_document2:
-    toc: yes
-    fig_caption: yes
-    number_sections: yes
-  bookdown::word_document2: 
-    fig_caption: yes
+  bookdown::word_document2:
+    code_folding: hide
     number_sections: yes
     toc: yes
     toc_depth: 4
-    fig_width: 5
+  pdf_document:
+linkcolor: blue
 bibliography: '`r  path.expand("~/bibliography.bib")`'
 ---
 
@@ -35,7 +31,6 @@ knitr::opts_chunk$set(warning = FALSE) # no warnings for cleaner output
 library(data.table)
 library(flextable)
 library(ggplot2)
-library(here)
 library(RColorBrewer)
 library(skimr)
 library(dkUtils) # see https://github.com/dataknut/dkUtils
@@ -58,7 +53,7 @@ rmdParams$beisData <- "2005-21-local-authority-ghg-emissions-csv-dataset-update-
 
 This report is a contribution to the Hampshire County Council Climate Change [Expert Stakeholder Forum](https://www.hants.gov.uk/landplanningandenvironment/environment/climatechange/whoweworkwith/climatechangeforumevent)'s Data sub-group.
 
-Code: https://github.com/HCC-CCECF-DataGroup/hampshire-ghg-emissions/tree/main/rmd (mirrored from https://git.soton.ac.uk/SERG/hcc-engagement/hampshire-ghg-emissions)
+Code: https://github.com/dataknut/hampshire-ghg-emissions (mirrored from https://git.soton.ac.uk/SERG/hcc-engagement/hampshire-ghg-emissions)
 
 If you are viewing this report as a web page then you can also click on the 'code' buttons to reveal the code used in each section.
 
@@ -139,8 +134,9 @@ The following code loads the data and reports basic checks. A full data descript
 #> # source: https://www.gov.uk/government/statistics/uk-local-authority-and-regional-greenhouse-gas-emissions-national-statistics-2005-to-2021
 #> # first version to include all CO2, CH4 & NO back to 2005
 ghgFile <- path.expand("~/Library/CloudStorage/Dropbox/data/beis/localAuthority/allGHG/2005-21-local-authority-ghg-emissions-csv-dataset-update-060723.csv")
-desnz_orig <- copy(la_ghg_DT) # for skim in appendix
 la_ghg_DT <- data.table::fread(ghgFile) 
+desnz_orig <- copy(la_ghg_DT) # for skim in appendix
+
 
 la_ghg_DT[, sectorLabel := `LA GHG Sector`]
 la_ghg_DT[, subSectorLabel := `LA GHG Sub-sector`]
@@ -292,9 +288,51 @@ library(plotly)
 plotly::ggplotly(p)
 ```
 
+### Biogenic Net-Zero
+
+It has been suggested that carbon sequestration through land-use and land-use change should be primarily used to offset '[fast carbon cycle](https://www.earthobservatory.nasa.gov/features/CarbonCycle/page3.php)' agricultural emissions rather than to offset (and thus enable) the continued burning of '[slow carbon cycle](https://www.earthobservatory.nasa.gov/features/CarbonCycle/page2.php)' fossil fuels.  Figure \@ref(fig:biogenicNetZero) shows how close Hampshire is to net-zero biogenic emissions under the definitions included in the plot. Note that this excludes emissions from Agricultural gas and electricity use which are assumed to be from the burning of fossil fuels and thus part of the slow carbon cycle.
+
+```{r biogenicNetZero, fig.cap = "How close is Hampshire to biogenic Net-Zero?"}
+
+biogenic <- hampshire_la_ghg_DT[(subSectorLabel %like% "Agric" & 
+                                   !(subSectorLabel %like% "Gas") &
+                                   !(subSectorLabel %like% "Elec")) |
+                                  sectorLabel %like% "LULU", .(`Total kT CO2e` = sum(`Territorial emissions (kt CO2e)`, na.rm = TRUE)), keyby = .(`Calendar Year`, subSectorLabel)]
+
+
+p <- ggplot2::ggplot(biogenic, aes(x = `Calendar Year`, 
+                       y = `Total kT CO2e`,
+                       fill = subSectorLabel)) +
+  geom_col(position = "stack") +
+  scale_fill_manual(values = desnz_emissions_colours) +
+  theme(legend.position = "bottom", ) +
+  guides(fill=guide_legend(ncol=2)) +
+  theme(legend.title = element_blank()) +
+  labs(x = "LA GHG Sub-sector")
+
+p
+
+netSum <- sum(biogenic[`Calendar Year` == max(`Calendar Year`)]$`Total kT CO2e`)
+
+absNeg <- sum(biogenic[`Calendar Year` == max(`Calendar Year`) &
+                         `Total kT CO2e` < 0, `Total kT CO2e`])
+absPos <- sum(biogenic[`Calendar Year` == max(`Calendar Year`) &
+                         `Total kT CO2e` > 0, `Total kT CO2e`])
+ 
+pc <- 100*(abs(absNeg)/absPos)
+
+if(netSum > 0){
+  netSumTxt <- "positive, so emissions are larger than the level of sequestration (carbon capture). In this sense Hampshire is not yet biogenic net-zero."
+} else {
+  netSumTxt <- "negative, so emissions are lower than the level of sequestration (carbon capture). In this sense Hampshire is biogenic net negative!"
+}
+```
+
+In the most recent year, Hampshire had net biogenic emissions using the categories defined in the plot of `r round(netSum)` kT CO2e (negative emissions are `r round(pc)` % of gross emissions). This value is `r netSumTxt`
+
 ## 2019 baseline
 
-Table \@ref(tab:hampshireDNZESCO2Total) shows the total CO2 emissions under this method for 2019 for all `r uniqueN(hampshire_la_ghg_DT$la_name)` districts. 
+Table \@ref(tab:hampshireDNZESCO2Total) shows the total CO2e emissions under this method for 2019 for all `r uniqueN(hampshire_la_ghg_DT$la_name)` districts. 
 
 ```{r hampshireDNZESCO2Total}
 t <- hampshire_la_ghg_DT[`Calendar Year` == 2019, .(`Total kT CO2e` = sum(`Territorial emissions (kt CO2e)`, na.rm = TRUE))]
@@ -311,7 +349,7 @@ Note that the total emissions deemed to be 'within the scope of influence of LAs
  * Transport: (Motorways)
  * Transport: Diesel Railways
  
-Table \@ref(tab:hampshireDNZESCO2TotalByCat) shows the total emissions for 2019 ordered by category. Figure \@ref(fig:hampshireDNZESCO2TotalByCat) shows the data as a bar plot ordered by value. The largest emissions sources under this method are clearly visible (domestic gas, transport and domestic electricity).
+Table \@ref(tab:hampshireDNZESCO2TotalByCat) shows the total emissions for 2019 ordered by magnitude Figure \@ref(fig:hampshireDNZESCO2TotalByCat) shows the data as a bar plot ordered by value. The largest emissions sources under this method are clearly visible (domestic gas, transport and domestic electricity).
 
 ```{r hampshireDNZESCO2TotalByCat, fig.cap = "CO2e emissions by category (Hampshire, 2019 ordered by emissions value)"}
 
@@ -323,8 +361,8 @@ makeOrderedBarPlot <- function(dt, year){
   dt[, `% of gross` := 100*(`Total kT CO2e`/absTotal)]
   
   res$ft <- makeFlexTable(dt[, .(Source = subSectorLabel, 
-                           `Total kT CO2e`, `% of gross`)], 
-                cap = paste0("CO2e emissions sorted by category (Hampshire, ", year , ")")
+                           `Total kT CO2e`, `% of gross`)][order(-`Total kT CO2e`)], 
+                cap = paste0("CO2e emissions sorted by magnitude (Hampshire, ", year , ")")
   )
   
   res$p <- ggplot2::ggplot(dt, 
@@ -464,7 +502,6 @@ latestYear <- max(hampshire_la_ghg_DT$`Calendar Year`)
 
 ## Latest data (`r latestYear`)
 
-
 ```{r colPltLatestYear}
 
 plotDT <- hampshire_la_ghg_DT[`Calendar Year` == max(`Calendar Year`), .(`Total kT CO2e` = sum(`Territorial emissions (kt CO2e)`, na.rm = TRUE)), keyby = .(subSectorLabel)]
@@ -486,6 +523,7 @@ fname <- paste0("beis-", max(hampshire_la_ghg_DT$`Calendar Year`),
 ggplot2::ggsave(here::here("plots", fname), plot = p)
 p
 ```
+
 
 
 # CSE: Territorial-based all GHG emissions (2018/19 data)
