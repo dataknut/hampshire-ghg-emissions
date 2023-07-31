@@ -77,7 +77,7 @@ If you wish to use any of the material in this report please cite as:
 
 This report estimates greenhouse gas (GHG) emissions from the Hampshire County using:
 
- * estimates of total annual _[territorial-based](https://www.ons.gov.uk/economy/environmentalaccounts/articles/netzeroandthedifferentofficialmeasuresoftheuksgreenhousegasemissions/2019-07-24#measuring-the-uks-progress-to-net-zero)_ **CO2e** emissions for the period 2005 onwards using the latest local authority district level data from [DESNZ 2023 data](https://www.gov.uk/government/collections/uk-local-authority-and-regional-greenhouse-gas-emissions-national-statistics);
+ * estimates of total annual _[territorial-based](https://www.ons.gov.uk/economy/environmentalaccounts/articles/netzeroandthedifferentofficialmeasuresoftheuksgreenhousegasemissions/2019-07-24#measuring-the-uks-progress-to-net-zero)_ **CO2e** emissions for the period 2005 onwards using the latest local authority district level data from [DESNZ 2023](https://www.gov.uk/government/collections/uk-local-authority-and-regional-greenhouse-gas-emissions-national-statistics). This data now includes CO2, CH4 and N2O estimates for 2005 onwards ;
  * estimates of total annual _[territorial-based](https://www.ons.gov.uk/economy/environmentalaccounts/articles/netzeroandthedifferentofficialmeasuresoftheuksgreenhousegasemissions/2019-07-24#measuring-the-uks-progress-to-net-zero)_ **CO2e** emissions for 2018/19 using the [CSE Impact tool](https://impact-tool.org.uk/download) dataset;
   * estimates of total annual _[consumption-based](https://www.ons.gov.uk/economy/environmentalaccounts/articles/netzeroandthedifferentofficialmeasuresoftheuksgreenhousegasemissions/2019-07-24#the-uks-carbon-footprint)_ **CO2e** emissions for 2018/19 using the [CSE Impact tool](https://impact-tool.org.uk/download) dataset.
   
@@ -118,9 +118,9 @@ However the HCC Climate [Change Strategic Framework of Programmes](https://www.h
 
 Using the proportion values in the figure above, this gives a total of `r dkUtils::tidyNum(ct_total,0)` kT CO2 for the 11 districts.
 
-# DESNZ: Territorial CO2 emissions (2005 to current)
+# DESNZ: Territorial CO2e emissions (2005 to current)
 
-These official local authority/district level [DESNZ National Statistics](https://www.gov.uk/government/collections/uk-local-authority-and-regional-greenhouse-gas-emissions-national-statistics) use the end-user territorial emissions method(_"meaning CO2 emissions that occur within the UK’s borders"_). As a result international aviation and shipping are _excluded_ from these estimates.
+These official local authority/district level [DESNZ National Statistics](https://www.gov.uk/government/collections/uk-local-authority-and-regional-greenhouse-gas-emissions-national-statistics) use the end-user territorial emissions method (_"meaning CO2e emissions that occur within the UK’s borders"_). As a result international aviation and shipping are _excluded_ from these estimates.
 
 Note also that:
 
@@ -226,9 +226,11 @@ hampshire_la_ghg_DT[, widerHampshire := ifelse(la_name == "Southampton" |
                                                       la_name == "Isle of Wight",
                          "Wider Hampshire",
                          "Hampshire CC")]
+
+
 message("Number of emissions categories: ", uniqueN(hampshire_la_ghg_DT$`LA GHG Sub-sector`))
 message("Number of districts: ", uniqueN(hampshire_la_ghg_DT$`Local Authority`))
-message("Total emissions for 2019: ", round(sum(hampshire_la_ghg_DT[`Calendar Year` == 2019]$`Territorial emissions (kt CO2e)`)), " kT CO2")
+message("Total emissions for 2019: ", round(sum(hampshire_la_ghg_DT[`Calendar Year` == 2019]$`Territorial emissions (kt CO2e)`)), " kT CO2e")
 message("Total emissions deemed to be 'within the scope of influence of LAs' for 2019: ", round(sum(hampshire_la_ghg_DT[`Calendar Year` == 2019]$`CO2 emissions within the scope of influence of LAs (kt CO2e)`)), " kT CO2")
 
 ```
