@@ -1,7 +1,7 @@
 ---
 title: "Hampshire 'County' GHG Emissions (v2.0)"
 subtitle: "2018/19 snapshots and trends over time using the latest DESNZ district level data"
-author: "Ben Anderson (b.anderson@soton.ac.uk)"
+author: "Ben Anderson (b.anderson@soton.ac.uk, [`@dataknut`](https://twitter.com/dataknut))"
 date: 'Last run at: `r Sys.time()`'
 output:
   bookdown::html_document2:
