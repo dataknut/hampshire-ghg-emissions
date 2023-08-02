@@ -28,12 +28,12 @@ knitr::opts_chunk$set(echo = FALSE) # code visible?
 knitr::opts_chunk$set(warning = FALSE) # no warnings for cleaner output
 
 # Libraries ----
-library(data.table)
-library(flextable)
-library(ggplot2)
-library(RColorBrewer)
-library(skimr)
 library(dkUtils) # see https://github.com/dataknut/dkUtils
+
+myLibs <- c("data.table", "flextable", "ggplot2", 
+            "leaflet", "RColorBrewer", "skimr", "sf")
+
+dkUtils::loadLibraries(myLibs)
 
 # Functions ----
 source(here::here("R", "functions.R")) # additional local functions
@@ -81,7 +81,43 @@ This report estimates greenhouse gas (GHG) emissions from the Hampshire County u
  * estimates of total annual _[territorial-based](https://www.ons.gov.uk/economy/environmentalaccounts/articles/netzeroandthedifferentofficialmeasuresoftheuksgreenhousegasemissions/2019-07-24#measuring-the-uks-progress-to-net-zero)_ **CO2e** emissions for 2018/19 using the [CSE Impact tool](https://impact-tool.org.uk/download) dataset;
   * estimates of total annual _[consumption-based](https://www.ons.gov.uk/economy/environmentalaccounts/articles/netzeroandthedifferentofficialmeasuresoftheuksgreenhousegasemissions/2019-07-24#the-uks-carbon-footprint)_ **CO2e** emissions for 2018/19 using the [CSE Impact tool](https://impact-tool.org.uk/download) dataset.
   
-The analysis is carried out for the 'Wider Hampshire' area, i.e. _all 14_ local authority districts in the Hampshire County **including the unitary authorities of Portsmouth, Southampton and the Isle of Wight**. Note that this differs from the baseline estimated for the Hampshire County Council [Climate Change Strategy](https://www.hants.gov.uk/landplanningandenvironment/environment/climatechange/whatarewedoing/climatechangestrategy) by The Carbon Trust which _excluded_ Portsmouth, Southampton and the Isle of Wight. 
+The analysis is carried out for the 'Wider Hampshire' area as defined in the map below (see Figure @ref(fig:simpleLAMap)): _all 14_ local authority districts in the Hampshire County **including the unitary authorities of Portsmouth, Southampton and the Isle of Wight**. Note that this differs from the baseline estimated for the Hampshire County Council [Climate Change Strategy](https://www.hants.gov.uk/landplanningandenvironment/environment/climatechange/whatarewedoing/climatechangestrategy) by The Carbon Trust which _excluded_ Portsmouth, Southampton and the Isle of Wight. 
+
+```{r mapBoundaries}
+gis <- list()
+
+gis$lsoa_lookup <- data.table::fread(path.expand("~/Library/CloudStorage/Dropbox/data/UK_lookups/LSOA_lookup_solent.csv.gz"))
+
+gis$la_boundaries <- sf::read_sf(path.expand("~/Library/CloudStorage/Dropbox/data/UK_boundaries/Local_Authority_Districts__December_2018__Boundaries_GB_BFC.shp/Local_Authority_Districts__December_2018__Boundaries_GB_BFC.shp"))
+gis$la_boundaries$la_name <- gis$la_boundaries$LAD18NM
+gis$hampshre_la_boundaries <- getSolent(gis$la_boundaries) # defined in R/functions.R
+
+```
+
+```{r simpleLAMap, fig.cap = "Local authorities defining 'Wider Hampshire'"}
+
+st_coord_sys <- sf::st_crs(gis$hampshre_la_boundaries) # check coord system
+#message("Boundary data co-ord system: ", st_coord_sys$epsg)
+# if required transform current coord system to EPSG: 4326 (is what leaflet wants - good)
+# do this once here and then re-use
+if(st_coord_sys$epsg != 4326){
+ gis$hampshre_la_boundaries_leaflet <- st_transform(gis$hampshre_la_boundaries, "+proj=longlat +datum=WGS84")
+}
+
+leaflet::leaflet(gis$hampshre_la_boundaries_leaflet) %>%
+  addTiles() %>%  # Add default OpenStreetMap map tiles
+  addPolygons(fillOpacity = 0.2, 
+              weight = 1.5, 
+              popup = ~(paste0(LAD18NM)
+                      ), # popups clicked
+              highlight = highlightOptions(
+                weight = 5,
+                color = "#666",
+                fillOpacity = 0.7,
+                bringToFront = TRUE))
+
+```
+
 
 # Carbon Trust estimates
 
@@ -125,6 +161,8 @@ These official local authority/district level [DESNZ National Statistics](https:
 Note also that:
 
 "_The end user basis for reporting emissions has been chosen for this dataset because it accounts for the emissions from energy use at the local level and does not penalise local areas for emissions from the production of energy which is then ‘exported’ to and used in other areas._" ([technical report](https://assets.publishing.service.gov.uk/government/uploads/system/uploads/attachment_data/file/1168163/uk-local-and-regional-ghg-emissions-2005-to-2021-technical-report.pdf), p8)
+
+DESNZ have produced a useful [mapping tool](https://naei.beis.gov.uk/laco2app/) which can be used to compare the spatial distribution of different emissions sources at district level.
 
 The following code loads the data and reports basic checks. A full data description can be found in Section \@ref(skimDesnz).
 
@@ -228,15 +266,24 @@ hampshire_la_ghg_DT[, widerHampshire := ifelse(la_name == "Southampton" |
                          "Hampshire CC")]
 
 
-message("Number of emissions categories: ", uniqueN(hampshire_la_ghg_DT$`LA GHG Sub-sector`))
-message("Number of districts: ", uniqueN(hampshire_la_ghg_DT$`Local Authority`))
-message("Total emissions for 2019: ", round(sum(hampshire_la_ghg_DT[`Calendar Year` == 2019]$`Territorial emissions (kt CO2e)`)), " kT CO2e")
-message("Total emissions deemed to be 'within the scope of influence of LAs' for 2019: ", round(sum(hampshire_la_ghg_DT[`Calendar Year` == 2019]$`CO2 emissions within the scope of influence of LAs (kt CO2e)`)), " kT CO2")
+message("Number of emissions categories (all local authorities): ", uniqueN(la_ghg_DT$`LA GHG Sub-sector`))
+message("Number of local authorities (all): ", uniqueN(la_ghg_DT$`Local Authority`))
+t <- la_ghg_DT[, .(`N local authorities` = uniqueN(`Local Authority`)), keyby = .(Country)]
+
+makeFlexTable(t, cap = "Number of local authorities per UK nation (unalocated = large electricity users/unallocated consumption/unkown location)")
+
+message("Number of emissions categories (Hampshire local authorities): ", uniqueN(hampshire_la_ghg_DT$`LA GHG Sub-sector`))
+message("Number of local authorities (Hampshire local authorities): ", uniqueN(hampshire_la_ghg_DT$`Local Authority`))
+
+t <- hampshire_la_ghg_DT[, .(`N years of data` = uniqueN(`Calendar Year`),
+                             `N emissions categories` = uniqueN(`LA GHG Sub-sector`)), keyby = .(`Local Authority`, `Local Authority Code`)]
+
+makeFlexTable(t, cap = "Wider Hampshire local authorities and data availability")
 
 ```
 
 
-DESNZ have produced a useful [mapping tool](https://naei.beis.gov.uk/laco2app/) which can be used to compare the spatial distribution of different emissions sources at district level.
+
 
 ## Trends over time
 
@@ -343,6 +390,9 @@ makeFlexTable(t, cap = "CO2e emissions (kT, 2019)")
 sumdesnz_kt <- sum(hampshire_la_ghg_DT[`Calendar Year` == 2019]$`Territorial emissions (kt CO2e)`)
 
 sum_within_infl <- sum(hampshire_la_ghg_DT[`Calendar Year` == 2019]$`Emissions within the scope of influence of LAs (kt CO2)`)
+
+message("Total emissions for 2019: ", round(sum(hampshire_la_ghg_DT[`Calendar Year` == 2019]$`Territorial emissions (kt CO2e)`)), " kT CO2e")
+message("Total emissions deemed to be 'within the scope of influence of LAs' for 2019: ", round(sum(hampshire_la_ghg_DT[`Calendar Year` == 2019]$`CO2 emissions within the scope of influence of LAs (kt CO2e)`)), " kT CO2")
 ```
 
 Note that the total emissions deemed to be 'within the scope of influence of LAs' for 2019 is `r dkUtils::tidyNum(round(sum_within_infl),0)` kT CO2e. Categories deemed by DESNZ to be outside local authorities' scope of influence in this data are:
