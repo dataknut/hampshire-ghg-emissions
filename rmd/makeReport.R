@@ -21,6 +21,6 @@ makeReport <- function(f){
 versions <- c("2.0")
 
 for(v in versions){
-  f <- paste0("Hampshire_County_GHG_Emissions_v", v)
+  f <- paste0("widerHampshire_GHG_Emissions_v", v)
   makeReport(f)
 }
